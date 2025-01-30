@@ -1,0 +1,19 @@
+# Byte-compiled / cached
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+.venv/
+ssis_env/
+
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+*.spec
+
+# Ignore CSV files
+*.csv
