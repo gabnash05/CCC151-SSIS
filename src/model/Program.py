@@ -1,7 +1,8 @@
 from typing import List, Dict, Any
 import utils.csvUtils as csvUtils
+from pathlib import Path
 
-PROGRAM_CSV_FILEPATH = "../../data/programs.csv"
+PROGRAM_CSV_FILEPATH = Path(__file__).parent.parent.parent / "data" / "programs.csv"
 PROGRAM_HEADERS = ["Program Code", "Program Name", "College Code"]
 
 class Program:
@@ -29,18 +30,18 @@ class Program:
   
   # Get program record
   @staticmethod
-  def getProgramRecord(programCode: str) -> Dict:
+  def getProgramRecord(programCode: str) -> Dict[str, str]:
     return csvUtils.getRowByIdCsv(PROGRAM_CSV_FILEPATH, programCode)
   
   # Get program record
   @staticmethod
-  def getProgramRecordsByCollege(collegeCode: str) -> List[Dict]:
+  def getProgramRecordsByCollege(collegeCode: str) -> List[Dict[str, str]]:
     return csvUtils.getRowsByFieldCsv(PROGRAM_CSV_FILEPATH, PROGRAM_HEADERS[2], collegeCode)
   
   ### UPDATE ###
   # Get program record
   @staticmethod
-  def updateProgramRecord(programCode: str, updateData: Dict) -> bool:
+  def updateProgramRecord(programCode: str, updateData: Dict[str, str]) -> bool:
     # update all students under program
     return csvUtils.updateRowByFieldCsv(PROGRAM_CSV_FILEPATH, PROGRAM_HEADERS[0], programCode, updateData)
   

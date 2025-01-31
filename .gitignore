@@ -17,3 +17,9 @@ dist/
 
 # Ignore CSV files
 *.csv
+
+# Temp Code Runners
+tempCodeRunnerFile.*
+
+# Package Installation
+*.egg-info/

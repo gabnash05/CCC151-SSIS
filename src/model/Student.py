@@ -1,9 +1,8 @@
 from typing import List, Dict, Any
 import utils.csvUtils as csvUtils
-import os
+from pathlib import Path
 
-relativePath = "data/students.csv"
-STUDENT_CSV_FILEPATH = os.path.abspath(relativePath)
+STUDENT_CSV_FILEPATH = Path(__file__).parent.parent.parent / "data" / "students.csv"
 STUDENT_HEADERS = ["ID Number", "First Name", "Last Name", "Year Level", "Gender", "Program Code"]
 
 class Student:
@@ -37,44 +36,49 @@ class Student:
   
   # Gets a student record
   @staticmethod
-  def getStudentRecord(studentId: str) -> Dict:
+  def getStudentRecord(studentId: str) -> Dict[str, str]:
     return csvUtils.getRowByIdCsv(STUDENT_CSV_FILEPATH, studentId)
   
+  ### UPDATE ###
+  # Add pagination
   # Get all student records
   @staticmethod
-  def getAllStudentRecords() -> List[Dict]:
+  def getAllStudentRecords() -> List[Dict[str, str]]:
     return csvUtils.readCsv(STUDENT_CSV_FILEPATH)
   
   # Get all student records by first name
   @staticmethod
-  def getAllStudentRecordsByYearLevel(firstName: str) -> List[Dict]:
+  def getAllStudentRecordsByFirstName(firstName: str) -> List[Dict[str, str]]:
     return csvUtils.getRowsByFieldCsv(STUDENT_CSV_FILEPATH, STUDENT_HEADERS[1], firstName)
   
   # Get all student records by last name
   @staticmethod
-  def getAllStudentRecordsByYearLevel(lastName: str) -> List[Dict]:
+  def getAllStudentRecordsByLastName(lastName: str) -> List[Dict[str, str]]:
     return csvUtils.getRowsByFieldCsv(STUDENT_CSV_FILEPATH, STUDENT_HEADERS[2], lastName)
   
   # Get all student records by year level
   @staticmethod
-  def getAllStudentRecordsByYearLevel(yearLevel: int) -> List[Dict]:
+  def getAllStudentRecordsByYearLevel(yearLevel: int) -> List[Dict[str, str]]:
     return csvUtils.getRowsByFieldCsv(STUDENT_CSV_FILEPATH, STUDENT_HEADERS[3], str(yearLevel))
 
   # Get all student records by gender
   @staticmethod
-  def getAllStudentRecordsByGender(gender: str) -> List[Dict]:
+  def getAllStudentRecordsByGender(gender: str) -> List[Dict[str, str]]:
     return csvUtils.getRowsByFieldCsv(STUDENT_CSV_FILEPATH, STUDENT_HEADERS[4], gender)
 
   # Get all student records by program code
   @staticmethod
-  def getAllStudentRecordsByProgram(program: str) -> List[Dict]:
+  def getAllStudentRecordsByProgram(program: str) -> List[Dict[str, str]]:
     return csvUtils.getRowsByFieldCsv(STUDENT_CSV_FILEPATH, STUDENT_HEADERS[5], program)
 
   # Get all student records by college
+  @staticmethod
+  def getAllStudentRecordsByCollege(college: str) -> List[Dict[str, str]]:
+    pass
 
   # Updates student information
   @staticmethod
-  def updateStudentRecordById(studentId: str, updateData: Dict) -> bool:
+  def updateStudentRecordById(studentId: str, updateData: Dict[str, str]) -> bool:
     return csvUtils.updateRowByFieldCsv(STUDENT_CSV_FILEPATH, STUDENT_HEADERS[0], studentId, updateData)
   
   # Removes a student record

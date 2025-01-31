@@ -1,8 +1,3 @@
-import sys
-import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
-
 from model.Student import Student
 
 # Initialize the CSV file with the correct headers
