@@ -2,10 +2,11 @@ from typing import List, Dict, Any
 import utils.csvUtils as csvUtils
 from pathlib import Path
 
-COLLEGE_CSV_FILEPATH = Path(__file__).parent.parent.parent / "data" / "colleges.csv"
-COLLEGE_HEADERS = ["College Code", "College Name"]
 
 class College:
+  COLLEGE_CSV_FILEPATH = Path(__file__).parent.parent.parent / "data" / "colleges.csv"
+  COLLEGE_HEADERS = ["College Code", "College Name"]
+
   def __init__(self, collegeCode, name):
     self.collegeCode = collegeCode
     self.name = name
@@ -19,33 +20,33 @@ class College:
   # Only for initializing when the application starts
   @staticmethod
   def intializeProgramStorage() -> bool:
-    return csvUtils.initializeCsv(COLLEGE_CSV_FILEPATH, COLLEGE_HEADERS)
+    return csvUtils.initializeCsv(College.COLLEGE_CSV_FILEPATH, College.COLLEGE_HEADERS)
   
   # Add new college
   @staticmethod
   def addNewCollege(college: Any) -> bool:
-    return csvUtils.appendRowCsv(COLLEGE_CSV_FILEPATH, college.toDict())
+    return csvUtils.appendRowCsv(College.COLLEGE_CSV_FILEPATH, college.toDict())
   
   # Get college record
   @staticmethod
   def getCollegeRecord(collegeCode: str) -> Dict[str, str]:
-    return csvUtils.getRowByIdCsv(COLLEGE_CSV_FILEPATH, collegeCode)
+    return csvUtils.getRowByIdCsv(College.COLLEGE_CSV_FILEPATH, collegeCode)
   
   # Get all college records
   @staticmethod
   def getAllCollegeRecords() -> List[Dict[str, str]]:
-    return csvUtils.readCsv(COLLEGE_CSV_FILEPATH)
+    return csvUtils.readCsv(College.COLLEGE_CSV_FILEPATH)
 
   ### UPDATE ###
   # Get program record
   @staticmethod
   def updateCollegeRecord(collegeCode: str, updateData: Dict[str, str]) -> bool:
     # update all programs under college
-    return csvUtils.updateRowByFieldCsv(COLLEGE_CSV_FILEPATH, COLLEGE_HEADERS[0], collegeCode, updateData)
+    return csvUtils.updateRowByFieldCsv(College.COLLEGE_CSV_FILEPATH, College.COLLEGE_HEADERS[0], collegeCode, updateData)
   
   ### UPDATE ###
   # Remove college
   @staticmethod
   def deleteCollegeRecord(collegeCode: str) -> bool:
     # update all students and programs under college
-    return csvUtils.deleteRowByFieldCsv(COLLEGE_CSV_FILEPATH, COLLEGE_HEADERS[0], collegeCode)
+    return csvUtils.deleteRowByFieldCsv(College.COLLEGE_CSV_FILEPATH, College.COLLEGE_HEADERS[0], collegeCode)
