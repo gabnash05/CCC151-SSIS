@@ -24,17 +24,27 @@ class Program:
   def intializeProgramStorage() -> bool:
     return csvUtils.initializeCsv(Program.PROGRAM_CSV_FILEPATH, Program.PROGRAM_HEADERS)
   
+  # Checks if Program Code already exists
+  @staticmethod
+  def programCodeExists(programCode: str) -> bool:
+    return csvUtils.checkIdIfExistsCsv(Program.PROGRAM_CSV_FILEPATH, programCode)
+
   # Add new program
   @staticmethod
   def addNewProgram(program: Any) -> bool:
     return csvUtils.appendRowCsv(Program.PROGRAM_CSV_FILEPATH, program.toDict())
   
-  # Get program record
+  # Get program record by code
   @staticmethod
-  def getProgramRecord(programCode: str) -> Dict[str, str]:
+  def getProgramRecordByCode(programCode: str) -> Dict[str, str]:
     return csvUtils.getRowByIdCsv(Program.PROGRAM_CSV_FILEPATH, programCode)
   
-  # Get program record
+  # Get program record by name
+  @staticmethod
+  def getProgramRecordsByName(programName: str) -> Dict[str, str]:
+    return csvUtils.getRowsByFieldCsv(Program.PROGRAM_CSV_FILEPATH, Program.PROGRAM_HEADERS[1], programName)
+  
+  # Get program record by college
   @staticmethod
   def getProgramRecordsByCollege(collegeCode: str) -> List[Dict[str, str]]:
     return csvUtils.getRowsByFieldCsv(Program.PROGRAM_CSV_FILEPATH, Program.PROGRAM_HEADERS[2], collegeCode)
@@ -42,7 +52,7 @@ class Program:
   ### UPDATE ###
   # Get program record
   @staticmethod
-  def updateProgramRecord(programCode: str, updateData: Dict[str, str]) -> bool:
+  def updateProgramRecordByCode(programCode: str, updateData: Dict[str, str]) -> bool:
     # update all students under program
     return csvUtils.updateRowByFieldCsv(Program.PROGRAM_CSV_FILEPATH, Program.PROGRAM_HEADERS[0], programCode, updateData)
   

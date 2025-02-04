@@ -22,15 +22,28 @@ def test_addNewCollege(mocker):
   assert result is True
 
 
-def test_getCollegeRecord(mocker):
+def test_getCollegeRecordByCode(mocker):
   mock_getRowByIdCsv = mocker.patch("utils.csvUtils.getRowByIdCsv", return_value={"College Code": "CCS", "College Name": "College of Computer Studies"})
 
-  result = College.getCollegeRecord("CCS")
+  result = College.getCollegeRecordByCode("CCS")
 
   mock_getRowByIdCsv.assert_called_once_with(College.COLLEGE_CSV_FILEPATH, "CCS")
   assert result["College Code"] == "CCS"
   assert result["College Name"] == "College of Computer Studies"
 
+def test_getCollegeRecordByName(mocker):
+    mock_getRowsByFieldCsv = mocker.patch(
+        "utils.csvUtils.getRowsByFieldCsv", 
+        return_value={"College Code": "CCS", "College Name": "College of Computer Studies"}
+    )
+
+    result = College.getCollegeRecordByName("College of Computer Studies")
+
+    mock_getRowsByFieldCsv.assert_called_once_with(
+        College.COLLEGE_CSV_FILEPATH, College.COLLEGE_HEADERS[1], "College of Computer Studies"
+    )
+    assert result["College Code"] == "CCS"
+    assert result["College Name"] == "College of Computer Studies"
 
 def test_getAllCollegeRecords(mocker):
   mock_readCsv = mocker.patch("utils.csvUtils.readCsv", return_value=[

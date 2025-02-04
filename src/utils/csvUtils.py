@@ -35,10 +35,10 @@ def readCsv(filepath: str) -> bool:
     return None
 
 # Overwrites the whole csv file
-def writeCsv(filepath: str, data: List[Dict]) -> bool:
+def writeCsv(filepath: str, data: List[Dict[str,str]]) -> bool:
   if not data:
-    print("Error: No data provided to writeCsv()")
-    return False
+    print("No data provided to writeCsv(). Rewriting entire file into blank")
+    return True
   
   fieldnames = data[0].keys()
   try:
@@ -145,3 +145,20 @@ def deleteRowByFieldCsv(filepath: str, searchField: str, searchValue: str) -> bo
   except Exception as error:
     print(f"Error deleting CSV row: {error}")
     return False
+
+# Checks if csv id row is unique
+def checkIdIfExistsCsv(filepath: str, id: str) -> bool:
+  try:
+    records = readCsv(filepath)
+
+    for record in records:
+      first_value = next(iter(record.values()))
+      if first_value == id:
+        return True
+    
+    return False
+  
+  except Exception as error:
+    print(f"Error checking if ID is : {error}")
+    return False
+

@@ -29,6 +29,11 @@ class Student:
   def intializeStudentStorage() -> bool:
     return csvUtils.initializeCsv(Student.STUDENT_CSV_FILEPATH, Student.STUDENT_HEADERS)
   
+  # Checks if a ID number already exists
+  @staticmethod
+  def idNumberExists(idNumber: str) -> bool:
+    return csvUtils.checkIdIfExistsCsv(Student.STUDENT_CSV_FILEPATH, idNumber)
+  
   # Adds a new student record
   @staticmethod
   def addStudentRecord(student: Any) -> bool:

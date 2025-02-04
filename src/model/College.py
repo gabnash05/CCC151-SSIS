@@ -22,6 +22,11 @@ class College:
   def intializeProgramStorage() -> bool:
     return csvUtils.initializeCsv(College.COLLEGE_CSV_FILEPATH, College.COLLEGE_HEADERS)
   
+  # Checks if College Code already exists
+  @staticmethod
+  def collegeCodeExists(collegeCode: str) -> bool:
+    return csvUtils.checkIdIfExistsCsv(College.COLLEGE_CSV_FILEPATH, collegeCode)
+
   # Add new college
   @staticmethod
   def addNewCollege(college: Any) -> bool:
@@ -29,8 +34,13 @@ class College:
   
   # Get college record
   @staticmethod
-  def getCollegeRecord(collegeCode: str) -> Dict[str, str]:
+  def getCollegeRecordByCode(collegeCode: str) -> Dict[str, str]:
     return csvUtils.getRowByIdCsv(College.COLLEGE_CSV_FILEPATH, collegeCode)
+  
+  # Get college record
+  @staticmethod
+  def getCollegeRecordByName(collegeName: str) -> Dict[str, str]:
+    return csvUtils.getRowsByFieldCsv(College.COLLEGE_CSV_FILEPATH, College.COLLEGE_HEADERS[1], collegeName)
   
   # Get all college records
   @staticmethod

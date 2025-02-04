@@ -1,4 +1,5 @@
 from model.Student import Student
+from model.Program import Program
 from typing import List, Dict, Any
 from utils.inputUtils import *
 
@@ -18,6 +19,12 @@ def addStudent(idNumber: str, firstName: str, lastName: str, yearLevel: int, gen
   if not validateGender(gender):
     return "Gender must be Male, Female, or Others."
   
+  if Student.idNumberExists(idNumber):
+    return "ID number already exists"
+
+  if not Program.programCodeExists(programCode):
+    return "Program Code does not exist"
+  
   newStudent = Student(idNumber, firstName, lastName, yearLevel, gender, programCode)
   isSuccessful = Student.addStudentRecord(newStudent)
 
@@ -33,11 +40,11 @@ def getAllStudents() -> List[Dict[str, str]]:
 def searchStudentsByField(field: str, value: str) -> List[Dict[str, str]]:
   if field not in STUDENT_SEARCH_FIELDS:
     print("Search field not valid")
-    return None
+    return []
   
   if not isinstance(value, str):
     print("Search value not valid")
-    return None
+    return []
   
   if field == STUDENT_SEARCH_FIELDS[0]:
     if validateIdNumber(value):
@@ -83,12 +90,12 @@ def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: 
     return "Gender must be Male, Female, or Others."
   
   updateData = {key: value for key, value in {
-    "idNumber": newIdNumber,
-    "firstName": newFirstName,
-    "lastName": newLastName,
-    "yearLevel": newYearLevel,
-    "gender": newGender,
-    "programCode": newProgramCode
+    "ID Number": newIdNumber,
+    "First Name": newFirstName,
+    "Last Name": newLastName,
+    "Year Level": newYearLevel,
+    "Gender": newGender,
+    "Program Code": newProgramCode
   }.items() if value is not None}
 
   isSuccessful = Student.updateStudentRecordById(originalId, updateData)
