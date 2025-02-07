@@ -1,5 +1,6 @@
 from model.Student import Student
 from model.Program import Program
+from model.College import College
 from typing import List, Dict, Any
 from utils.inputUtils import *
 
@@ -60,7 +61,15 @@ def searchStudentsByField(field: str, value: str) -> List[Dict[str, str]]:
     return Student.getAllStudentRecordsByProgram(value)
   
   if field == STUDENT_SEARCH_FIELDS[4]:
-    return Student.getAllStudentRecordsByCollege(value)
+    studentsInCollege = []
+
+    programs = Program.getProgramRecordsByCollege(value)
+
+    for program in programs:
+      students = Student.getAllStudentRecordsByProgram(program["Program Code"])
+      studentsInCollege.extend(students)
+  
+  return studentsInCollege
 
 # may be depricated
 # FILTER SEARCH: get list of all students by year level

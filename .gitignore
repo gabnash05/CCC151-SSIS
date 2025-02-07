@@ -23,3 +23,6 @@ tempCodeRunnerFile.*
 
 # Package Installation
 *.egg-info/
+
+# pytest
+.pytest_cache

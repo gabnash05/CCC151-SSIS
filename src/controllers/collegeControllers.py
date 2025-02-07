@@ -42,7 +42,7 @@ def updateCollege(originalCollegeCode: str, newCollegeCode: Any, newCollegeName:
     return "College Code does not exist"
 
   updateData = {key: value for key, value in {
-    "College Code": newCollegeCode,
+    "College Code": newCollegeCode, 
     "College Name": newCollegeName,
   }.items() if value is not None}
 
