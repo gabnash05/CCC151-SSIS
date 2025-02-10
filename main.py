@@ -5,12 +5,12 @@ from PyQt6.QtWidgets import QApplication, QMainWindow
 class MyApp(QMainWindow):
   def __init__(self):
     super().__init__()
-    uic.loadUi("gui/mainwindow.ui", self)
+    uic.loadUi("gui/ui/studentMainWindow.ui", self)
 
-    self.apply_stylesheet()
+    #self.apply_stylesheet()
   
   def apply_stylesheet(self):
-    with open("gui/styles.qss", "r") as file:
+    with open("gui/styles/styles.qss", "r") as file:
       stylesheet = file.read()
       self.setStyleSheet(stylesheet)
 

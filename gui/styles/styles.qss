@@ -1,0 +1,111 @@
+QMainWindow {
+	background-color: rgb(22, 22, 22);
+	font: 9pt "Inter";
+}
+
+/* DROP DOWNS */
+QComboBox {
+	border-radius: 2px;
+	border: 1px solid rgb(180, 180, 180) !important;
+	font: 9pt "Inter";
+	color: rgb(230, 230, 230);
+	background-color: rgb(16, 16, 16);
+}
+
+QComboBox::drop-down {
+  subcontrol-origin: padding;
+  subcontrol-position: top right;
+  width: 15px;
+}
+
+QComboBox QAbstractItemView::item::hover {
+	background-color: rgb(35, 35, 35);
+}
+
+QComboBox::hover {
+	background-color: rgb(35, 35, 35);
+}
+
+/* BUTTONS */
+QPushButton {
+	font: 9pt "Inter";
+	font-weight: bold;
+	padding: 0px, 15px;
+	background-color: rgb(63, 150, 160);
+	border-radius: 3px;
+	padding: 0px 15px;
+}
+
+QPushButton::hover {
+	background-color: rgb(83, 170, 180);
+}
+
+#sidebarFrame QPushButton {
+	font: 12pt "Inter";
+	font-weight: 600;
+	background-color: rgb(37, 37, 37);
+	border-radius: 0px;
+}
+
+#sidebarFrame QPushButton::hover {
+	background-color: rgb(47, 47, 47);
+	border-radius: 0px;
+}
+
+#sidebarFrame #studentsSidebarButton {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(71, 71, 71, 255), stop:1 rgba(95, 105, 106, 255));
+	border-left: 9px solid rgb(93, 180, 190);
+}
+
+/* LINE EDIT */
+#searchBarLineEdit {
+	background-color: rgb(37, 37, 37);
+	border-radius: 2px;
+	padding: 0px 15px;
+	color: rgb(120, 139, 140);
+}
+
+/* FRAMES */
+QFrame {
+  border: none;
+}
+
+#dataFrame {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(37, 37, 37, 255), stop:1 rgba(52, 57, 57, 255));
+	border-radius: 5px;
+}
+
+#headerFrame {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(63, 150, 160, 255), stop:1 rgba(38, 85, 90, 255));
+	border: 1px solid rgba(0, 0, 0, 30);
+}
+
+#sidebarFrame {
+	background-color: rgb(37, 37, 37);
+}
+
+/* LABELS */
+#studentLabel {
+  font: 20pt "Inter";
+  font-weight: bold;
+}
+
+#tableHeaderFrame QLabel {
+	font: 9pt "Inter";
+	font-weight: 500;
+	color: rgb(120, 139, 140);
+}
+
+#dataFrame Line {
+	background-color: rgb(120, 139, 140);
+}
+
+/* DATA TABLE */
+#scrollArea QLabel {
+	font: 9pt "Inter";
+	font-weight: 500;
+}
+
+#scrollArea Line {
+	background-color: rgb(120, 139, 140);
+}
