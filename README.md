@@ -1,4 +1,7 @@
-# **Lexis - a Student Information System**
+<h1>
+  <img src="assets/LogoIcon.png" width="30" alt="Project Logo">
+  Lexis - a Student Information System
+</h1>
 
 ## About This Project
 
