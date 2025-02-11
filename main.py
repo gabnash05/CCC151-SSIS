@@ -1,21 +1,9 @@
 import sys
-from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication, QMainWindow
-
-class MyApp(QMainWindow):
-  def __init__(self):
-    super().__init__()
-    uic.loadUi("gui/ui/studentMainWindow.ui", self)
-
-    #self.apply_stylesheet()
-  
-  def apply_stylesheet(self):
-    with open("gui/styles/styles.qss", "r") as file:
-      stylesheet = file.read()
-      self.setStyleSheet(stylesheet)
+from PyQt6.QtWidgets import QApplication
+from src.views.MainWindow import MainWindow
 
 if __name__ == "__main__":
   app = QApplication(sys.argv)
-  window = MyApp()
-  window.show()
+  window = MainWindow()
+  window.show()   
   sys.exit(app.exec())

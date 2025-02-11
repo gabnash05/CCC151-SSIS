@@ -1,5 +1,8 @@
 from PyQt6 import QtWidgets, QtCore
 
+class StudentTable():
+    pass
+
 def create_student_row(parent, student_data):
     row_frame = QtWidgets.QFrame(parent)
     row_frame.setMinimumSize(QtCore.QSize(400, 30))

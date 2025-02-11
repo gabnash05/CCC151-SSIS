@@ -45,6 +45,8 @@ QPushButton::hover {
 	font-weight: 600;
 	background-color: rgb(37, 37, 37);
 	border-radius: 0px;
+	text-align: left;
+	padding-left: 45px
 }
 
 #sidebarFrame QPushButton::hover {
@@ -54,7 +56,15 @@ QPushButton::hover {
 
 #sidebarFrame #studentsSidebarButton {
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(71, 71, 71, 255), stop:1 rgba(95, 105, 106, 255));
-	border-left: 9px solid rgb(93, 180, 190);
+	border-left: 4px solid rgb(93, 180, 190);
+}
+
+#headerFrame QPushButton {
+	background: none;
+}
+
+#sortByLabel {
+	color: rgb(100, 100, 100)
 }
 
 /* LINE EDIT */
@@ -62,7 +72,6 @@ QPushButton::hover {
 	background-color: rgb(37, 37, 37);
 	border-radius: 2px;
 	padding: 0px 15px;
-	color: rgb(120, 139, 140);
 }
 
 /* FRAMES */
@@ -98,6 +107,16 @@ QFrame {
 
 #dataFrame Line {
 	background-color: rgb(120, 139, 140);
+}
+
+#userNameLabel {
+	font: 9pt "Inter";
+	font-weight: 600;
+}
+
+#userRoleLabel {
+	font: 9pt "Inter";
+	font-style: italic;
 }
 
 /* DATA TABLE */
