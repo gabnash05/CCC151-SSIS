@@ -37,6 +37,7 @@ QComboBox {
 	font: 9pt &quot;Inter&quot;;
 	color: rgb(230, 230, 230);
 	background-color: rgb(16, 16, 16);
+	padding: 5px;
 }
 
 QComboBox::drop-down {
@@ -466,6 +467,9 @@ QFrame {
               <height>30</height>
              </size>
             </property>
+            <property name="autoRepeat">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -833,11 +837,6 @@ QFrame {
                <property name="placeholderText">
                 <string>Sort by</string>
                </property>
-               <item>
-                <property name="text">
-                 <string>None</string>
-                </property>
-               </item>
                <item>
                 <property name="text">
                  <string>ID Number</string>
