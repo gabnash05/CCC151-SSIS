@@ -11,7 +11,7 @@ This project is developed in fulfillment of the requirements for the subject **C
 ### **1. Clone the Repository**
 
 ```sh
-git clone <your-repo-url>
+git clone <https://github.com/gabnash05/CCC151-SSIS.git>
 cd <your-project-folder>
 ```
 ### **2. Create and Activate a Virtual Environment**
