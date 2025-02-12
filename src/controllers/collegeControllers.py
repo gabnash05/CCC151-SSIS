@@ -6,6 +6,12 @@ from utils.inputUtils import *
 
 COLLEGE_SEARCH_FIELDS = ["College Code", "College Name"]
 
+# INITIALIZING
+def initializeAllCsv():
+  Student.intializeStudentStorage()
+  Program.intializeProgramStorage()
+  College.intializeProgramStorage()
+
 # ADD COLLEGE FORM: adds a new college
 def addCollege(collegeCode: str, collegeName: str) -> bool:
   if not all([collegeCode, collegeName]):
@@ -53,9 +59,15 @@ def updateCollege(originalCollegeCode: str, newCollegeCode: Any, newCollegeName:
       "College Code": newCollegeCode
     }
 
+    # Update programs under college
     programsToUpdate = Program.getProgramRecordsByCollege(originalCollegeCode)
     for program in programsToUpdate:
       Program.updateProgramRecordByCode(program["Program Code"], updateData)
+    
+    # Update students under college
+    studentsToUpdate = Student.getAllStudentRecordsByCollege(originalCollegeCode)
+    for student in studentsToUpdate:
+      Student.updateStudentRecordById(student["ID Number"], updateData)
 
     return "College updated successfully."
   
@@ -74,8 +86,14 @@ def removeCollege(collegeCode: str) -> str:
       "College Code": "N/A",
     }
 
+    # Updates all programs under College
     programsToUpdate = Program.getProgramRecordsByCollege(collegeCode)
     for program in programsToUpdate:
       Program.updateProgramRecordByCode(program["Program Code"], updateData)
+    
+    # Update students under college
+    studentsToUpdate = Student.getAllStudentRecordsByCollege(collegeCode)
+    for student in studentsToUpdate:
+      Student.updateStudentRecordById(student["ID Number"], updateData)
 
   return "College removed successfully." if isSuccessful else "Failed to remove college." 

@@ -4,15 +4,16 @@ from pathlib import Path
 
 class Student:  
   STUDENT_CSV_FILEPATH = Path(__file__).parent.parent.parent / "data" / "students.csv"
-  STUDENT_HEADERS = ["ID Number", "First Name", "Last Name", "Year Level", "Gender", "Program Code"]
+  STUDENT_HEADERS = ["ID Number", "First Name", "Last Name", "Year Level", "Gender", "Program Code", "College Code"]
 
-  def __init__(self, idNumber: str, firstName: str, lastName: str, yearLevel: int, gender: str, programCode: str):
+  def __init__(self, idNumber: str, firstName: str, lastName: str, yearLevel: int, gender: str, programCode: str, collegeCode: str):
     self.idNumber = idNumber
     self.firstName = firstName
     self.lastName = lastName
     self.yearLevel = str(yearLevel)
     self.gender = gender
     self.programCode = programCode
+    self.collegeCode = collegeCode
 
   def toDict(self) -> None:
     return {
@@ -21,7 +22,8 @@ class Student:
       "Last Name": self.lastName,
       "Year Level": self.yearLevel,
       "Gender": self.gender,
-      "Program Code": self.programCode
+      "Program Code": self.programCode,
+      "College Code": self.collegeCode
     }
   
   # Only for initializing when the application starts
@@ -79,7 +81,7 @@ class Student:
   # Get all student records by college
   @staticmethod
   def getAllStudentRecordsByCollege(college: str) -> List[Dict[str, str]]:
-    pass
+    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, Student.STUDENT_HEADERS[6], college)
 
   # Updates student information
   @staticmethod

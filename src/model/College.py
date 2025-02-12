@@ -47,16 +47,12 @@ class College:
   def getAllCollegeRecords() -> List[Dict[str, str]]:
     return csvUtils.readCsv(College.COLLEGE_CSV_FILEPATH)
 
-  ### UPDATE ###
   # Get program record
   @staticmethod
   def updateCollegeRecord(collegeCode: str, updateData: Dict[str, str]) -> bool:
-    # update all programs under college
     return csvUtils.updateRowByFieldCsv(College.COLLEGE_CSV_FILEPATH, College.COLLEGE_HEADERS[0], collegeCode, updateData)
   
-  ### UPDATE ###
   # Remove college
   @staticmethod
   def deleteCollegeRecord(collegeCode: str) -> bool:
-    # update all students and programs under college
     return csvUtils.deleteRowByFieldCsv(College.COLLEGE_CSV_FILEPATH, College.COLLEGE_HEADERS[0], collegeCode)

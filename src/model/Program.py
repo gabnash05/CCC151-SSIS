@@ -5,6 +5,7 @@ from pathlib import Path
 
 class Program:
   PROGRAM_CSV_FILEPATH = Path(__file__).parent.parent.parent / "data" / "programs.csv"
+
   PROGRAM_HEADERS = ["Program Code", "Program Name", "College Code"]
 
   def __init__(self, programCode: str, name: str, collegeCode: str):
@@ -49,16 +50,12 @@ class Program:
   def getProgramRecordsByCollege(collegeCode: str) -> List[Dict[str, str]]:
     return csvUtils.getRowsByFieldCsv(Program.PROGRAM_CSV_FILEPATH, Program.PROGRAM_HEADERS[2], collegeCode)
   
-  ### UPDATE ###
   # Get program record
   @staticmethod
   def updateProgramRecordByCode(programCode: str, updateData: Dict[str, str]) -> bool:
-    # update all students under program
     return csvUtils.updateRowByFieldCsv(Program.PROGRAM_CSV_FILEPATH, Program.PROGRAM_HEADERS[0], programCode, updateData)
   
-  ### UPDATE ###
   # Remove program from college
   @staticmethod
   def deleteProgramRecord(programCode: str) -> bool:
-    # update all students under program
     return csvUtils.deleteRowByFieldCsv(Program.PROGRAM_CSV_FILEPATH, Program.PROGRAM_HEADERS[0], programCode)

@@ -6,8 +6,14 @@ from utils.inputUtils import *
 
 STUDENT_SEARCH_FIELDS = ["ID Number", "First Name", "Last Name", "Program Code", "College Code"]
 
+# INITIALIZING
+def initializeAllCsv():
+  Student.intializeStudentStorage()
+  Program.intializeProgramStorage()
+  College.intializeProgramStorage()
+
 # ADD STUDENT FORM: add a student record
-def addStudent(idNumber: str, firstName: str, lastName: str, yearLevel: int, gender: str, programCode: str) -> str:
+def addStudent(idNumber: str, firstName: str, lastName: str, yearLevel: int, gender: str, programCode: str, collegeCode: str) -> str:
   if not all([idNumber, firstName, lastName, gender, programCode]):
     return("Enter all required fields")
   
@@ -26,7 +32,10 @@ def addStudent(idNumber: str, firstName: str, lastName: str, yearLevel: int, gen
   if not Program.programCodeExists(programCode):
     return "Program Code does not exist"
   
-  newStudent = Student(idNumber, firstName, lastName, yearLevel, gender, programCode)
+  if not College.collegeCodeExists(collegeCode):
+    return "College Code does not exist"
+  
+  newStudent = Student(idNumber, firstName, lastName, yearLevel, gender, programCode, collegeCode)
   isSuccessful = Student.addStudentRecord(newStudent)
 
   return "Student added successfully." if isSuccessful else "Failed to add student."
@@ -61,15 +70,7 @@ def searchStudentsByField(field: str, value: str) -> List[Dict[str, str]]:
     return Student.getAllStudentRecordsByProgram(value)
   
   if field == STUDENT_SEARCH_FIELDS[4]:
-    studentsInCollege = []
-
-    programs = Program.getProgramRecordsByCollege(value)
-
-    for program in programs:
-      students = Student.getAllStudentRecordsByProgram(program["Program Code"])
-      studentsInCollege.extend(students)
-  
-  return studentsInCollege
+    return Student.getAllStudentRecordsByCollege(value)
 
 # may be depricated
 # FILTER SEARCH: get list of all students by year level
@@ -88,7 +89,7 @@ def getStudentsByGender(gender: str) -> List[Dict[str, str]]:
   return Student.getAllStudentRecordsByGender(gender)
 
 # UPDATE STUDENT FORM: updates a student record
-def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: str, newYearLevel: int, newGender: str, newProgramCode: str) -> str:
+def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: str, newYearLevel: int, newGender: str, newProgramCode: str, newCollegeCode: str) -> str:
   if not validateIdNumber(originalId):
     return("Invalid ID Number")
   
@@ -98,13 +99,20 @@ def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: 
   if not validateGender(newGender):
     return "Gender must be Male, Female, or Others."
   
+  if not Program.programCodeExists(newProgramCode):
+    return "Program Code does not exist"
+  
+  if not College.collegeCodeExists(newCollegeCode):
+    return "College Code does not exist"
+  
   updateData = {key: value for key, value in {
     "ID Number": newIdNumber,
     "First Name": newFirstName,
     "Last Name": newLastName,
     "Year Level": newYearLevel,
     "Gender": newGender,
-    "Program Code": newProgramCode
+    "Program Code": newProgramCode,
+    "College Code": newCollegeCode
   }.items() if value is not None}
 
   isSuccessful = Student.updateStudentRecordById(originalId, updateData)

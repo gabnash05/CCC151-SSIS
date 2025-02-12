@@ -6,6 +6,13 @@ from utils.inputUtils import *
 
 PROGRAM_SEARCH_FIELDS = ["Program Code", "Program Name", "College Code"]
 
+# INITIALIZING
+def initializeAllCsv():
+  Student.intializeStudentStorage()
+  Program.intializeProgramStorage()
+  College.intializeProgramStorage()
+
+
 # ADD PROGRAM FORM: adds a new program to a college
 def addProgram(programCode: str, programName: str, collegeCode: str) -> bool:
   if not all([programCode, programName, collegeCode]):

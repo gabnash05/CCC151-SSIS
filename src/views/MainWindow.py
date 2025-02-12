@@ -1,5 +1,5 @@
 from PyQt6 import uic
-from PyQt6.QtWidgets import QMainWindow, QSizePolicy
+from PyQt6.QtWidgets import QMainWindow, QSizePolicy, QStatusBar
 from PyQt6.QtGui import QIcon
 
 from views.StudentTable import StudentTable
@@ -15,12 +15,19 @@ class MainWindow(QMainWindow):
     self.setWindowIcon(QIcon("assets/LogoIcon.png"))
     self.setWindowTitle("Lexis")
 
+    # STATUS BAR
+    self.status_bar = QStatusBar()
+    self.setStatusBar(self.status_bar)  
+
     # UI COMPONENTS
     self.studentTable = StudentTable(self)
     self.dataFrame.layout().addWidget(self.studentTable)
 
-    # Ensure StudentTable expands freely inside scroll area
-    self.studentTable.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+    # CONNECT SIGNALS
+    # self.studentTable.statusMessage.connect(self.status_bar.showMessage)
+
+    # FINISHED INITIALIZATION
+    self.status_bar.showMessage("Main Window Loaded", 3000)
 
   # ---------------------------------------------------------
   
