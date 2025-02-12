@@ -1,0 +1,40 @@
+/* Make QScrollArea transparent */
+QScrollArea {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+
+/* Ensure the widget inside QScrollArea is also transparent */
+QScrollArea QWidget {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+/* Make the viewport transparent */
+QScrollArea::viewport {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+/* Ensure all frames are transparent */
+QFrame {
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+/* Ensure all labels are transparent */
+QLabel {
+  background-color: rgba(0, 0, 0, 0);
+  color: rgb(120, 139, 140); /* Keep text visible */
+}
+
+/* BUTTONS */
+QPushButton {
+  font: 9pt "Inter";
+  font-weight: bold;
+  padding: 0px 15px;
+  background-color: rgb(63, 150, 160);
+  border-radius: 3px;
+}
+
+QPushButton::hover {
+  background-color: rgb(83, 170, 180);
+}
