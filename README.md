@@ -5,15 +5,13 @@
 
 This project is developed in fulfillment of the requirements for the subject **CCC151 - Information Management Systems**.
 
-<br><br>
 
 ## About This Project
 
 Lexis is a student information system built using Python, PyQt6, and using CSV data storage **without a DBMS**. It provides full CRUDL capabilities, including features such as **sorting**, **searching**, and **unique ID management**.
 
-<br><br>
 
-## **🔹 Setup Instructions**
+## **Setup Instructions**
 
 ### **1. Clone the Repository**
 
@@ -51,18 +49,16 @@ pip install -e .
 ```
 ---
 
-<br><br>
 
-## **🔹 Running the Project**
+## **Running the Project**
 
 Make sure the virtual environment is activated and all dependencies were installed properly
 ```sh
 python src/main.py
 ```
 ---
-<br><br>
 
-## **🔹 Deactivating the Virtual Environment**
+## **Deactivating the Virtual Environment**
 
 When you're done working, deactivate the virtual environment:
 ```sh
@@ -70,9 +66,8 @@ deactivate
 ```
 
 ---
-<br><br>
 
-## **🔹 Troubleshooting**
+## **Troubleshooting**
 
 If `pip install -e .` fails, try manually installing dependencies using:
 ```sh
@@ -94,7 +89,6 @@ If `pytest` is not found, install:
 pip install pytest pytest-mock
 ```
 ---
-<br><br>
 
-## **📜 License**
+## **License**
 This project is for educational purposes only.
