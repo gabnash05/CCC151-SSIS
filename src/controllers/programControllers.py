@@ -29,6 +29,9 @@ def addProgram(programCode: str, programName: str, collegeCode: str) -> bool:
 
   return "Program added successfully." if isSuccessful else "Failed to add program."
 
+def getAllPrograms() -> List[Dict[str, str]]:
+  return Program.getAllProgramRecords()
+
 # SEARCH BAR: searches for a program based on a specific field
 def searchProgramsByField(field: str, value: str) -> List[Dict[str, str]]:
   if field not in PROGRAM_SEARCH_FIELDS:

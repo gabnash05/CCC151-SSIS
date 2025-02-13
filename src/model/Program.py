@@ -35,6 +35,10 @@ class Program:
   def addNewProgram(program: Any) -> bool:
     return csvUtils.appendRowCsv(Program.PROGRAM_CSV_FILEPATH, program.toDict())
   
+  # Get all program records
+  def getAllProgramRecords() -> List[Dict[str, str]]:
+    return csvUtils.readCsv(Program.PROGRAM_CSV_FILEPATH)
+  
   # Get program record by code
   @staticmethod
   def getProgramRecordByCode(programCode: str) -> Dict[str, str]:

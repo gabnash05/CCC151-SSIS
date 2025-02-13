@@ -11,13 +11,13 @@ class StudentTable(QtWidgets.QWidget):
   # Student variables
   headers = ["ID Number", "Name", "Gender", "Year Level", "Program", "College", "Operations"]
   sortByFields = ["ID Number", "Name", "Gender", "Year Level", "Program", "College", "Operations"]
-  statusMessage = pyqtSignal(str, int)
+  statusMessageSignal = pyqtSignal(str, int)
 
   def __init__(self, parent=None):
     super().__init__(parent)
 
     # Updating Status Bar
-    self.statusMessage.emit("Student Table Loading", 3000)
+    self.statusMessageSignal.emit("Student Table Loading", 3000)
     
     # Main Layout
     self.mainLayout = QtWidgets.QVBoxLayout(self)
@@ -81,7 +81,7 @@ class StudentTable(QtWidgets.QWidget):
       QScrollArea::viewport { background: transparent; }
       QScrollArea QWidget { background: transparent; }
       QScrollBar:vertical, QScrollBar:horizontal { background: #222222; border-radius: 5px; width: 10px; height: 10px; }
-      QScrollBar::handle:vertical, QScrollBar::handle:horizontal { background: #888888; border-radius: 5px; min-height: 20px; min-width: 20px; }
+      QScrollBar::handle:vertical, QScrollBar::handle:horizontal { background: #AAAAAA; border-radius: 5px; min-height: 20px; min-width: 20px; }
       QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover { background: #777777; }
     """
     self.scrollArea.setStyleSheet(scrollAreaStyle)
@@ -98,7 +98,8 @@ class StudentTable(QtWidgets.QWidget):
   #--------------------------------------------------------------------------
 
   # Generates StudentRows into Student Table
-  def addStudentToTable(self, studentData: List[Dict[str, str]]) -> None:
+  # Connected to an emitted signal from AddStudentDialogue
+  def addStudentToTable(self, studentData):
     studentRow = StudentRow(studentData, self.scrollContent)
     self.scrollLayout.addWidget(studentRow)
     self.scrollLayout.addWidget(studentRow.separator)
@@ -113,6 +114,7 @@ class StudentTable(QtWidgets.QWidget):
 
     return studentsList
   
+  # WIP
   # Displays data provided to the table
   def displayStudents(self, parent, students: List[Dict[str, str]], sortBy: str) -> None:
     if sortBy not in self.sortByFields:

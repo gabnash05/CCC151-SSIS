@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QMainWindow, QSizePolicy, QStatusBar
 from PyQt6.QtGui import QIcon
 
 from views.StudentTable import StudentTable
+from views.AddStudentDialogue import AddStudentDialog
 
 class MainWindow(QMainWindow):
   def __init__(self):
@@ -11,7 +12,7 @@ class MainWindow(QMainWindow):
     super().__init__()
     uic.loadUi("src/gui/ui/studentMainWindow.ui", self)
 
-    #self.apply_stylesheet()
+    #self.applyStylesheet()
     self.setWindowIcon(QIcon("assets/LogoIcon.png"))
     self.setWindowTitle("Lexis")
 
@@ -24,15 +25,31 @@ class MainWindow(QMainWindow):
     self.dataFrame.layout().addWidget(self.studentTable)
 
     # CONNECT SIGNALS
-    # self.studentTable.statusMessage.connect(self.status_bar.showMessage)
+    self.studentTable.statusMessageSignal.connect(self.displayMessageToStatusBar)
+    self.addStudentButton.clicked.connect(self.openAddStudentDialog)
 
     # FINISHED INITIALIZATION
-    self.status_bar.showMessage("Main Window Loaded", 3000)
+    self.displayMessageToStatusBar("Main Window Loaded", 3000)
 
   # ---------------------------------------------------------
   
   # INIT FUNCTIONS
-  def apply_stylesheet(self):
+  def displayMessageToStatusBar(self, message, duration):
+    self.status_bar.showMessage(message, duration)
+
+  def applyStylesheet(self):
     with open("../gui/styles/styles.qss", "r") as file:
       stylesheet = file.read()
       self.setStyleSheet(stylesheet)
+  
+  # UI FUNCTIONS
+  def openAddStudentDialog(self):
+    self.dialog = AddStudentDialog(self)
+
+    # Connect signal from AddStudentDialog to StudentTable
+    self.dialog.studentAddedTableSignal.connect(self.studentTable.addStudentToTable)
+
+    # Connect signal from AddStudentDialog to StudentTable
+    self.dialog.studentAddedWindowSignal.connect(self.displayMessageToStatusBar)
+
+    self.dialog.exec()

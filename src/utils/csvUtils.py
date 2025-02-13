@@ -17,7 +17,7 @@ def initializeCsv(filepath: str, headers: List[str]) -> bool:
     return False
 
 # Returns the whole csv file into an array of dicts
-def readCsv(filepath: str) -> bool:
+def readCsv(filepath: str) -> List[Dict[str,str]]:
   data = []
   try:
     if not os.path.exists(filepath):

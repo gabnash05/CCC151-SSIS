@@ -42,6 +42,10 @@ class StudentRow(QtWidgets.QWidget):
       label = QtWidgets.QLabel(self.rowFrame)
       label.setText(str(value))
       label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+
+      # VIP STUDENTS
+      if value == "Joaquin Ermita" or value == "Rene Jr Estrella":
+        label.setStyleSheet("color: #FFD700; font-weight: bold;")
       
       if index == 1:
         label.setMinimumWidth(150)
@@ -81,7 +85,7 @@ class StudentRow(QtWidgets.QWidget):
     self.deleteOpacity = QGraphicsOpacityEffect()
     self.editButton.setGraphicsEffect(self.editOpacity)
     self.deleteButton.setGraphicsEffect(self.deleteOpacity)
-    self.setButtonsVisible(False)  # Start with hidden buttons
+    self.setButtonsVisible(False)
     
     operationsLayout.addWidget(self.editButton)
     operationsLayout.addWidget(self.deleteButton)

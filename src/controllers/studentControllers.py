@@ -13,10 +13,13 @@ def initializeAllCsv():
   College.intializeProgramStorage()
 
 # ADD STUDENT FORM: add a student record
-def addStudent(idNumber: str, firstName: str, lastName: str, yearLevel: int, gender: str, programCode: str, collegeCode: str) -> str:
+def addStudent(idNumber: str, firstName: str, lastName: str, yearLevel: str, gender: str, programCode: str, collegeCode: str) -> str:
   if not all([idNumber, firstName, lastName, gender, programCode]):
     return("Enter all required fields")
   
+  # converts year level into an int
+  if isinstance(yearLevel, str):
+    yearLevel = int(yearLevel)
   if not validateYearLevel(yearLevel):
     return("Year Level must be a positive integer.")
   

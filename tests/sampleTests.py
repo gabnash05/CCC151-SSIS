@@ -32,3 +32,5 @@ initializeAllCsv()
 # print(getAllStudents())
 # print()
 # print(searchProgramsByField("College Code", "CSM"))
+
+print(addStudent("2021-0001", "Joaquin", "Ermita", 4, "Male", "BSCS", "CCS"))

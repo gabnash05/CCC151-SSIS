@@ -25,6 +25,9 @@ def addCollege(collegeCode: str, collegeName: str) -> bool:
 
   return "College added successfully." if isSuccessful else "Failed to add college."
 
+def getAllColleges() -> List[Dict[str, str]]:
+  return College.getAllCollegeRecords()
+
 # SEARCH BAR: searches for a college based on a specific field
 def searchCollegesByField(field: str, value: str) -> List[Dict[str, str]]:
   if field not in COLLEGE_SEARCH_FIELDS:
