@@ -101,6 +101,7 @@ class StudentTable(QtWidgets.QWidget):
   # Connected to an emitted signal from AddStudentDialogue
   def addStudentToTable(self, studentData):
     studentRow = StudentRow(studentData, self.scrollContent)
+    studentRow.statusMessageSignal.connect(self.statusMessageSignal)
     self.scrollLayout.addWidget(studentRow)
     self.scrollLayout.addWidget(studentRow.separator)
 
@@ -125,6 +126,9 @@ class StudentTable(QtWidgets.QWidget):
 
     for student in students:
       self.addStudentToTable(student)
+
+  def handleStudentDeleted(self, message, duration):
+    self.statusMessageSignal.emit(message, duration)
 
 if __name__ == "__main__":
   app = QtWidgets.QApplication(sys.argv)

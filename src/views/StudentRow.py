@@ -2,11 +2,22 @@ import os
 from PyQt6 import QtWidgets, QtCore, QtGui
 from PyQt6.QtWidgets import QGraphicsOpacityEffect
 from PyQt6.QtGui import QCursor
+from PyQt6.QtCore import pyqtSignal
+
+from views.UpdateStudentDialogue import UpdateStudentDialog
+from controllers.studentControllers import removeStudent
 
 class StudentRow(QtWidgets.QWidget):
+  statusMessageSignal = pyqtSignal(str, int)
+
   def __init__(self, studentData, parent=None):
     super().__init__(parent)
-    
+    # Store StudentRow Variables
+    self.studentData = studentData
+    self.idNumber = studentData[0]
+    self.studentName = studentData[1]
+
+    # Initialize
     self.setMinimumSize(QtCore.QSize(400, 30))
     self.setMaximumSize(QtCore.QSize(16777215, 40))
     
@@ -86,7 +97,11 @@ class StudentRow(QtWidgets.QWidget):
     self.editButton.setGraphicsEffect(self.editOpacity)
     self.deleteButton.setGraphicsEffect(self.deleteOpacity)
     self.setButtonsVisible(False)
-    
+
+    # Connect Buttons
+    self.deleteButton.clicked.connect(self.deleteRow)
+    self.editButton.clicked.connect(self.updateRow)
+
     operationsLayout.addWidget(self.editButton)
     operationsLayout.addWidget(self.deleteButton)
     rowLayout.addWidget(self.operationsFrame)
@@ -99,19 +114,91 @@ class StudentRow(QtWidgets.QWidget):
     self.separator.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
     mainLayout.addWidget(self.separator)
 
+  # ----------------------------------------------------------------------
+  # Deletes a student in the GUI and CSV
+  def deleteRow(self):
+    # "Are you sure if you want to delete" POPUP
+    if not self.showDeleteConfirmation(self, self.studentName):
+      return
+
+    # Remove from csv
+    result = removeStudent(self.idNumber)
+    
+    # Remove the widget
+    if result != "Student removed successfully.":
+      self.statusMessageSignal.emit(result, 3000)
+      return
+    
+    if self.parent():
+      layout = self.parent().layout()
+      if layout:
+        layout.removeWidget(self)
+        layout.removeWidget(self.separator)
+      self.separator.deleteLater()
+    self.deleteLater()
+    self.statusMessageSignal.emit(result, 3000)
+
+  # Updates a student in the GUI and CSV
+  def updateRow(self):
+    dialog = UpdateStudentDialog(self.studentData, self)
+    dialog.statusMessageSignal.connect(self.statusMessageSignal)
+    dialog.exec()
+
+  # Creates a pop up when deleting a student
+  def showDeleteConfirmation(self, parent, studentName):
+    msgBox = QtWidgets.QMessageBox(parent)
+    msgBox.setWindowTitle("Confirm Deletion")
+    msgBox.setText(f"Are you sure you want to delete {studentName}?")
+    msgBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+
+    for button in msgBox.findChildren(QtWidgets.QPushButton):
+      button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+
+    msgBox.setStyleSheet("""
+      QMessageBox {
+        background-color: rgb(37, 37, 37);
+        color: white;
+        border-radius: 10px;
+      }
+      QMessageBox QLabel {
+        color: white;
+        font-family: \"Inter\";
+      }
+      QMessageBox QPushButton {
+        font: 9pt "Inter";
+        font-weight: bold;
+        padding: 0px, 15px;
+        background-color: rgb(63, 150, 160);
+        border-radius: 3px;
+        padding: 5px 15px;
+      }
+                         
+      QMessageBox QPushButton::hover {
+        background-color: rgb(83, 170, 180);
+      }
+    """)
+
+    # Show the dialog and return the user's choice
+    return msgBox.exec() == QtWidgets.QMessageBox.StandardButton.Yes
+  
+  # Helper function to add icons to buttons
   def setButtonIcon(self, button, relativePath, size):
     absolutePath = os.path.abspath(relativePath)
     icon = QtGui.QIcon(absolutePath)
     button.setIcon(icon)
     button.setIconSize(QtCore.QSize(size, size))
 
+  # Sets button visibility in row
   def setButtonsVisible(self, visible):
     opacity = 1.0 if visible else 0.0
     self.editOpacity.setOpacity(opacity)
     self.deleteOpacity.setOpacity(opacity)
 
+  # Checks if mouse enters row
   def enterEvent(self, event):
     self.setButtonsVisible(True)
 
+  # Checks if mouse leaves row
   def leaveEvent(self, event):
     self.setButtonsVisible(False)
