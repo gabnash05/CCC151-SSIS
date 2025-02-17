@@ -5,53 +5,83 @@ from controllers.collegeControllers import getAllColleges
 from controllers.studentControllers import updateStudent
 
 class UpdateStudentDialog(QtWidgets.QDialog):
-  statusMessageSignal = QtCore.pyqtSignal(str, int)  # Emits (studentID, updatedData)
+  studentUpdatedTableSignal = QtCore.pyqtSignal(list)
+  statusMessageSignal = QtCore.pyqtSignal(str, int) 
 
-  def __init__(self, studentData, parent=None):
+  def __init__(self, parent=None, studentData=None):
     super().__init__(parent)
     self.setWindowTitle("Update Student")
     self.setModal(True)
+
+    # Process student data
+    firstName, lastName = studentData[1].split(" ", 1)  # Split at the first space
+    newStudentData = [studentData[0], firstName, lastName] + studentData[2:]
     
     # Store the student ID for reference
-    self.studentID = studentData[0]  # Assuming first item is Student ID
+    self.originalStudentID = newStudentData[0]
 
     # Set Window Size
-    self.setMinimumSize(QtCore.QSize(400, 475))
-    self.setMaximumSize(QtCore.QSize(500, 475))
+    self.setMinimumSize(QtCore.QSize(400, 500))
+    self.setMaximumSize(QtCore.QSize(500, 500))
 
-    # Stylesheet
-    self.setStyleSheet("QDialog { background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(37, 37, 37, 255), stop:1 rgba(52, 57, 57, 255)); }")
+    # Set stylesheet
+    self.setStyleSheet("""
+                       QDialog { 
+                          background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(37, 37, 37, 255), stop:1 rgba(52, 57, 57, 255)); 
+                       }
 
+                       QLineEdit:focus { 
+                          border:  1px solid rgb(63, 150, 160); border-radius: 4px; 
+                       }
+
+                       QComboBox { 
+                          background-color: rgba(0, 0, 0, 0); 
+                       }  
+                       
+                       QComboBox::drop-down { 
+                          subcontrol-origin: padding; subcontrol-position: top right; width: 15px; 
+                       } 
+                       
+                       QComboBox QAbstractItemView::item::hover { 
+                          background-color: rgb(25, 25, 25); 
+                       } 
+                       
+                       QComboBox::hover { 
+                          background-color: rgb(35, 35, 35); 
+                       }""")
+    
     # Form Fields
     self.idInput = QtWidgets.QLineEdit(self)
-    self.idInput.setText(studentData[0])
-    self.idInput.setReadOnly(True)  # Prevent editing of student ID
+    self.idInput.setText(newStudentData[0])
+    # Prevent editing of student ID
+    #self.idInput.setReadOnly(True)  
 
     self.firstNameInput = QtWidgets.QLineEdit(self)
-    self.firstNameInput.setText(studentData[1])
+    self.firstNameInput.setText(newStudentData[1])
 
     self.lastNameInput = QtWidgets.QLineEdit(self)
-    self.lastNameInput.setText(studentData[2])
+    self.lastNameInput.setText(newStudentData[2])
 
     self.yearLevelInput = QtWidgets.QLineEdit(self)
-    self.yearLevelInput.setText(studentData[3])
+    self.yearLevelInput.setText(newStudentData[4])
 
     self.genderInput = QtWidgets.QComboBox(self)
     self.genderInput.addItems(["Male", "Female", "Others"])
-    self.genderInput.setCurrentText(studentData[4])
+    self.genderInput.setCurrentText(newStudentData[3])
 
     self.programCodeInput = QtWidgets.QComboBox(self)
     self.collegeCodeInput = QtWidgets.QComboBox(self)
 
-    self.programCodeInput.addItems(["Select Program"])
-    self.programCodeInput.model().item(0).setEnabled(False)
-
-    self.collegeCodeInput.addItems(["Select College"])
     colleges = getAllColleges()
     collegeCodeList = [college["College Code"] for college in colleges]
     self.collegeCodeInput.addItems(collegeCodeList)
-    self.collegeCodeInput.setCurrentText(studentData[5])  # Set current college
-    self.collegeCodeInput.model().item(0).setEnabled(False)
+
+    collegeIndex = collegeCodeList.index(newStudentData[6])
+    self.collegeCodeInput.setCurrentIndex(collegeIndex)
+
+    programCodeList = self.updateProgramOptions(collegeIndex)
+    programIndex = programCodeList.index(newStudentData[5])
+    self.programCodeInput.setCurrentIndex(programIndex)
 
     # Section Headers
     self.titleLabel = QtWidgets.QLabel("Update Student")
@@ -66,8 +96,8 @@ class UpdateStudentDialog(QtWidgets.QDialog):
 
     # Update Button
     self.updateButton = QtWidgets.QPushButton("Update Student")
-    self.updateButton.setMinimumSize(QtCore.QSize(100, 40))
-    self.updateButton.setMaximumSize(QtCore.QSize(100, 40))
+    self.updateButton.setMinimumSize(QtCore.QSize(120, 40))
+    self.updateButton.setMaximumSize(QtCore.QSize(140, 40))
     self.updateButton.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
     self.updateButton.clicked.connect(self.updateStudent)
 
@@ -124,27 +154,92 @@ class UpdateStudentDialog(QtWidgets.QDialog):
 
     # Clear previous program options
     self.programCodeInput.clear()
-    self.programCodeInput.addItem("Select Program")  # Placeholder
-    self.programCodeInput.model().item(0).setEnabled(False)
 
     # Add new program options
     programs = searchProgramsByField("College Code", selectedCollege)
     programCodeList = [program["Program Code"] for program in programs]
     self.programCodeInput.addItems(programCodeList)
+
+    return programCodeList
   
   def updateStudent(self):
-    updatedData = [
-      self.idInput.text(),
-      self.firstNameInput.text(),
-      self.lastNameInput.text(),
-      self.yearLevelInput.text(),
-      self.genderInput.currentText(),
-      self.collegeCodeInput.currentText(),
-      self.programCodeInput.currentText(),
-    ]
+    idNumber = self.idInput.text() or None
+    firstName = self.firstNameInput.text() or None
+    lastName = self.lastNameInput.text() or None
+    yearLevel = self.yearLevelInput.text() or None
+    gender = self.genderInput.currentText() or None
+    programCode = self.programCodeInput.currentText() or None
+    collegeCode = self.collegeCodeInput.currentText() or None
+
+    result = updateStudent(self.originalStudentID, idNumber, firstName, lastName, yearLevel, gender, programCode, collegeCode)
+
+    if result == "Student updated successfully.":
+      self.showStatusMessage(result)
+
+      # Send signal to MainWindow to call addStudent in StudentTable
+      self.studentUpdatedTableSignal.emit([self.originalStudentID, idNumber, firstName, lastName, gender, yearLevel, programCode, collegeCode])
+      self.statusMessageSignal.emit("Updating Student", 1000)
+
+      # Closes the QDialog
+      self.accept()
+    else:
+      self.showStatusMessage(result)
+      return
 
     # Emit signal
     self.statusMessageSignal.emit("Student Updated", 3000)
 
     # Close dialog
     self.accept()
+
+  def showStatusMessage(self, message):
+    self.statusBar.setText(message)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Example usage in Main Window
+class MainWindow(QtWidgets.QMainWindow):
+  def __init__(self):
+    super().__init__()
+    self.setWindowTitle("Student Management")
+
+    self.add_student_button = QtWidgets.QPushButton("Edit Student", self)
+    self.add_student_button.clicked.connect(self.open_update_student_dialog)
+
+    self.setCentralWidget(self.add_student_button)
+
+  def open_update_student_dialog(self):
+    dialog = UpdateStudentDialog(self, ["2023-0001", "1", "1", "Male", "1", "BSCS", "CCS"])
+    dialog.exec()
+
+
+if __name__ == "__main__":
+  app = QtWidgets.QApplication([])
+  window = MainWindow()
+  window.show()
+  app.exec()

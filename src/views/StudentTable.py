@@ -10,12 +10,27 @@ from controllers.studentControllers import getAllStudents
 class StudentTable(QtWidgets.QWidget):
   # Student variables
   headers = ["ID Number", "Name", "Gender", "Year Level", "Program", "College", "Operations"]
-  sortByFields = ["ID Number", "Name", "Gender", "Year Level", "Program", "College", "Operations"]
+  sortByFields = [("ID Number", "Last Name"), ("First Name", "Last Name"), ("Last Name", "First Name"), ("Gender", "Last Name"), ("Year Level", "Last Name"), ("Program Code", "Last Name"), ("College Code", "Last Name")]
+
+  # Signals
   statusMessageSignal = pyqtSignal(str, int)
+  editStudentSignal = pyqtSignal(list)
 
   def __init__(self, parent=None):
     super().__init__(parent)
 
+    self.parentWidget = parent
+
+    self.setupUI()
+
+    self.students = []
+    self.sortByIndex = 0
+    self.sortingOrder = 0
+
+    self.initialStudentsToDisplay()
+
+  # UI Setup
+  def setupUI(self):
     # Updating Status Bar
     self.statusMessageSignal.emit("Student Table Loading", 3000)
     
@@ -90,45 +105,128 @@ class StudentTable(QtWidgets.QWidget):
     self.mainLayout.addWidget(self.scrollArea)
     
     # Displaying initial data to display
-    students = self.initialSetStudentsToDisplay()
-    
-    for student in students:
-      self.addStudentToTable(student)
 
   #--------------------------------------------------------------------------
+  # Displays data provided to the table
+  def refreshDisplayStudents(self):
+    self.updateSortByIndex()
 
-  # Generates StudentRows into Student Table
-  # Connected to an emitted signal from AddStudentDialogue
-  def addStudentToTable(self, studentData):
-    studentRow = StudentRow(studentData, self.scrollContent)
-    studentRow.statusMessageSignal.connect(self.statusMessageSignal)
-    self.scrollLayout.addWidget(studentRow)
-    self.scrollLayout.addWidget(studentRow.separator)
+    # 2 Layer sorting based on predefined sortByField tuples
+    if self.sortingOrder == 0:
+      sortedStudents = sorted(self.students, 
+                              key=lambda x: (x[self.sortByFields[self.sortByIndex][0]], x[self.sortByFields[self.sortByIndex][1]]))
+    elif self.sortingOrder == 1:
+      sortedStudents = sorted(self.students, 
+                              key=lambda x: (x[self.sortByFields[self.sortByIndex][0]], x[self.sortByFields[self.sortByIndex][1]]),
+                              reverse=True)
+    
+    self.clearScrollArea()
 
-  # Gets all students in the student.csv file
-  def initialSetStudentsToDisplay(self) -> List[List[str]]:
-    students = getAllStudents()
     studentsList = [
     [student["ID Number"], f"{student["First Name"]} {student["Last Name"]}", student["Gender"], student["Year Level"], student["Program Code"], student["College Code"]]
-      for student in students
+      for student in sortedStudents
     ]
 
-    return studentsList
+    for student in studentsList:
+      self.addStudentRowToTable(student)
   
-  # WIP
-  # Displays data provided to the table
-  def displayStudents(self, parent, students: List[Dict[str, str]], sortBy: str) -> None:
-    if sortBy not in self.sortByFields:
-      # display error message to status bar
-      return
+  # Deletes all StudentRows in StudentTable
+  def clearScrollArea(self):
+    for i in reversed(range(self.scrollLayout.count())):
+      widget = self.scrollLayout.itemAt(i).widget()
+      if widget is not None:
+        widget.deleteLater()
+
+  # Generates StudentRows into StudentTable
+  def addStudentRowToTable(self, studentData):
+    studentRow = StudentRow(studentData, self.scrollContent)
+    studentRow.statusMessageSignal.connect(self.statusMessageSignal)
+    studentRow.editStudentSignal.connect(self.editStudentSignal.emit)
+    self.scrollLayout.addWidget(studentRow)
+    self.scrollLayout.addWidget(studentRow.separator)
+  
+  # Reloads StudentTable when new student is adden from AddStudentDialog
+  def addNewStudentToTable(self, studentData):
+    newStudent = {
+      "ID Number": studentData[0],
+      "First Name": studentData[1],
+      "Last Name": studentData[2],
+      "Gender": studentData[3],
+      "Year Level": studentData[4],
+      "Program Code": studentData[5],
+      "College Code": studentData[6]
+    }
+
+    self.students.append(newStudent)
+
+    self.refreshDisplayStudents()
+
+  # Edits a StudentRow in StudentTable
+  def editStudentInTable(self, studentData):
+    originalIDNumber = studentData[0]
+
+    newStudent = {
+      "ID Number": studentData[1],
+      "First Name": studentData[2],
+      "Last Name": studentData[3],
+      "Gender": studentData[4],
+      "Year Level": studentData[5],
+      "Program Code": studentData[6],
+      "College Code": studentData[7]
+    }
+
+    for student in self.students:
+      if student["ID Number"] == originalIDNumber:
+        student.update(newStudent)
     
-    # delete all qframes in scroll area
+    self.refreshDisplayStudents()
 
-    for student in students:
-      self.addStudentToTable(student)
+  # Gets all students in the student.csv file
+  def initialStudentsToDisplay(self):
+    self.clearScrollArea()
+    
+    students = getAllStudents()
+    self.students.extend(students)
 
+    self.refreshDisplayStudents()
+  
+  # Sends signal for deleting student
   def handleStudentDeleted(self, message, duration):
+    self.refreshDisplayStudents()
     self.statusMessageSignal.emit(message, duration)
+
+  # Updates the sortByIndex for sorting in refreshDisplayStudents
+  def updateSortByIndex(self):
+    sortByIndex = self.parentWidget.sortByComboBox.currentIndex()
+    sortingOrder = self.parentWidget.sortingOrderComboBox.currentIndex()
+
+    if sortByIndex < 0:
+      self.sortByIndex = 0
+    else:
+      self.sortByIndex = sortByIndex
+    
+    if sortingOrder < 0:
+      self.sortingOrder = 0
+    else:
+      self.sortingOrder = sortingOrder
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
   app = QtWidgets.QApplication(sys.argv)

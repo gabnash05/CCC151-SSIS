@@ -4,6 +4,7 @@ from PyQt6.QtGui import QIcon
 
 from views.StudentTable import StudentTable
 from views.AddStudentDialogue import AddStudentDialog
+from views.UpdateStudentDialogue import UpdateStudentDialog
 
 class MainWindow(QMainWindow):
   def __init__(self):
@@ -27,6 +28,9 @@ class MainWindow(QMainWindow):
     # CONNECT SIGNALS
     self.studentTable.statusMessageSignal.connect(self.displayMessageToStatusBar)
     self.addStudentButton.clicked.connect(self.openAddStudentDialog)
+    self.studentTable.editStudentSignal.connect(self.openUpdateStudentDialog)
+    self.sortByComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
+    self.sortingOrderComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
 
     # FINISHED INITIALIZATION
     self.displayMessageToStatusBar("Main Window Loaded", 3000)
@@ -34,9 +38,11 @@ class MainWindow(QMainWindow):
   # ---------------------------------------------------------
   
   # INIT FUNCTIONS
+  # Display messages to QStatusBar
   def displayMessageToStatusBar(self, message, duration):
     self.status_bar.showMessage(message, duration)
 
+  # Apply stylesheet to MainWindow
   def applyStylesheet(self):
     with open("../gui/styles/styles.qss", "r") as file:
       stylesheet = file.read()
@@ -44,12 +50,24 @@ class MainWindow(QMainWindow):
   
   # UI FUNCTIONS
   def openAddStudentDialog(self):
-    self.dialog = AddStudentDialog(self)
+    self.addDialog = AddStudentDialog(self)
 
     # Connect signal from AddStudentDialog to StudentTable
-    self.dialog.studentAddedTableSignal.connect(self.studentTable.addStudentToTable)
+    self.addDialog.studentAddedTableSignal.connect(self.studentTable.addNewStudentToTable)
+    
+    # Connect signal from AddStudentDialog to MainWindow
+    self.addDialog.studentAddedWindowSignal.connect(self.displayMessageToStatusBar)
 
-    # Connect signal from AddStudentDialog to StudentTable
-    self.dialog.studentAddedWindowSignal.connect(self.displayMessageToStatusBar)
+    self.addDialog.exec()
+  
+  # Updates a student in the GUI and CSV
+  def openUpdateStudentDialog(self, studentData):
+    self.updateDialog = UpdateStudentDialog(self, studentData)
 
-    self.dialog.exec()
+    # Connect signal from UpdateStudentDialog to StudentTable
+    self.updateDialog.studentUpdatedTableSignal.connect(self.studentTable.editStudentInTable)
+    
+    # Connect signal from UpdateStudentDialog to MainWindow
+    self.updateDialog.statusMessageSignal.connect(self.displayMessageToStatusBar)
+
+    self.updateDialog.exec()

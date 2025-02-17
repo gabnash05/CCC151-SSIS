@@ -9,6 +9,7 @@ from controllers.studentControllers import removeStudent
 
 class StudentRow(QtWidgets.QWidget):
   statusMessageSignal = pyqtSignal(str, int)
+  editStudentSignal = pyqtSignal(list)
 
   def __init__(self, studentData, parent=None):
     super().__init__(parent)
@@ -20,22 +21,24 @@ class StudentRow(QtWidgets.QWidget):
     # Initialize
     self.setMinimumSize(QtCore.QSize(400, 30))
     self.setMaximumSize(QtCore.QSize(16777215, 40))
+    self.setObjectName("rowFrame")
     
     # StyleSheet
     rowFrameStyle = """
-    QPushButton { 
-      font: 9pt "Inter"; 
-      font-weight: bold; 
-      padding: 0px 15px; 
-      border-radius: 3px; 
-    } 
-    #deleteButton { background-color: rgb(160, 63, 63); } 
-    #editButton { background-color: rgb(63, 150, 160); } 
-    #editButton::hover { background-color: rgb(83, 170, 180); } 
-    #deleteButton::hover { background-color: rgb(180, 83, 83); } 
-    QFrame { border: none; background: transparent; } 
-    QLabel { border: none; background: transparent; font: 9pt "Inter"; }
-    """
+      QPushButton { 
+        font: 9pt "Inter"; 
+        font-weight: bold; 
+        padding: 0px 15px; 
+        border-radius: 3px; 
+      } 
+      #deleteButton { background-color: rgb(160, 63, 63); } 
+      #editButton { background-color: rgb(63, 150, 160); } 
+      #editButton::hover { background-color: rgb(83, 170, 180); } 
+      #deleteButton::hover { background-color: rgb(180, 83, 83); } 
+      QFrame { border: none; background: transparent; } 
+      QLabel { border: none; background: transparent; font: 9pt "Inter"; }
+
+      """
     self.setStyleSheet(rowFrameStyle)
 
     # Main Layout
@@ -100,7 +103,7 @@ class StudentRow(QtWidgets.QWidget):
 
     # Connect Buttons
     self.deleteButton.clicked.connect(self.deleteRow)
-    self.editButton.clicked.connect(self.updateRow)
+    self.editButton.clicked.connect(self.sendStudentData)
 
     operationsLayout.addWidget(self.editButton)
     operationsLayout.addWidget(self.deleteButton)
@@ -118,11 +121,11 @@ class StudentRow(QtWidgets.QWidget):
   # Deletes a student in the GUI and CSV
   def deleteRow(self):
     # "Are you sure if you want to delete" POPUP
-    if not self.showDeleteConfirmation(self, self.studentName):
+    if not self.showDeleteConfirmation(self, self.studentData[1]):
       return
 
     # Remove from csv
-    result = removeStudent(self.idNumber)
+    result = removeStudent(self.studentData[0])
     
     # Remove the widget
     if result != "Student removed successfully.":
@@ -138,11 +141,9 @@ class StudentRow(QtWidgets.QWidget):
     self.deleteLater()
     self.statusMessageSignal.emit(result, 3000)
 
-  # Updates a student in the GUI and CSV
-  def updateRow(self):
-    dialog = UpdateStudentDialog(self.studentData, self)
-    dialog.statusMessageSignal.connect(self.statusMessageSignal)
-    dialog.exec()
+  # Sends Signal to update a student
+  def sendStudentData(self):
+    self.editStudentSignal.emit(self.studentData)
 
   # Creates a pop up when deleting a student
   def showDeleteConfirmation(self, parent, studentName):

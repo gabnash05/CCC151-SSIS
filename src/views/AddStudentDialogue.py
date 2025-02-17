@@ -19,15 +19,38 @@ class AddStudentDialog(QtWidgets.QDialog):
     self.setMaximumSize(QtCore.QSize(500, 475))
 
     # Set stylesheet
-    self.setStyleSheet("QDialog { background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(37, 37, 37, 255), stop:1 rgba(52, 57, 57, 255)); } QLineEdit:focus { border:  1px solid rgb(63, 150, 160); border-radius: 4px; } QComboBox { background-color: rgba(0, 0, 0, 0); }  QComboBox::drop-down { subcontrol-origin: padding; subcontrol-position: top right; width: 15px; } QComboBox QAbstractItemView::item::hover { background-color: rgb(25, 25, 25); } QComboBox::hover { background-color: rgb(35, 35, 35); }")
+    self.setStyleSheet("""
+                       QDialog { 
+                          background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(37, 37, 37, 255), stop:1 rgba(52, 57, 57, 255)); 
+                       }
+
+                       QLineEdit:focus { 
+                          border:  1px solid rgb(63, 150, 160); border-radius: 4px; 
+                       }
+
+                       QComboBox { 
+                          background-color: rgba(0, 0, 0, 0); 
+                       }  
+                       
+                       QComboBox::drop-down { 
+                          subcontrol-origin: padding; subcontrol-position: top right; width: 15px; 
+                       } 
+                       
+                       QComboBox QAbstractItemView::item::hover { 
+                          background-color: rgb(25, 25, 25); 
+                       } 
+                       
+                       QComboBox::hover { 
+                          background-color: rgb(35, 35, 35); 
+                       }""")
 
     # Create form fields
-    self.idInput = QtWidgets.QLineEdit(self)
     self.firstNameInput = QtWidgets.QLineEdit(self)
     self.lastNameInput = QtWidgets.QLineEdit(self)
     self.yearLevelInput = QtWidgets.QLineEdit(self)
     self.genderInput = QtWidgets.QComboBox(self)
     self.genderInput.addItems(["Male", "Female", "Others"])
+    self.idInput = QtWidgets.QLineEdit(self)
     self.programCodeInput = QtWidgets.QComboBox(self)
     self.collegeCodeInput = QtWidgets.QComboBox(self)
 
@@ -60,8 +83,8 @@ class AddStudentDialog(QtWidgets.QDialog):
 
     # Button to add student
     self.addButton = QtWidgets.QPushButton("Add Student")
-    self.addButton.setMinimumSize(QtCore.QSize(100, 40))
-    self.addButton.setMaximumSize(QtCore.QSize(100, 40))
+    self.addButton.setMinimumSize(QtCore.QSize(120, 40))
+    self.addButton.setMaximumSize(QtCore.QSize(140, 40))
     self.addButton.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
 
     # Connect Button
@@ -129,7 +152,7 @@ class AddStudentDialog(QtWidgets.QDialog):
       self.showStatusMessage(result)
 
       # Send signal to MainWindow to call addStudent in StudentTable
-      self.studentAddedTableSignal.emit([idNumber, firstName + " " + lastName, gender, yearLevel, programCode, collegeCode])
+      self.studentAddedTableSignal.emit([idNumber, firstName, lastName, gender, yearLevel, programCode, collegeCode])
       self.studentAddedWindowSignal.emit("Adding Student", 1000)
 
       # Closes the QDialog

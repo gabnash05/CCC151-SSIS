@@ -96,6 +96,9 @@ def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: 
   if not validateIdNumber(originalId):
     return("Invalid ID Number")
   
+  # converts year level into an int
+  if isinstance(newYearLevel, str):
+    newYearLevel = int(newYearLevel)
   if not validateYearLevel(newYearLevel):
     return("Year Level must be a positive integer.")
   
