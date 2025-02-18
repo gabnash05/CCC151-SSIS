@@ -1,11 +1,16 @@
 import random
 
 # Sample first and last names
-first_names = ["Michael", "Karen", "Lisa", "Patricia", "Susan", "Sarah", "Joaquin", "Marcus", "David", "Emily",
-              "John", "Jessica", "Daniel", "Sophia", "Matthew", "Isabella", "James", "Olivia", "Alexander", "Mia"]
+first_names = [
+    "Ethan", "Ava", "Noah", "Charlotte", "Liam", "Amelia", "Benjamin", "Evelyn", "Elijah", "Abigail",
+    "Mason", "Harper", "Logan", "Ella", "Jacob", "Grace", "William", "Chloe", "Henry", "Lily",
+    "Samuel", "Victoria", "Sebastian", "Hannah", "Jack", "Zoey", "Owen", "Nora", "Caleb", "Madison"
+]
 
-last_names = ["Garcia", "Reyes", "Cejas", "Lopez", "Ermita", "Cuaton", "Santos", "Dela Cruz", "Fernandez", "Gomez",
-            "Hernandez", "Ibarra", "Jimenez", "Mendoza", "Navarro", "Ortega", "Perez", "Quintana", "Ramos", "Villanueva"]
+last_names = [
+    "Castillo", "De Leon", "Domingo", "Estrada", "Ferrer", "Galvez", "Herrera", "Inocencio", "Javier", "Lazaro",
+    "Magbanua", "Natividad", "Osorio", "Pangilinan", "Ramirez", "Salazar", "Torres", "Urbano", "Velasco", "Zamora"
+]
 
 # Programs with corresponding colleges
 programs = [

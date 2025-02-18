@@ -15,8 +15,11 @@ class StudentRow(QtWidgets.QWidget):
     super().__init__(parent)
     # Store StudentRow Variables
     self.studentData = studentData
-    self.idNumber = studentData[0]
-    self.studentName = studentData[1]
+
+    self.idNumber = studentData["ID Number"]
+    self.studentName = studentData["Last Name"] + " " + studentData["First Name"]
+
+    print(self.idNumber, self.studentName)
 
     # Initialize
     self.setMinimumSize(QtCore.QSize(400, 30))
@@ -51,24 +54,58 @@ class StudentRow(QtWidgets.QWidget):
     rowLayout.setContentsMargins(15, 0, 15, 0)
     mainLayout.addWidget(self.rowFrame)
 
-    # Add student labels
-    for index, value in enumerate(studentData):
-      label = QtWidgets.QLabel(self.rowFrame)
-      label.setText(str(value))
-      label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+    # ID Number label
+    idNumberLabel = QtWidgets.QLabel(self.rowFrame)
+    idNumberLabel.setText(str(studentData["ID Number"]))
+    idNumberLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+    idNumberLabel.setMinimumWidth(60)
+    rowLayout.addWidget(idNumberLabel)
 
-      # VIP STUDENTS
-      if value == "Joaquin Ermita" or value == "Rene Jr Estrella":
-        label.setStyleSheet("color: #FFD700; font-weight: bold;")
-      
-      if index == 1:
-        label.setMinimumWidth(150)
-      elif index == 6:
-        label.setMinimumWidth(100)
-      else:
-        label.setMinimumWidth(60)
+    # Name label
+    studentName = str(studentData["First Name"]) + " " + str(studentData["Last Name"])
+    nameLabel = QtWidgets.QLabel(self.rowFrame)
+    nameLabel.setText(str(studentName))
+    nameLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+    nameLabel.setMinimumWidth(150)
 
-      rowLayout.addWidget(label)
+
+    # ELITE STUDENTS
+    if studentName == "Joaquin Ermita" or studentName == "Rene Jr Estrella":
+      nameLabel.setStyleSheet("color: #FFD700; font-weight: bold;")
+    elif studentName == "Kesa Sysn":
+      nameLabel.setStyleSheet("color: pink; font-weight: bold;")
+    elif studentName == "Vincee Jandayan":
+      nameLabel.setStyleSheet("color: #B9FF66; font-weight: bold;")
+
+    rowLayout.addWidget(nameLabel)
+
+    # Gender label
+    genderLabel = QtWidgets.QLabel(self.rowFrame)
+    genderLabel.setText(str(studentData["Gender"]))
+    genderLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+    genderLabel.setMinimumWidth(60)
+    rowLayout.addWidget(genderLabel)
+
+    # Year Level label
+    yearLevelLabel = QtWidgets.QLabel(self.rowFrame)
+    yearLevelLabel.setText(str(studentData["Year Level"]))
+    yearLevelLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+    yearLevelLabel.setMinimumWidth(60)
+    rowLayout.addWidget(yearLevelLabel)
+
+    # Program Code label
+    programCodeLabel = QtWidgets.QLabel(self.rowFrame)
+    programCodeLabel.setText(str(studentData["Program Code"]))
+    programCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+    programCodeLabel.setMinimumWidth(60)
+    rowLayout.addWidget(programCodeLabel)
+
+    # College Code label
+    collegeCodeLabel = QtWidgets.QLabel(self.rowFrame)
+    collegeCodeLabel.setText(str(studentData["College Code"]))
+    collegeCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+    collegeCodeLabel.setMinimumWidth(60)
+    rowLayout.addWidget(collegeCodeLabel)
 
     # Operations Frame (for buttons)
     self.operationsFrame = QtWidgets.QFrame(self.rowFrame)
@@ -121,11 +158,11 @@ class StudentRow(QtWidgets.QWidget):
   # Deletes a student in the GUI and CSV
   def deleteRow(self):
     # "Are you sure if you want to delete" POPUP
-    if not self.showDeleteConfirmation(self, self.studentData[1]):
+    if not self.showDeleteConfirmation(self, self.studentName):
       return
 
     # Remove from csv
-    result = removeStudent(self.studentData[0])
+    result = removeStudent(self.idNumber)
     
     # Remove the widget
     if result != "Student removed successfully.":
@@ -143,7 +180,7 @@ class StudentRow(QtWidgets.QWidget):
 
   # Sends Signal to update a student
   def sendStudentData(self):
-    self.editStudentSignal.emit(self.studentData)
+    self.editStudentSignal.emit(self.studentData.values())
 
   # Creates a pop up when deleting a student
   def showDeleteConfirmation(self, parent, studentName):

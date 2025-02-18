@@ -12,13 +12,9 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     super().__init__(parent)
     self.setWindowTitle("Update Student")
     self.setModal(True)
-
-    # Process student data
-    firstName, lastName = studentData[1].split(" ", 1)  # Split at the first space
-    newStudentData = [studentData[0], firstName, lastName] + studentData[2:]
     
     # Store the student ID for reference
-    self.originalStudentID = newStudentData[0]
+    self.originalStudentID = studentData[0]
 
     # Set Window Size
     self.setMinimumSize(QtCore.QSize(400, 500))
@@ -52,22 +48,22 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     
     # Form Fields
     self.idInput = QtWidgets.QLineEdit(self)
-    self.idInput.setText(newStudentData[0])
+    self.idInput.setText(studentData[0])
     # Prevent editing of student ID
     #self.idInput.setReadOnly(True)  
 
     self.firstNameInput = QtWidgets.QLineEdit(self)
-    self.firstNameInput.setText(newStudentData[1])
+    self.firstNameInput.setText(studentData[1])
 
     self.lastNameInput = QtWidgets.QLineEdit(self)
-    self.lastNameInput.setText(newStudentData[2])
+    self.lastNameInput.setText(studentData[2])
 
     self.yearLevelInput = QtWidgets.QLineEdit(self)
-    self.yearLevelInput.setText(newStudentData[4])
+    self.yearLevelInput.setText(studentData[3])
 
     self.genderInput = QtWidgets.QComboBox(self)
     self.genderInput.addItems(["Male", "Female", "Others"])
-    self.genderInput.setCurrentText(newStudentData[3])
+    self.genderInput.setCurrentText(studentData[4])
 
     self.programCodeInput = QtWidgets.QComboBox(self)
     self.collegeCodeInput = QtWidgets.QComboBox(self)
@@ -76,11 +72,11 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     collegeCodeList = [college["College Code"] for college in colleges]
     self.collegeCodeInput.addItems(collegeCodeList)
 
-    collegeIndex = collegeCodeList.index(newStudentData[6])
+    collegeIndex = collegeCodeList.index(studentData[6])
     self.collegeCodeInput.setCurrentIndex(collegeIndex)
 
     programCodeList = self.updateProgramOptions(collegeIndex)
-    programIndex = programCodeList.index(newStudentData[5])
+    programIndex = programCodeList.index(studentData[5])
     self.programCodeInput.setCurrentIndex(programIndex)
 
     # Section Headers
@@ -146,8 +142,8 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     self.setLayout(mainLayout)
   
   def updateProgramOptions(self, index):
-    if index <= 0:
-      return  # Ignore the placeholder selection
+    if index < 0:
+      return
     
     # Get selected college
     selectedCollege = self.collegeCodeInput.currentText()
@@ -163,10 +159,10 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     return programCodeList
   
   def updateStudent(self):
-    idNumber = self.idInput.text() or None
-    firstName = self.firstNameInput.text() or None
-    lastName = self.lastNameInput.text() or None
-    yearLevel = self.yearLevelInput.text() or None
+    idNumber = self.idInput.text().strip() or None
+    firstName = self.firstNameInput.text().strip() or None
+    lastName = self.lastNameInput.text().strip() or None
+    yearLevel = self.yearLevelInput.text().strip() or None
     gender = self.genderInput.currentText() or None
     programCode = self.programCodeInput.currentText() or None
     collegeCode = self.collegeCodeInput.currentText() or None

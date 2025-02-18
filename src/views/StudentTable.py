@@ -122,12 +122,7 @@ class StudentTable(QtWidgets.QWidget):
     
     self.clearScrollArea()
 
-    studentsList = [
-    [student["ID Number"], f"{student["First Name"]} {student["Last Name"]}", student["Gender"], student["Year Level"], student["Program Code"], student["College Code"]]
-      for student in sortedStudents
-    ]
-
-    for student in studentsList:
+    for student in sortedStudents:
       self.addStudentRowToTable(student)
   
   # Deletes all StudentRows in StudentTable

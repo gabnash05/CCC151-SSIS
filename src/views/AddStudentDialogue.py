@@ -138,10 +138,10 @@ class AddStudentDialog(QtWidgets.QDialog):
 
   # Adds a student to the csv file and to StudentTable
   def addStudent(self):
-    idNumber = self.idInput.text() or None
-    firstName = self.firstNameInput.text() or None
-    lastName = self.lastNameInput.text() or None
-    yearLevel = self.yearLevelInput.text() or None
+    idNumber = self.idInput.text().strip() or None
+    firstName = self.firstNameInput.text().strip() or None
+    lastName = self.lastNameInput.text().strip() or None
+    yearLevel = self.yearLevelInput.text().strip() or None
     gender = self.genderInput.currentText() or None
     programCode = self.programCodeInput.currentText() or None
     collegeCode = self.collegeCodeInput.currentText() or None
