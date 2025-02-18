@@ -2,11 +2,14 @@ from PyQt6 import uic
 from PyQt6.QtWidgets import QMainWindow, QSizePolicy, QStatusBar
 from PyQt6.QtGui import QIcon
 
+from controllers.studentControllers import searchStudentsByField
 from views.StudentTable import StudentTable
 from views.AddStudentDialogue import AddStudentDialog
 from views.UpdateStudentDialogue import UpdateStudentDialog
 
 class MainWindow(QMainWindow):
+  searchByFields = ["ID Number", "First Name", "Last Name", "Program Code", "College Code"]
+
   def __init__(self):
 
     # WINDOW INITIALIZATION
@@ -31,6 +34,7 @@ class MainWindow(QMainWindow):
     self.studentTable.editStudentSignal.connect(self.openUpdateStudentDialog)
     self.sortByComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
     self.sortingOrderComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
+    self.searchButton.clicked.connect(self.searchStudents)
 
     # FINISHED INITIALIZATION
     self.displayMessageToStatusBar("Main Window Loaded", 3000)
@@ -71,3 +75,19 @@ class MainWindow(QMainWindow):
     self.updateDialog.statusMessageSignal.connect(self.displayMessageToStatusBar)
 
     self.updateDialog.exec()
+  
+  # Changes the students list in StudentTable
+  def searchStudents(self):
+    searchValue = self.searchBarLineEdit.text()
+    searchField = self.searchByComboBox.currentText()
+
+    if searchValue == "":
+      self.studentTable.initialStudentsToDisplay()
+      return
+    
+    if searchField == "":
+      searchField = self.searchByFields[0]
+
+    students = searchStudentsByField(searchField, searchValue)
+
+    self.studentTable.setStudents(students)

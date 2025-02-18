@@ -637,7 +637,7 @@ QFrame {
              <item>
               <widget class="QComboBox" name="searchByComboBox">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -686,12 +686,12 @@ QFrame {
                </item>
                <item>
                 <property name="text">
-                 <string>Program</string>
+                 <string>Program Code</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>College</string>
+                 <string>College Code</string>
                 </property>
                </item>
               </widget>

@@ -125,6 +125,18 @@ class StudentTable(QtWidgets.QWidget):
     for student in sortedStudents:
       self.addStudentRowToTable(student)
   
+  # Changes the set of students in StudentTable
+  def setStudents(self, newStudents):
+    if newStudents == None:
+      self.statusMessageSignal.emit("No Students Found", 3000)
+      return
+    
+    self.students.clear()
+
+    self.students.extend(newStudents)
+
+    self.refreshDisplayStudents()
+
   # Deletes all StudentRows in StudentTable
   def clearScrollArea(self):
     for i in reversed(range(self.scrollLayout.count())):
@@ -179,7 +191,8 @@ class StudentTable(QtWidgets.QWidget):
   # Gets all students in the student.csv file
   def initialStudentsToDisplay(self):
     self.clearScrollArea()
-    
+    self.students.clear()
+
     students = getAllStudents()
     self.students.extend(students)
 
@@ -204,9 +217,6 @@ class StudentTable(QtWidgets.QWidget):
       self.sortingOrder = 0
     else:
       self.sortingOrder = sortingOrder
-    
-
-
 
 
 

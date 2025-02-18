@@ -19,8 +19,6 @@ class StudentRow(QtWidgets.QWidget):
     self.idNumber = studentData["ID Number"]
     self.studentName = studentData["Last Name"] + " " + studentData["First Name"]
 
-    print(self.idNumber, self.studentName)
-
     # Initialize
     self.setMinimumSize(QtCore.QSize(400, 30))
     self.setMaximumSize(QtCore.QSize(16777215, 40))
