@@ -4,9 +4,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import pyqtSignal, Qt
 
 from controllers.studentControllers import searchStudentsByField
-from views.StudentTable import StudentTable
-from views.AddStudentDialogue import AddStudentDialog
-from views.UpdateStudentDialogue import UpdateStudentDialog
+from views.components.StudentTable import StudentTable
+from views.components.AddStudentDialog import AddStudentDialog
+from views.components.UpdateStudentDialogue import UpdateStudentDialog
 
 
 class StudentsPage(QtWidgets.QWidget):

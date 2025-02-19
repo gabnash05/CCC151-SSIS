@@ -1,10 +1,9 @@
 import sys
-from typing import List, Dict, Any
-from PyQt6 import QtWidgets, QtCore, QtGui
-from PyQt6.QtGui import QCursor
-from PyQt6.QtCore import Qt, pyqtSignal
 
-from views.StudentRow import StudentRow
+from PyQt6 import QtWidgets, QtCore
+from PyQt6.QtCore import pyqtSignal
+
+from views.components.StudentRow import StudentRow
 from controllers.studentControllers import getAllStudents
 
 class StudentTable(QtWidgets.QWidget):
@@ -103,10 +102,9 @@ class StudentTable(QtWidgets.QWidget):
 
     self.scrollArea.setWidget(self.scrollContent)
     self.mainLayout.addWidget(self.scrollArea)
-    
-    # Displaying initial data to display
 
   #--------------------------------------------------------------------------
+  
   # Displays data provided to the table
   def refreshDisplayStudents(self):
     self.updateSortByIndex()

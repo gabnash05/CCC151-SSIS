@@ -2,9 +2,9 @@ from PyQt6.QtWidgets import QMainWindow, QStackedWidget, QVBoxLayout
 from PyQt6.QtGui import QIcon
 from PyQt6 import uic
 
-from views.StudentsPage import StudentsPage
-from views.ProgramsPage import ProgramsPage 
-from views.CollegesPage import CollegesPage
+from views.pages.StudentsPage import StudentsPage
+from views.pages.ProgramsPage import ProgramsPage 
+from views.pages.CollegesPage import CollegesPage
 
 class MainWindow(QMainWindow):
   def __init__(self):

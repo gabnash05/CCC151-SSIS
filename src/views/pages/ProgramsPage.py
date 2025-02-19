@@ -4,9 +4,10 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import pyqtSignal, Qt
 
 from controllers.studentControllers import searchStudentsByField
-from views.StudentTable import StudentTable
-from views.AddStudentDialogue import AddStudentDialog
-from views.UpdateStudentDialogue import UpdateStudentDialog
+
+from views.components.ProgramTable import ProgramTable
+from views.components.AddProgramDialog import AddProgramDialog
+from views.components.UpdateStudentDialogue import UpdateStudentDialog
 
 
 class ProgramsPage(QtWidgets.QWidget):
@@ -19,14 +20,14 @@ class ProgramsPage(QtWidgets.QWidget):
     super().__init__(parent)
     self.setupUi()
 
-    #self.studentTable = StudentTable(self)
-    #self.dataFrame.layout().addWidget(self.studentTable)
+    self.programTable = ProgramTable(self)
+    self.dataFrame.layout().addWidget(self.programTable)
 
     # CONNECT SIGNALS
-    #self.studentTable.statusMessageSignal.connect(self.displayMessageToStatusBar)
+    self.programTable.statusMessageSignal.connect(self.displayMessageToStatusBar)
 
-    #self.addProgramButton.clicked.connect(self.openAddStudentDialog)
-    #self.studentTable.editStudentSignal.connect(self.openUpdateStudentDialog)
+    self.addProgramButton.clicked.connect(self.openAddProgramDialog)
+    #self.programTable.editProgramSignal.connect(self.openUpdateStudentDialog)
 
     #self.sortByComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
     #self.sortingOrderComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
@@ -502,15 +503,17 @@ class ProgramsPage(QtWidgets.QWidget):
     self.sortingOrderComboBox.setItemText(0, _translate("mainWindow", "Ascending"))
     self.sortingOrderComboBox.setItemText(1, _translate("mainWindow", "Descending"))
 
+  # UPDATE
   # Display messages to custom status bar
   def displayMessageToStatusBar(self, message, duration):
     self.statusMessageSignal.emit(message, duration)
 
+  # UPDATE
   # Open Add Student Dialog
-  def openAddStudentDialog(self):
-    self.addDialog = AddStudentDialog(self)
-    self.addDialog.studentAddedTableSignal.connect(self.studentTable.addNewStudentToTable)
-    self.addDialog.studentAddedWindowSignal.connect(self.displayMessageToStatusBar)
+  def openAddProgramDialog(self):
+    self.addDialog = AddProgramDialog(self)
+    self.addDialog.programAddedTableSignal.connect(self.programTable.addNewProgramToTable)
+    self.addDialog.programAddedWindowSignal.connect(self.displayMessageToStatusBar)
     self.addDialog.exec()
 
   # Open Update Student Dialog
