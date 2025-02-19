@@ -3,11 +3,11 @@ import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import pyqtSignal, Qt
 
-from controllers.studentControllers import searchStudentsByField
+from controllers.programControllers import searchProgramsByField
 
 from views.components.ProgramTable import ProgramTable
 from views.components.AddProgramDialog import AddProgramDialog
-from views.components.UpdateStudentDialogue import UpdateStudentDialog
+from views.components.UpdateProgramDialog import UpdateProgramDialog
 
 
 class ProgramsPage(QtWidgets.QWidget):
@@ -27,13 +27,13 @@ class ProgramsPage(QtWidgets.QWidget):
     self.programTable.statusMessageSignal.connect(self.displayMessageToStatusBar)
 
     self.addProgramButton.clicked.connect(self.openAddProgramDialog)
-    #self.programTable.editProgramSignal.connect(self.openUpdateStudentDialog)
+    self.programTable.editProgramSignal.connect(self.openUpdateProgramDialog)
 
-    #self.sortByComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
-    #self.sortingOrderComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
+    self.sortByComboBox.currentIndexChanged.connect(self.programTable.refreshDisplayPrograms)
+    self.sortingOrderComboBox.currentIndexChanged.connect(self.programTable.refreshDisplayPrograms)
 
-    self.searchButton.clicked.connect(self.searchStudents)
-    self.spacebarPressedSignal.connect(self.searchStudents)
+    self.searchButton.clicked.connect(self.searchPrograms)
+    self.spacebarPressedSignal.connect(self.searchPrograms)
 
     self.displayMessageToStatusBar("Programs Page Loaded", 3000)
       
@@ -516,27 +516,28 @@ class ProgramsPage(QtWidgets.QWidget):
     self.addDialog.programAddedWindowSignal.connect(self.displayMessageToStatusBar)
     self.addDialog.exec()
 
-  # Open Update Student Dialog
-  def openUpdateStudentDialog(self, studentData):
-    self.updateDialog = UpdateStudentDialog(self, studentData)
-    self.updateDialog.studentUpdatedTableSignal.connect(self.studentTable.editStudentInTable)
+  # Open Update Program Dialog
+  def openUpdateProgramDialog(self, programData):
+    self.updateDialog = UpdateProgramDialog(self, programData)
+    self.updateDialog.programUpdatedTableSignal.connect(self.programTable.editProgramInTable)
     self.updateDialog.statusMessageSignal.connect(self.displayMessageToStatusBar)
     self.updateDialog.exec()
 
   # Search students
-  def searchStudents(self):
+  def searchPrograms(self):
     searchValue = self.searchBarLineEdit.text()
     searchField = self.searchByComboBox.currentText()
 
     if searchValue == "":
-        self.studentTable.initialStudentsToDisplay()
-        return
+      self.programTable.initialProgramsToDisplay()
+      return
 
-    if searchField == "":
-        searchField = self.searchByFields[0]
+    if searchField == "Search By":
+      searchField = self.searchByFields[0]
 
-    students = searchStudentsByField(searchField, searchValue)
-    self.studentTable.setStudents(students)
+
+    programs = searchProgramsByField(searchField, searchValue)
+    self.programTable.setPrograms(programs)
 
   # Handle key press events
   def keyPressEvent(self, event):

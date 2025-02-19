@@ -8,8 +8,8 @@ from controllers.programControllers import getAllPrograms
 
 class ProgramTable(QtWidgets.QWidget):
   # Student variables
-  headers = ["Program Code", "Name", "College", "Operations"]
-  sortByFields = [("Program Code", "Program Name"), ("Program Name", "College"), ("College Code", "Program Name")]
+  headers = ["Program Code", "Program Name", "College Code", "Operations"]
+  sortByFields = [("Program Code", "Program Name"), ("Program Name", "College Code"), ("College Code", "Program Name")]
 
   # Signals
   statusMessageSignal = pyqtSignal(str, int)
@@ -110,6 +110,10 @@ class ProgramTable(QtWidgets.QWidget):
   def refreshDisplayPrograms(self):
     self.updateSortByIndex()
 
+    if self.programs == [None]:
+      self.clearScrollArea()
+      return
+
     # 2 Layer sorting based on predefined sortByField tuples
     if self.sortingOrder == 0:
       sortedPrograms = sorted(self.programs, 
@@ -170,7 +174,7 @@ class ProgramTable(QtWidgets.QWidget):
     newProgram = {
       "Program Code": programData[1],
       "Program Name": programData[2],
-      "Program Code": programData[3],
+      "College Code": programData[3],
     }
 
     for program in self.programs:

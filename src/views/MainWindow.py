@@ -30,6 +30,9 @@ class MainWindow(QMainWindow):
     self.studentsPage.programsSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.programsPage))
     self.studentsPage.collegesSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.collegesPage))
 
+    # self.programsPage.studentsSidebarButton.clicked.connect(self.studentsPage.searchStudents)
+    # self.collegesPage.studentsSidebarButton.clicked.connect(self.studentsPage.searchStudents)
+
     self.programsPage.studentsSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.studentsPage))
     self.programsPage.collegesSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.collegesPage)) 
 
@@ -40,6 +43,8 @@ class MainWindow(QMainWindow):
     self.studentsPage.statusMessageSignal.connect(self.handleStatusMessage)
     self.programsPage.statusMessageSignal.connect(self.handleStatusMessage)
     self.collegesPage.statusMessageSignal.connect(self.handleStatusMessage)
+    
   
   def handleStatusMessage(self, message, duration):
     self.statusBar.showMessage(message, duration)
+

@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QGraphicsOpacityEffect
 from PyQt6.QtGui import QCursor
 from PyQt6.QtCore import pyqtSignal
 
-from views.components.UpdateStudentDialogue import UpdateStudentDialog
+from views.components.UpdateStudentDialog import UpdateStudentDialog
 from controllers.programControllers import removeProgram
 
 class ProgramRow(QtWidgets.QWidget):
