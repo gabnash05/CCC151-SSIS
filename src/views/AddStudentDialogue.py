@@ -14,6 +14,9 @@ class AddStudentDialog(QtWidgets.QDialog):
     self.setWindowTitle("Add Student")
     self.setModal(True)
 
+    self.setupUI()
+    
+  def setupUI(self):
     # Window Init
     self.setMinimumSize(QtCore.QSize(400, 475))
     self.setMaximumSize(QtCore.QSize(500, 475))
@@ -153,7 +156,7 @@ class AddStudentDialog(QtWidgets.QDialog):
 
       # Send signal to MainWindow to call addStudent in StudentTable
       self.studentAddedTableSignal.emit([idNumber, firstName, lastName, gender, yearLevel, programCode, collegeCode])
-      self.studentAddedWindowSignal.emit("Adding Student", 1000)
+      self.studentAddedWindowSignal.emit("Student Added", 1000)
 
       # Closes the QDialog
       self.accept()

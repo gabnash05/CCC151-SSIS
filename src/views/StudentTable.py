@@ -208,10 +208,10 @@ class StudentTable(QtWidgets.QWidget):
     sortByIndex = self.parentWidget.sortByComboBox.currentIndex()
     sortingOrder = self.parentWidget.sortingOrderComboBox.currentIndex()
 
-    if sortByIndex < 0:
+    if sortByIndex <= 0:
       self.sortByIndex = 0
     else:
-      self.sortByIndex = sortByIndex
+      self.sortByIndex = sortByIndex - 1
     
     if sortingOrder < 0:
       self.sortingOrder = 0

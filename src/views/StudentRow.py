@@ -19,7 +19,11 @@ class StudentRow(QtWidgets.QWidget):
     self.idNumber = studentData["ID Number"]
     self.studentName = studentData["Last Name"] + " " + studentData["First Name"]
 
+    self.setupUI()
+
     # Initialize
+  
+  def setupUI(self):
     self.setMinimumSize(QtCore.QSize(400, 30))
     self.setMaximumSize(QtCore.QSize(16777215, 40))
     self.setObjectName("rowFrame")
@@ -54,13 +58,13 @@ class StudentRow(QtWidgets.QWidget):
 
     # ID Number label
     idNumberLabel = QtWidgets.QLabel(self.rowFrame)
-    idNumberLabel.setText(str(studentData["ID Number"]))
+    idNumberLabel.setText(str(self.studentData["ID Number"]))
     idNumberLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     idNumberLabel.setMinimumWidth(60)
     rowLayout.addWidget(idNumberLabel)
 
     # Name label
-    studentName = str(studentData["First Name"]) + " " + str(studentData["Last Name"])
+    studentName = str(self.studentData["First Name"]) + " " + str(self.studentData["Last Name"])
     nameLabel = QtWidgets.QLabel(self.rowFrame)
     nameLabel.setText(str(studentName))
     nameLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -79,28 +83,28 @@ class StudentRow(QtWidgets.QWidget):
 
     # Gender label
     genderLabel = QtWidgets.QLabel(self.rowFrame)
-    genderLabel.setText(str(studentData["Gender"]))
+    genderLabel.setText(str(self.studentData["Gender"]))
     genderLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     genderLabel.setMinimumWidth(60)
     rowLayout.addWidget(genderLabel)
 
     # Year Level label
     yearLevelLabel = QtWidgets.QLabel(self.rowFrame)
-    yearLevelLabel.setText(str(studentData["Year Level"]))
+    yearLevelLabel.setText(str(self.studentData["Year Level"]))
     yearLevelLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     yearLevelLabel.setMinimumWidth(60)
     rowLayout.addWidget(yearLevelLabel)
 
     # Program Code label
     programCodeLabel = QtWidgets.QLabel(self.rowFrame)
-    programCodeLabel.setText(str(studentData["Program Code"]))
+    programCodeLabel.setText(str(self.studentData["Program Code"]))
     programCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     programCodeLabel.setMinimumWidth(60)
     rowLayout.addWidget(programCodeLabel)
 
     # College Code label
     collegeCodeLabel = QtWidgets.QLabel(self.rowFrame)
-    collegeCodeLabel.setText(str(studentData["College Code"]))
+    collegeCodeLabel.setText(str(self.studentData["College Code"]))
     collegeCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     collegeCodeLabel.setMinimumWidth(60)
     rowLayout.addWidget(collegeCodeLabel)

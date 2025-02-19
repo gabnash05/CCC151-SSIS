@@ -16,6 +16,9 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     # Store the student ID for reference
     self.originalStudentID = studentData[0]
 
+    self.setupUI(studentData)
+
+  def setupUI(self, studentData):
     # Set Window Size
     self.setMinimumSize(QtCore.QSize(400, 500))
     self.setMaximumSize(QtCore.QSize(500, 500))
