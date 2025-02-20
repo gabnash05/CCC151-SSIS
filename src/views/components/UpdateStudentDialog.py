@@ -50,11 +50,6 @@ class UpdateStudentDialog(QtWidgets.QDialog):
                        }""")
     
     # Form Fields
-    self.idInput = QtWidgets.QLineEdit(self)
-    self.idInput.setText(studentData[0])
-    # Prevent editing of student ID
-    #self.idInput.setReadOnly(True)  
-
     self.firstNameInput = QtWidgets.QLineEdit(self)
     self.firstNameInput.setText(studentData[1])
 
@@ -68,19 +63,26 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     self.genderInput.addItems(["Male", "Female", "Others"])
     self.genderInput.setCurrentText(studentData[4])
 
+    self.idInput = QtWidgets.QLineEdit(self)
+    self.idInput.setText(studentData[0])
+    # Prevent editing of student ID
+    #self.idInput.setReadOnly(True)  
+
     self.programCodeInput = QtWidgets.QComboBox(self)
     self.collegeCodeInput = QtWidgets.QComboBox(self)
 
     colleges = getAllColleges()
     collegeCodeList = [college["College Code"] for college in colleges]
     self.collegeCodeInput.addItems(collegeCodeList)
+    
+    if studentData[6] != "N/A":
+      collegeIndex = collegeCodeList.index(studentData[6])
+      self.collegeCodeInput.setCurrentIndex(collegeIndex)
 
-    collegeIndex = collegeCodeList.index(studentData[6])
-    self.collegeCodeInput.setCurrentIndex(collegeIndex)
-
-    programCodeList = self.updateProgramOptions(collegeIndex)
-    programIndex = programCodeList.index(studentData[5])
-    self.programCodeInput.setCurrentIndex(programIndex)
+      programCodeList = self.updateProgramOptions(collegeIndex)
+      if studentData[5] != "N/A":
+        programIndex = programCodeList.index(studentData[5])
+        self.programCodeInput.setCurrentIndex(programIndex)
 
     # Section Headers
     self.titleLabel = QtWidgets.QLabel("Update Student")
@@ -155,7 +157,7 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     self.programCodeInput.clear()
 
     # Add new program options
-    programs = searchProgramsByField("College Code", selectedCollege)
+    programs = searchProgramsByField(selectedCollege, "College Code")
     programCodeList = [program["Program Code"] for program in programs]
     self.programCodeInput.addItems(programCodeList)
 

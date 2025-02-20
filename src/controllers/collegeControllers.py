@@ -29,8 +29,8 @@ def getAllColleges() -> List[Dict[str, str]]:
   return College.getAllCollegeRecords()
 
 # SEARCH BAR: searches for a college based on a specific field
-def searchCollegesByField(field: str, value: str) -> List[Dict[str, str]]:
-  if field not in COLLEGE_SEARCH_FIELDS:
+def searchCollegesByField(value: str, field: str = None) -> List[Dict[str, str]]:
+  if field and field not in COLLEGE_SEARCH_FIELDS:
     print("Search field not valid")
     return []
   
@@ -38,6 +38,9 @@ def searchCollegesByField(field: str, value: str) -> List[Dict[str, str]]:
     print("Search value not valid")
     return []
   
+  if field == None:
+    return College.searchForCollege(value)
+
   if field == COLLEGE_SEARCH_FIELDS[0]:
     return [College.getCollegeRecordByCode(value)]
   

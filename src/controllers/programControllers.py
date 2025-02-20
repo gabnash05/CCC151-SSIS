@@ -33,14 +33,17 @@ def getAllPrograms() -> List[Dict[str, str]]:
   return Program.getAllProgramRecords()
 
 # SEARCH BAR: searches for a program based on a specific field
-def searchProgramsByField(field: str, value: str) -> List[Dict[str, str]]:
-  if field not in PROGRAM_SEARCH_FIELDS:
+def searchProgramsByField(value: str, field: str = None) -> List[Dict[str, str]]:
+  if field and field not in PROGRAM_SEARCH_FIELDS:
     print("Search field not valid")
     return []
   
   if not isinstance(value, str):
     print("Search value not valid")
     return []
+  
+  if field == None:
+    return Program.searchForProgram(value)
   
   if field == PROGRAM_SEARCH_FIELDS[0]:
     return [Program.getProgramRecordByCode(value)]

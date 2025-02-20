@@ -56,6 +56,7 @@ class CollegeRow(QtWidgets.QWidget):
     collegeCodeLabel.setText(str(self.collegeData["College Code"]))
     collegeCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     collegeCodeLabel.setMinimumWidth(60)
+    collegeCodeLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(collegeCodeLabel)
 
     # College Name label
@@ -64,6 +65,7 @@ class CollegeRow(QtWidgets.QWidget):
     collegeNameLabel.setText(str(collegeName))
     collegeNameLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     collegeNameLabel.setMinimumWidth(500)
+    collegeNameLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(collegeNameLabel)
 
     # Operations Frame (for buttons)

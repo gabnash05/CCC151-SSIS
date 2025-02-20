@@ -2,7 +2,7 @@ import os
 from PyQt6 import QtWidgets, QtCore, QtGui
 from PyQt6.QtWidgets import QGraphicsOpacityEffect
 from PyQt6.QtGui import QCursor
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal, Qt
 
 from views.components.UpdateStudentDialog import UpdateStudentDialog
 from controllers.studentControllers import removeStudent
@@ -61,6 +61,7 @@ class StudentRow(QtWidgets.QWidget):
     idNumberLabel.setText(str(self.studentData["ID Number"]))
     idNumberLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     idNumberLabel.setMinimumWidth(60)
+    idNumberLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(idNumberLabel)
 
     # Name label
@@ -68,6 +69,7 @@ class StudentRow(QtWidgets.QWidget):
     nameLabel = QtWidgets.QLabel(self.rowFrame)
     nameLabel.setText(str(studentName))
     nameLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+    nameLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     nameLabel.setMinimumWidth(150)
 
 
@@ -86,6 +88,7 @@ class StudentRow(QtWidgets.QWidget):
     genderLabel.setText(str(self.studentData["Gender"]))
     genderLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     genderLabel.setMinimumWidth(60)
+    genderLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(genderLabel)
 
     # Year Level label
@@ -93,6 +96,7 @@ class StudentRow(QtWidgets.QWidget):
     yearLevelLabel.setText(str(self.studentData["Year Level"]))
     yearLevelLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     yearLevelLabel.setMinimumWidth(60)
+    yearLevelLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(yearLevelLabel)
 
     # Program Code label
@@ -100,6 +104,7 @@ class StudentRow(QtWidgets.QWidget):
     programCodeLabel.setText(str(self.studentData["Program Code"]))
     programCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     programCodeLabel.setMinimumWidth(60)
+    programCodeLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(programCodeLabel)
 
     # College Code label
@@ -107,6 +112,7 @@ class StudentRow(QtWidgets.QWidget):
     collegeCodeLabel.setText(str(self.studentData["College Code"]))
     collegeCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     collegeCodeLabel.setMinimumWidth(60)
+    collegeCodeLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(collegeCodeLabel)
 
     # Operations Frame (for buttons)

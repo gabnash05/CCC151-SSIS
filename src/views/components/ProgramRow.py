@@ -56,6 +56,7 @@ class ProgramRow(QtWidgets.QWidget):
     programCodeLabel.setText(str(self.programData["Program Code"]))
     programCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     programCodeLabel.setMinimumWidth(60)
+    programCodeLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(programCodeLabel)
 
     #Program Name label
@@ -64,6 +65,7 @@ class ProgramRow(QtWidgets.QWidget):
     programNameLabel.setText(str(programName))
     programNameLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     programNameLabel.setMinimumWidth(500)
+    programNameLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(programNameLabel)
 
     # College Code label
@@ -71,6 +73,7 @@ class ProgramRow(QtWidgets.QWidget):
     collegeCodeLabel.setText(str(self.programData["College Code"]))
     collegeCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     collegeCodeLabel.setMinimumWidth(60)
+    collegeCodeLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(collegeCodeLabel)
 
     # Operations Frame (for buttons)

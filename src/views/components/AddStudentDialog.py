@@ -50,10 +50,10 @@ class AddStudentDialog(QtWidgets.QDialog):
     # Create form fields
     self.firstNameInput = QtWidgets.QLineEdit(self)
     self.lastNameInput = QtWidgets.QLineEdit(self)
-    self.yearLevelInput = QtWidgets.QLineEdit(self)
     self.genderInput = QtWidgets.QComboBox(self)
     self.genderInput.addItems(["Male", "Female", "Others"])
     self.idInput = QtWidgets.QLineEdit(self)
+    self.yearLevelInput = QtWidgets.QLineEdit(self)
     self.programCodeInput = QtWidgets.QComboBox(self)
     self.collegeCodeInput = QtWidgets.QComboBox(self)
 
@@ -177,7 +177,7 @@ class AddStudentDialog(QtWidgets.QDialog):
     self.programCodeInput.model().item(0).setEnabled(False)
 
     # Add new program options
-    programs = searchProgramsByField("College Code", selectedCollege)
+    programs = searchProgramsByField(selectedCollege, "College Code")
     programCodeList = [program["Program Code"] for program in programs]
     self.programCodeInput.addItems(programCodeList)
 

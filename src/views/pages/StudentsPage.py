@@ -7,13 +7,14 @@ from controllers.studentControllers import searchStudentsByField
 from views.components.StudentTable import StudentTable
 from views.components.AddStudentDialog import AddStudentDialog
 from views.components.UpdateStudentDialog import UpdateStudentDialog
+from utils.inputUtils import validateIdNumber
 
 
 class StudentsPage(QtWidgets.QWidget):
     searchByFields = ["ID Number", "First Name", "Last Name", "Program Code", "College Code"]
 
     statusMessageSignal = pyqtSignal(str, int)
-    spacebarPressedSignal = pyqtSignal()
+    enterPressedSignal = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -32,7 +33,7 @@ class StudentsPage(QtWidgets.QWidget):
         self.sortingOrderComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
 
         self.searchButton.clicked.connect(self.searchStudents)
-        self.spacebarPressedSignal.connect(self.searchStudents)
+        self.enterPressedSignal.connect(self.searchStudents)
 
         self.displayMessageToStatusBar("Students Page Loaded", 3000)
         
@@ -336,7 +337,7 @@ class StudentsPage(QtWidgets.QWidget):
 
         self.searchByComboBox.addItem("Search By")
         self.searchByComboBox.setCurrentIndex(0) 
-        self.searchByComboBox.model().item(0).setEnabled(False)
+        #self.searchByComboBox.model().item(0).setEnabled(False)
 
         self.searchByComboBox.setObjectName("searchByComboBox")
         self.searchByComboBox.addItem("")
@@ -540,16 +541,18 @@ class StudentsPage(QtWidgets.QWidget):
             self.studentTable.initialStudentsToDisplay()
             return
 
-        if searchField == "":
-            searchField = self.searchByFields[0]
-
-        students = searchStudentsByField(searchField, searchValue)
+        if searchField == "Search By":
+            students = searchStudentsByField(searchValue)
+            self.studentTable.setStudents(students)
+            return 
+        
+        students = searchStudentsByField(searchValue, searchField)
         self.studentTable.setStudents(students)
 
     # Handle key press events
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Return:
-            self.spacebarPressedSignal.emit()
+            self.enterPressedSignal.emit()
 
 
 

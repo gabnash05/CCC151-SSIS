@@ -40,7 +40,7 @@ class College:
   # Get college record
   @staticmethod
   def getCollegeRecordByName(collegeName: str) -> Dict[str, str]:
-    return csvUtils.getRowsByFieldCsv(College.COLLEGE_CSV_FILEPATH, College.COLLEGE_HEADERS[1], collegeName)
+    return csvUtils.getRowsByFieldCsv(College.COLLEGE_CSV_FILEPATH, collegeName, College.COLLEGE_HEADERS[1])
   
   # Get all college records
   @staticmethod
@@ -56,3 +56,8 @@ class College:
   @staticmethod
   def deleteCollegeRecord(collegeCode: str) -> bool:
     return csvUtils.deleteRowByFieldCsv(College.COLLEGE_CSV_FILEPATH, College.COLLEGE_HEADERS[0], collegeCode)
+  
+  # Searches for college records without a search field
+  @staticmethod
+  def searchForCollege(searchValue: str) -> List[Dict[str, str]]:
+    return csvUtils.getRowsByFieldCsv(College.COLLEGE_CSV_FILEPATH, searchValue, None)

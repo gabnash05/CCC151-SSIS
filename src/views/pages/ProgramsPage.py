@@ -340,7 +340,7 @@ class ProgramsPage(QtWidgets.QWidget):
 
     self.searchByComboBox.addItem("Search By")
     self.searchByComboBox.setCurrentIndex(0) 
-    self.searchByComboBox.model().item(0).setEnabled(False)
+    #self.searchByComboBox.model().item(0).setEnabled(False)
 
     self.searchByComboBox.setObjectName("searchByComboBox")
     self.searchByComboBox.addItem("")
@@ -533,10 +533,11 @@ class ProgramsPage(QtWidgets.QWidget):
       return
 
     if searchField == "Search By":
-      searchField = self.searchByFields[0]
+      programs = searchProgramsByField(searchValue)
+      self.programTable.setPrograms(programs)
+      return
 
-
-    programs = searchProgramsByField(searchField, searchValue)
+    programs = searchProgramsByField(searchValue, searchField)
     self.programTable.setPrograms(programs)
 
   # Handle key press events

@@ -340,7 +340,7 @@ class CollegesPage(QtWidgets.QWidget):
 
     self.searchByComboBox.addItem("Search By")
     self.searchByComboBox.setCurrentIndex(0) 
-    self.searchByComboBox.model().item(0).setEnabled(False)
+    #self.searchByComboBox.model().item(0).setEnabled(False)
 
     self.searchByComboBox.setObjectName("searchByComboBox")
     self.searchByComboBox.addItem("")
@@ -527,9 +527,11 @@ class CollegesPage(QtWidgets.QWidget):
       return
 
     if searchField == "Search By":
-      searchField = self.searchByFields[0]
+      colleges = searchCollegesByField(searchValue)
+      self.collegeTable.setColleges(colleges)
+      return
 
-    colleges = searchCollegesByField(searchField, searchValue)
+    colleges = searchCollegesByField(searchValue, searchField)
     self.collegeTable.setColleges(colleges)
 
   # Handle key press events

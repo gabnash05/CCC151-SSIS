@@ -18,7 +18,7 @@ def addStudent(idNumber: str, firstName: str, lastName: str, yearLevel: str, gen
     return("Enter all required fields")
   
   # converts year level into an int
-  if isinstance(yearLevel, str):
+  if isinstance(yearLevel, str) and yearLevel.isdigit():
     yearLevel = int(yearLevel)
   if not validateYearLevel(yearLevel):
     return("Year Level must be a positive integer.")
@@ -50,14 +50,18 @@ def getAllStudents() -> List[Dict[str, str]]:
   return Student.getAllStudentRecords()
 
 # SEARCH BAR: Search Student by a specific field ("ID Number", "First Name", "Last Name", "Program Code", "College Code")
-def searchStudentsByField(field: str, value: str) -> List[Dict[str, str]]:
-  if field not in STUDENT_SEARCH_FIELDS:
+def searchStudentsByField(value: str, field: str = None ) -> List[Dict[str, str]]:
+  if field and field not in STUDENT_SEARCH_FIELDS:
     print("Search field not valid")
     return []
   
   if not isinstance(value, str):
     print("Search value not valid")
     return []
+  
+  # No search field
+  if field == None:
+    return Student.searchForStudent(value)
   
   if field == STUDENT_SEARCH_FIELDS[0]:
     if validateIdNumber(value):
@@ -97,7 +101,7 @@ def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: 
     return("Invalid ID Number")
   
   # converts year level into an int
-  if isinstance(newYearLevel, str):
+  if isinstance(newYearLevel, str) and newYearLevel.isdigit():
     newYearLevel = int(newYearLevel)
   if not validateYearLevel(newYearLevel):
     return("Year Level must be a positive integer.")

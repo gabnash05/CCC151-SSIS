@@ -47,12 +47,12 @@ class Program:
   # Get program record by name
   @staticmethod
   def getProgramRecordsByName(programName: str) -> Dict[str, str]:
-    return csvUtils.getRowsByFieldCsv(Program.PROGRAM_CSV_FILEPATH, Program.PROGRAM_HEADERS[1], programName)
+    return csvUtils.getRowsByFieldCsv(Program.PROGRAM_CSV_FILEPATH, programName, Program.PROGRAM_HEADERS[1])
   
   # Get program record by college
   @staticmethod
   def getProgramRecordsByCollege(collegeCode: str) -> List[Dict[str, str]]:
-    return csvUtils.getRowsByFieldCsv(Program.PROGRAM_CSV_FILEPATH, Program.PROGRAM_HEADERS[2], collegeCode)
+    return csvUtils.getRowsByFieldCsv(Program.PROGRAM_CSV_FILEPATH, collegeCode, Program.PROGRAM_HEADERS[2])
   
   # Get program record
   @staticmethod
@@ -63,3 +63,8 @@ class Program:
   @staticmethod
   def deleteProgramRecord(programCode: str) -> bool:
     return csvUtils.deleteRowByFieldCsv(Program.PROGRAM_CSV_FILEPATH, Program.PROGRAM_HEADERS[0], programCode)
+  
+  # Searches for program records without a search field
+  @staticmethod
+  def searchForProgram(searchValue: str) -> List[Dict[str, str]]:
+    return csvUtils.getRowsByFieldCsv(Program.PROGRAM_CSV_FILEPATH, searchValue, None)

@@ -57,19 +57,53 @@ def writeCsv(filepath: str, data: List[Dict[str,str]]) -> bool:
     return False
 
 # Gets rows from csv file that matches a field and value as an array of dicts
-def getRowsByFieldCsv(filepath: str, searchField: str, searchValue: str) -> List[Dict]:
+def getRowsByFieldCsv(filepath: str, searchValue: str, searchField: str = None) -> List[Dict[str, str]]:
   try:
     data = readCsv(filepath)
+    if not data:
+      return []
     
-    if data and searchField not in data[0]:
-      print(f"Error: Field '{searchField}' not found in CSV")
-      return None
+    searchWords = searchValue.lower().split()
+
+    if searchField:
+      if searchField not in data[0]:
+        print(f"Error: Field '{searchField}' not found in CSV")
+        return []
+      return [
+        record for record in data
+        if any(word in record[searchField].lower() for word in searchWords)
+      ]
+
+    # SEARCH FOR STUDENT
+    if len(data[0]) > 3:
+      filteredRecords = []
+      for record in data:
+        firstName = record["First Name"].lower()
+        lastName = record["Last Name"].lower()
+        fullName = f"{firstName} {lastName}"
+        
+        # Check if all search words appear somewhere in the full name
+        if all(word in fullName for word in searchWords):
+          filteredRecords.append(record)
+        
+        # If the search term is a single word, check all fields
+        elif len(searchWords) == 1:
+          if any(searchWords[0] in value.lower() for value in record.values()):
+            filteredRecords.append(record)
+
+      return filteredRecords
     
-    return [record for record in data if record[searchField].lower() == searchValue.lower()]
-  
+    # SEARCH FOR PROGRAM AND COLLEGE
+    else:
+      return [
+        record for record in data
+        if any(searchValue.lower() in value.lower() for value in record.values())
+      ]
+
+    
   except Exception as error:
     print(f"Error reading CSV by Field: {error}")  
-    return None
+    return []
 
 # Gets a single row from csv file as a dict
 def getRowByIdCsv(filepath: str, id: str) -> Dict:

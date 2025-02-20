@@ -61,8 +61,9 @@ class UpdateProgramDialog(QtWidgets.QDialog):
     collegeCodeList = [college["College Code"] for college in colleges]
     self.collegeCodeInput.addItems(collegeCodeList)
 
-    collegeIndex = collegeCodeList.index(programData[2])
-    self.collegeCodeInput.setCurrentIndex(collegeIndex)
+    if programData[2] != "N/A":
+      collegeIndex = collegeCodeList.index(programData[2])
+      self.collegeCodeInput.setCurrentIndex(collegeIndex)
 
     # Section Headers
     self.titleLabel = QtWidgets.QLabel("Update Program")

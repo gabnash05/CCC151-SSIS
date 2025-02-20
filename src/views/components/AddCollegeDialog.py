@@ -118,7 +118,7 @@ class AddCollegeDialog(QtWidgets.QDialog):
 
       # Send signal to ProgramPage to call addProgram in ProgramTable
       self.collegeAddedTableSignal.emit([collegeCode, collegeName])
-      self.collegeAddedWindowSignall.emit("College Added", 1000)
+      self.collegeAddedWindowSignal.emit("College Added", 1000)
 
       # Closes the QDialog
       self.accept()

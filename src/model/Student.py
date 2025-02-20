@@ -56,32 +56,32 @@ class Student:
   # Get all student records by first name
   @staticmethod
   def getAllStudentRecordsByFirstName(firstName: str) -> List[Dict[str, str]]:
-    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, Student.STUDENT_HEADERS[1], firstName)
+    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, firstName, Student.STUDENT_HEADERS[1])
   
   # Get all student records by last name
   @staticmethod
   def getAllStudentRecordsByLastName(lastName: str) -> List[Dict[str, str]]:
-    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, Student.STUDENT_HEADERS[2], lastName)
+    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, lastName, Student.STUDENT_HEADERS[2])
   
   # Get all student records by year level
   @staticmethod
   def getAllStudentRecordsByYearLevel(yearLevel: int) -> List[Dict[str, str]]:
-    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, Student.STUDENT_HEADERS[3], str(yearLevel))
+    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, str(yearLevel), Student.STUDENT_HEADERS[3])
 
   # Get all student records by gender
   @staticmethod
   def getAllStudentRecordsByGender(gender: str) -> List[Dict[str, str]]:
-    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, Student.STUDENT_HEADERS[4], gender)
+    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, gender, Student.STUDENT_HEADERS[4])
 
   # Get all student records by program code
   @staticmethod
   def getAllStudentRecordsByProgram(program: str) -> List[Dict[str, str]]:
-    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, Student.STUDENT_HEADERS[5], program)
+    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, program, Student.STUDENT_HEADERS[5])
 
   # Get all student records by college
   @staticmethod
   def getAllStudentRecordsByCollege(college: str) -> List[Dict[str, str]]:
-    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, Student.STUDENT_HEADERS[6], college)
+    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, college, Student.STUDENT_HEADERS[6])
 
   # Updates student information
   @staticmethod
@@ -92,3 +92,8 @@ class Student:
   @staticmethod
   def removeStudentRecordById(studentId: str) -> bool:
     return csvUtils.deleteRowByFieldCsv(Student.STUDENT_CSV_FILEPATH, Student.STUDENT_HEADERS[0], studentId)
+  
+  # Searches for student records without a search field
+  @staticmethod
+  def searchForStudent(searchValue: str) -> List[Dict[str, str]]:
+    return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, searchValue, None)
