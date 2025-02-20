@@ -5,16 +5,16 @@ from PyQt6.QtGui import QCursor
 from PyQt6.QtCore import pyqtSignal, Qt
 
 from views.components.UpdateStudentDialog import UpdateStudentDialog
-from controllers.programControllers import removeProgram
+from controllers.collegeControllers import removeCollege
 
-class ProgramRow(QtWidgets.QWidget):
+class CollegeRow(QtWidgets.QWidget):
   statusMessageSignal = pyqtSignal(str, int)
-  editProgramSignal = pyqtSignal(list)
+  editCollegeSignal = pyqtSignal(list)
 
-  def __init__(self, programData, parent=None):
+  def __init__(self, collegeData, parent=None):
     super().__init__(parent)
     # Store StudentRow Variables
-    self.programData = programData
+    self.collegeData = collegeData
 
     self.setupUI()
   
@@ -51,33 +51,26 @@ class ProgramRow(QtWidgets.QWidget):
     rowLayout.setContentsMargins(15, 0, 15, 0)
     mainLayout.addWidget(self.rowFrame)
 
-    # Program Code label
-    programCodeLabel = QtWidgets.QLabel(self.rowFrame)
-    programCodeLabel.setText(str(self.programData["Program Code"]))
-    programCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-    programCodeLabel.setMinimumWidth(60)
-    rowLayout.addWidget(programCodeLabel)
-
-    #Program Name label
-    programName = str(self.programData["Program Name"])
-    programNameLabel = QtWidgets.QLabel(self.rowFrame)
-    programNameLabel.setText(str(programName))
-    programNameLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-    programNameLabel.setMinimumWidth(500)
-    rowLayout.addWidget(programNameLabel)
-
     # College Code label
     collegeCodeLabel = QtWidgets.QLabel(self.rowFrame)
-    collegeCodeLabel.setText(str(self.programData["College Code"]))
+    collegeCodeLabel.setText(str(self.collegeData["College Code"]))
     collegeCodeLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
     collegeCodeLabel.setMinimumWidth(60)
     rowLayout.addWidget(collegeCodeLabel)
 
+    # College Name label
+    collegeName = str(self.collegeData["College Name"])
+    collegeNameLabel = QtWidgets.QLabel(self.rowFrame)
+    collegeNameLabel.setText(str(collegeName))
+    collegeNameLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+    collegeNameLabel.setMinimumWidth(500)
+    rowLayout.addWidget(collegeNameLabel)
+
     # Operations Frame (for buttons)
     self.operationsFrame = QtWidgets.QFrame(self.rowFrame)
     operationsLayout = QtWidgets.QHBoxLayout(self.operationsFrame)
-    operationsLayout.setContentsMargins(0, 0, 0, 0)
     operationsLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+    operationsLayout.setContentsMargins(0, 0, 0, 0)
     
     # Edit & Delete Buttons
     self.editButton = QtWidgets.QPushButton("", self.operationsFrame)
@@ -106,7 +99,7 @@ class ProgramRow(QtWidgets.QWidget):
 
     # Connect Buttons
     self.deleteButton.clicked.connect(self.deleteRow)
-    self.editButton.clicked.connect(self.sendProgramData)
+    self.editButton.clicked.connect(self.sendCollegeData)
 
     operationsLayout.addWidget(self.editButton)
     operationsLayout.addWidget(self.deleteButton)
@@ -125,14 +118,14 @@ class ProgramRow(QtWidgets.QWidget):
   # Deletes a program in the GUI and CSV
   def deleteRow(self):
     # "Are you sure if you want to delete" POPUP
-    if not self.showDeleteConfirmation(self, self.programData["Program Code"]):
+    if not self.showDeleteConfirmation(self, self.collegeData["College Code"]):
       return
 
     # Remove from csv
-    result = removeProgram(self.programData["Program Code"])
+    result = removeCollege(self.collegeData["College Code"])
     
     # Remove the widget
-    if result != "Program removed successfully.":
+    if result != "College removed successfully.":
       self.statusMessageSignal.emit(result, 3000)
       return
     
@@ -146,14 +139,14 @@ class ProgramRow(QtWidgets.QWidget):
     self.statusMessageSignal.emit(result, 3000)
 
   # Sends Signal to update a student
-  def sendProgramData(self):
-    self.editProgramSignal.emit(self.programData.values())
+  def sendCollegeData(self):
+    self.editCollegeSignal.emit(self.collegeData.values())
 
   # Creates a pop up when deleting a student
-  def showDeleteConfirmation(self, parent, programCode):
+  def showDeleteConfirmation(self, parent, collegeCode):
     msgBox = QtWidgets.QMessageBox(parent)
     msgBox.setWindowTitle("Confirm Deletion")
-    msgBox.setText(f"Are you sure you want to delete {programCode}?")
+    msgBox.setText(f"Are you sure you want to delete {collegeCode}?")
     msgBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
     msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
 

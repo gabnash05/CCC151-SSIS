@@ -3,10 +3,11 @@ import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import pyqtSignal, Qt
 
-from controllers.studentControllers import searchStudentsByField
-from views.components.StudentTable import StudentTable
-from views.components.AddStudentDialog import AddStudentDialog
-from views.components.UpdateStudentDialog import UpdateStudentDialog
+from controllers.collegeControllers import searchCollegesByField
+
+from views.components.CollegeTable import CollegeTable
+from views.components.AddCollegeDialog import AddCollegeDialog
+from views.components.UpdateCollegeDialog import UpdateCollegeDialog
 
 
 class CollegesPage(QtWidgets.QWidget):
@@ -19,20 +20,20 @@ class CollegesPage(QtWidgets.QWidget):
     super().__init__(parent)
     self.setupUi()
 
-    #self.studentTable = StudentTable(self)
-    #self.dataFrame.layout().addWidget(self.studentTable)
+    self.collegeTable = CollegeTable(self)
+    self.dataFrame.layout().addWidget(self.collegeTable)
 
     # CONNECT SIGNALS
-    #self.studentTable.statusMessageSignal.connect(self.displayMessageToStatusBar)
+    self.collegeTable.statusMessageSignal.connect(self.displayMessageToStatusBar)
 
-    #self.addCollegeButton.clicked.connect(self.openAddStudentDialog)
-    #self.studentTable.editStudentSignal.connect(self.openUpdateStudentDialog)
+    self.addCollegeButton.clicked.connect(self.openAddCollegeDialog)
+    self.collegeTable.editCollegeSignal.connect(self.openUpdateCollegeDialog)
 
-    #self.sortByComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
-    #self.sortingOrderComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
+    self.sortByComboBox.currentIndexChanged.connect(self.collegeTable.refreshDisplayColleges)
+    self.sortingOrderComboBox.currentIndexChanged.connect(self.collegeTable.refreshDisplayColleges)
 
-    self.searchButton.clicked.connect(self.searchStudents)
-    self.spacebarPressedSignal.connect(self.searchStudents)
+    self.searchButton.clicked.connect(self.searchColleges)
+    self.spacebarPressedSignal.connect(self.searchColleges)
 
     self.displayMessageToStatusBar("Programs Page Loaded", 3000)
       
@@ -141,7 +142,7 @@ class CollegesPage(QtWidgets.QWidget):
 "}\n"
 "\n"
 "/* LABELS */\n"
-"#programLabel {\n"
+"#collegeLabel {\n"
 "  font: 20pt \"Inter\";\n"
 "  font-weight: bold;\n"
 "}\n"
@@ -362,11 +363,11 @@ class CollegesPage(QtWidgets.QWidget):
     self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetMinimumSize)
     self.horizontalLayout.setContentsMargins(-1, 11, 11, 11)
     self.horizontalLayout.setObjectName("horizontalLayout")
-    self.programLabel = QtWidgets.QLabel(parent=self.controlsFrame)
-    self.programLabel.setMinimumSize(QtCore.QSize(180, 0))
-    self.programLabel.setMaximumSize(QtCore.QSize(200, 16777215))
-    self.programLabel.setObjectName("programLabel")
-    self.horizontalLayout.addWidget(self.programLabel)
+    self.collegeLabel = QtWidgets.QLabel(parent=self.controlsFrame)
+    self.collegeLabel.setMinimumSize(QtCore.QSize(180, 0))
+    self.collegeLabel.setMaximumSize(QtCore.QSize(200, 16777215))
+    self.collegeLabel.setObjectName("collegeLabel")
+    self.horizontalLayout.addWidget(self.collegeLabel)
     self.addCollegeButton = QtWidgets.QPushButton(parent=self.controlsFrame)
     sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
     sizePolicy.setHorizontalStretch(0)
@@ -489,7 +490,7 @@ class CollegesPage(QtWidgets.QWidget):
     self.searchByComboBox.setPlaceholderText(_translate("mainWindow", "Search by"))
     self.searchByComboBox.setItemText(1, _translate("mainWindow", "College Code"))
     self.searchByComboBox.setItemText(2, _translate("mainWindow", "College Name"))
-    self.programLabel.setText(_translate("mainWindow", "Colleges"))
+    self.collegeLabel.setText(_translate("mainWindow", "Colleges"))
     self.addCollegeButton.setText(_translate("mainWindow", "Add College"))
     self.sortByComboBox.setToolTip(_translate("mainWindow", "Sort by"))
     self.sortByComboBox.setPlaceholderText(_translate("mainWindow", "Sort by"))
@@ -503,33 +504,33 @@ class CollegesPage(QtWidgets.QWidget):
     self.statusMessageSignal.emit(message, duration)
 
   # Open Add Student Dialog
-  def openAddStudentDialog(self):
-    self.addDialog = AddStudentDialog(self)
-    self.addDialog.studentAddedTableSignal.connect(self.studentTable.addNewStudentToTable)
-    self.addDialog.studentAddedWindowSignal.connect(self.displayMessageToStatusBar)
+  def openAddCollegeDialog(self):
+    self.addDialog = AddCollegeDialog(self)
+    self.addDialog.collegeAddedTableSignal.connect(self.collegeTable.addNewCollegeToTable)
+    self.addDialog.collegeAddedWindowSignal.connect(self.displayMessageToStatusBar)
     self.addDialog.exec()
 
-  # Open Update Student Dialog
-  def openUpdateStudentDialog(self, studentData):
-    self.updateDialog = UpdateStudentDialog(self, studentData)
-    self.updateDialog.studentUpdatedTableSignal.connect(self.studentTable.editStudentInTable)
+  # Open Update Program Dialog
+  def openUpdateCollegeDialog(self, collegeData):
+    self.updateDialog = UpdateCollegeDialog(self, collegeData)
+    self.updateDialog.collegeUpdatedTableSignal.connect(self.collegeTable.editCollegeInTable)
     self.updateDialog.statusMessageSignal.connect(self.displayMessageToStatusBar)
     self.updateDialog.exec()
 
   # Search students
-  def searchStudents(self):
-    searchValue = self.searchBarLineEdit.text()
+  def searchColleges(self):
+    searchValue = self.searchBarLineEdit.text().strip()
     searchField = self.searchByComboBox.currentText()
 
     if searchValue == "":
-        self.studentTable.initialStudentsToDisplay()
-        return
+      self.collegeTable.initialCollegesToDisplay()
+      return
 
-    if searchField == "":
-        searchField = self.searchByFields[0]
+    if searchField == "Search By":
+      searchField = self.searchByFields[0]
 
-    students = searchStudentsByField(searchField, searchValue)
-    self.studentTable.setStudents(students)
+    colleges = searchCollegesByField(searchField, searchValue)
+    self.collegeTable.setColleges(colleges)
 
   # Handle key press events
   def keyPressEvent(self, event):

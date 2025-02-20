@@ -3,17 +3,17 @@ import sys
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtCore import pyqtSignal
 
-from views.components.ProgramRow import ProgramRow
-from controllers.programControllers import getAllPrograms
+from views.components.CollegeRow import CollegeRow
+from controllers.collegeControllers import getAllColleges
 
-class ProgramTable(QtWidgets.QWidget):
+class CollegeTable(QtWidgets.QWidget):
   # Student variables
-  headers = ["Program Code", "Program Name", "College Code", "Operations"]
-  sortByFields = [("Program Code", "Program Name"), ("Program Name", "College Code"), ("College Code", "Program Name")]
+  headers = ["College Code", "College Name", "Operations"]
+  sortByFields = [("College Code", "College Name"), ("College Name", "College Code")]
 
   # Signals
   statusMessageSignal = pyqtSignal(str, int)
-  editProgramSignal = pyqtSignal(list)
+  editCollegeSignal = pyqtSignal(list)
 
   def __init__(self, parent=None):
     super().__init__(parent)
@@ -22,16 +22,16 @@ class ProgramTable(QtWidgets.QWidget):
 
     self.setupUI()
 
-    self.programs = []
+    self.colleges = []
     self.sortByIndex = 0
     self.sortingOrder = 0
 
-    self.initialProgramsToDisplay()
+    self.initialCollegesToDisplay()
 
   # UI Setup
   def setupUI(self):
     # Updating Status Bar
-    self.statusMessageSignal.emit("Program Table Loading", 3000)
+    self.statusMessageSignal.emit("College Table Loading", 3000)
     
     # Main Layout
     self.mainLayout = QtWidgets.QVBoxLayout(self)
@@ -55,11 +55,10 @@ class ProgramTable(QtWidgets.QWidget):
       label.setObjectName(f"headerLabel_{i}")
 
       # Set width constraints
-      # Set width constraints
       if i == 1:  # Name column
         label.setMinimumWidth(500)
       else:
-        label.setMinimumWidth(60)
+        label.setMinimumWidth(100)
 
       self.horizontalLayout_2.addWidget(label, 1)
 
@@ -102,38 +101,38 @@ class ProgramTable(QtWidgets.QWidget):
   #--------------------------------------------------------------------------
   
   # Displays data provided to the table
-  def refreshDisplayPrograms(self):
+  def refreshDisplayColleges(self):
     self.updateSortByIndex()
 
-    if self.programs == [None]:
+    if self.colleges == [None]:
       self.clearScrollArea()
       return
 
     # 2 Layer sorting based on predefined sortByField tuples
     if self.sortingOrder == 0:
-      sortedPrograms = sorted(self.programs, 
+      sortedColleges = sorted(self.colleges, 
                               key=lambda x: (x[self.sortByFields[self.sortByIndex][0]], x[self.sortByFields[self.sortByIndex][1]]))
     elif self.sortingOrder == 1:
-      sortedPrograms = sorted(self.programs, 
+      sortedColleges = sorted(self.colleges, 
                               key=lambda x: (x[self.sortByFields[self.sortByIndex][0]], x[self.sortByFields[self.sortByIndex][1]]),
                               reverse=True)
     
     self.clearScrollArea()
 
-    for program in sortedPrograms:
-      self.addProgramRowToTable(program)
+    for college in sortedColleges:
+      self.addCollegeRowToTable(college)
   
   # Changes the set of programs in ProgramTable
-  def setPrograms(self, newPrograms):
-    if newPrograms == None:
-      self.statusMessageSignal.emit("No Programs Found", 3000)
+  def setColleges(self, newColleges):
+    if newColleges == None:
+      self.statusMessageSignal.emit("No Colleges Found", 3000)
       return
     
-    self.programs.clear()
+    self.colleges.clear()
 
-    self.programs.extend(newPrograms)
+    self.colleges.extend(newColleges)
 
-    self.refreshDisplayPrograms()
+    self.refreshDisplayColleges()
 
   # Deletes all ProgramRows in ProgramTable
   def clearScrollArea(self):
@@ -143,57 +142,55 @@ class ProgramTable(QtWidgets.QWidget):
         widget.deleteLater()
 
   # Generates ProgramRows into ProgramTable
-  def addProgramRowToTable(self, programData):
-    programRow = ProgramRow(programData, self.scrollContent)
-    programRow.statusMessageSignal.connect(self.statusMessageSignal)
-    programRow.editProgramSignal.connect(self.editProgramSignal.emit)
-    self.scrollLayout.addWidget(programRow)
-    self.scrollLayout.addWidget(programRow.separator)
+  def addCollegeRowToTable(self, collegeData):
+    collegeRow = CollegeRow(collegeData, self.scrollContent)
+    collegeRow.statusMessageSignal.connect(self.statusMessageSignal)
+    collegeRow.editCollegeSignal.connect(self.editCollegeSignal.emit)
+    self.scrollLayout.addWidget(collegeRow)
+    self.scrollLayout.addWidget(collegeRow.separator)
   
-  # Reloads ProgramTable when new student is adden from AddStudentDialog
-  def addNewProgramToTable(self, programData):
-    newProgram = {
-      "Program Code": programData[0],
-      "Program Name": programData[1],
-      "College Code": programData[2],
+  # Reloads CollegeTable when new college is adden from AddCollegeDialog
+  def addNewCollegeToTable(self, collegeData):
+    newCollege = {
+      "College Code": collegeData[0],
+      "College Name": collegeData[1],
     }
 
-    self.programs.append(newProgram)
+    self.colleges.append(newCollege)
 
-    self.refreshDisplayPrograms()
+    self.refreshDisplayColleges()
 
-  # Edits a StudentRow in ProgramTable
-  def editProgramInTable(self, programData):
-    originalProgramCode = programData[0]
+  # Edits a CollegeRow in CollegeTable
+  def editCollegeInTable(self, collegeData):
+    originalCollegeCode = collegeData[0]
 
-    newProgram = {
-      "Program Code": programData[1],
-      "Program Name": programData[2],
-      "College Code": programData[3],
+    newCollege = {
+      "College Code": collegeData[1],
+      "College Name": collegeData[2],
     }
 
-    for program in self.programs:
-      if program["Program Code"] == originalProgramCode:
-        program.update(newProgram)
+    for college in self.colleges:
+      if college["College Code"] == originalCollegeCode:
+        college.update(newCollege)
     
-    self.refreshDisplayPrograms()
+    self.refreshDisplayColleges()
 
-  # Gets all programs in the program.csv file
-  def initialProgramsToDisplay(self):
+  # Gets all colleges in the college.csv file
+  def initialCollegesToDisplay(self):
     self.clearScrollArea()
-    self.programs.clear()
+    self.colleges.clear()
 
-    programs = getAllPrograms()
-    self.programs.extend(programs)
+    colleges = getAllColleges()
+    self.colleges.extend(colleges)
 
-    self.refreshDisplayPrograms()
+    self.refreshDisplayColleges()
   
-  # Sends signal for deleting program
-  def handleProgramDeleted(self, message, duration):
-    self.refreshDisplayPrograms()
+  # Sends signal for deleting college
+  def handleCollegeDeleted(self, message, duration):
+    self.refreshDisplayColleges()
     self.statusMessageSignal.emit(message, duration)
 
-  # Updates the sortByIndex for sorting in refreshDisplayPrograms
+  # Updates the sortByIndex for sorting in refreshDisplayColleges
   def updateSortByIndex(self):
     sortByIndex = self.parentWidget.sortByComboBox.currentIndex()
     sortingOrder = self.parentWidget.sortingOrderComboBox.currentIndex()
@@ -225,6 +222,6 @@ class ProgramTable(QtWidgets.QWidget):
 
 if __name__ == "__main__":
   app = QtWidgets.QApplication(sys.argv)
-  window = ProgramTable()
+  window = CollegeTable()
   window.show()
   sys.exit(app.exec())

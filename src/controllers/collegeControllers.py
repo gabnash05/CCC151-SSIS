@@ -42,7 +42,7 @@ def searchCollegesByField(field: str, value: str) -> List[Dict[str, str]]:
     return [College.getCollegeRecordByCode(value)]
   
   if field == COLLEGE_SEARCH_FIELDS[1]:
-    return Program.College.getCollegeRecordByCode(value)
+    return College.getCollegeRecordByName(value)
 
 # UPDATE PROGRAM FORM: updates a program and the students under the program
 def updateCollege(originalCollegeCode: str, newCollegeCode: Any, newCollegeName: Any) -> bool:

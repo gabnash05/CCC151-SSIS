@@ -533,7 +533,7 @@ class StudentsPage(QtWidgets.QWidget):
 
     # Search students
     def searchStudents(self):
-        searchValue = self.searchBarLineEdit.text()
+        searchValue = self.searchBarLineEdit.text().strip()
         searchField = self.searchByComboBox.currentText()
 
         if searchValue == "":
