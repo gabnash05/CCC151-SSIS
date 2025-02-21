@@ -21,8 +21,30 @@ Lexis is a student information system built using Python, PyQt6, and using CSV d
 
 <br></br>
 
-## **Demo**
-*Screenshots Unavailable*
+#### **STUDENT**, **PROGRAM**, and **COLLEGE** pages. 
+These three sections allow you to search, sort, add, edit, and delete records efficiently. You can navigate between these pages to manage student information, academic programs, and college details.
+![Description](assets/clip1.gif)
+
+#### **ADDING a record**. 
+To add a new record, navigate to the respective section (Student, Program, or College), click the "Add" button, and fill out the necessary fields in the form. Once submitted, the new entry will appear in the table.
+![Description](assets/clip4.gif)
+
+#### **SEARCHING for records**. 
+The search feature allows you to quickly find specific records. You can filter results by entering a search term in the search bar. The system will match records based on all available fields unless you specify a particular search field in the "Search By" dropdown.
+![Description](assets/clip2.gif)
+
+#### **SORTING records**. 
+You can organize the data by sorting records based on their attributes. Choose an attribute (e.g., Last Name, ID Number, or College) and toggle between ascending or descending order to rearrange the list accordingly.
+![Description](assets/clip5.gif)
+
+#### **UPDATING a record**. 
+To modify an existing record, click the Edit Button signified by a "Pen" that appears at the end when hovering over the record you selected. A form will appear, allowing you to update the necessary fields. After saving, the changes will reflect immediately in the database.
+![Description](assets/clip3.gif)
+
+#### **DELETING a record**. 
+If you need to remove a record, click the Delete Button siginified by a "Trash Can" that appears at the end when hovering over the record you selected. A confirmation prompt will appear to prevent accidental deletions. Once confirmed, the record will be permanently removed.
+![Description](assets/clip8.gif)
+___
 
 <br></br>
 
