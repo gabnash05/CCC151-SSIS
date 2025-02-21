@@ -135,7 +135,7 @@ class ProgramRow(QtWidgets.QWidget):
     # Remove from csv
     result = removeProgram(self.programData["Program Code"])
 
-    # Remove from college list
+    # Remove from program list
     self.programTable.programs.remove(self.programData)
     
     # Remove the widget

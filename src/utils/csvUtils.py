@@ -80,7 +80,7 @@ def getRowsByFieldCsv(filepath: str, searchValue: str, searchField: str = None) 
     isStudentCsv = "First Name" in data[0] and "Last Name" in data[0]
     if isStudentCsv:
       # Check if searching for multiple words (e.g., "Lucy Smith" or "BS Bi") and split if its a name
-      if " " in searchValue and (searchValue.startswith(("BS", "BA", "BT"))):
+      if " " in searchValue and (searchValue.lower().startswith(("bs", "ba", "bt"))):
         searchWords = [searchValue.lower()]
       else:
         searchWords = searchValue.lower().split()
