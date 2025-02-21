@@ -25,7 +25,6 @@ class CollegeTable(QtWidgets.QWidget):
     self.colleges = []
     self.sortByIndex = 0
     self.sortingOrder = 0
-    self.searchActive = False
 
     self.initialCollegesToDisplay()
     
@@ -54,6 +53,7 @@ class CollegeTable(QtWidgets.QWidget):
     for i, header in enumerate(self.headers):
       label = QtWidgets.QLabel(header, self.tableHeaderFrame)
       label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+      label.setStyleSheet("font: 9pt 'Inter'; font-weight: bold;")
       label.setObjectName(f"headerLabel_{i}")
 
       # Set width constraints
@@ -158,14 +158,9 @@ class CollegeTable(QtWidgets.QWidget):
       "College Name": collegeData[1],
     }
 
-    if any(college["College Code"] == newCollege["College Code"] for college in self.colleges):
-      return
+    self.colleges.append(newCollege)
 
-    if self.searchActive:
-      self.parentWidget.searchColleges()
-    else:
-      self.colleges.append(newCollege)
-      self.refreshDisplayColleges()
+    self.refreshDisplayColleges()
 
   # Edits a CollegeRow in CollegeTable
   def editCollegeInTable(self, collegeData):

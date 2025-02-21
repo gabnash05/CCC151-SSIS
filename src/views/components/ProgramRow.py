@@ -15,6 +15,7 @@ class ProgramRow(QtWidgets.QWidget):
     super().__init__(parent)
     # Store StudentRow Variables
     self.programData = programData
+    self.programTable = self.parentWidget().parentWidget().parentWidget().parentWidget()
 
     self.setupUI()
   
@@ -133,6 +134,9 @@ class ProgramRow(QtWidgets.QWidget):
 
     # Remove from csv
     result = removeProgram(self.programData["Program Code"])
+
+    # Remove from college list
+    self.programTable.programs.remove(self.programData)
     
     # Remove the widget
     if result != "Program removed successfully.":

@@ -522,10 +522,6 @@ class CollegesPage(QtWidgets.QWidget):
     searchValue = self.searchBarLineEdit.text().strip()
     searchField = self.searchByComboBox.currentText()
 
-    self.collegeTable.searchActive = True
-
-    print("Search")
-
     if searchField == "Search By":
       colleges = searchCollegesByField(searchValue)
     else:

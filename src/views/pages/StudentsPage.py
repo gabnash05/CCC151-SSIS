@@ -435,8 +435,10 @@ class StudentsPage(QtWidgets.QWidget):
         self.sortingOrderComboBox.addItem("")
         self.sortingOrderComboBox.addItem("")
         self.horizontalLayout.addWidget(self.sortingOrderComboBox)
+
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout.addItem(spacerItem3)
+        
         self.horizontalLayout.setStretch(0, 1)
         self.horizontalLayout.setStretch(1, 1)
         self.horizontalLayout.setStretch(2, 2)

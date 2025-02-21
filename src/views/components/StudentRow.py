@@ -15,6 +15,8 @@ class StudentRow(QtWidgets.QWidget):
     super().__init__(parent)
     # Store StudentRow Variables
     self.studentData = studentData
+    self.studentTable = self.parentWidget().parentWidget().parentWidget().parentWidget()
+
 
     self.idNumber = studentData["ID Number"]
     self.studentName = studentData["Last Name"] + " " + studentData["First Name"]
@@ -171,6 +173,9 @@ class StudentRow(QtWidgets.QWidget):
 
     # Remove from csv
     result = removeStudent(self.idNumber)
+
+    # Remove from student list
+    self.studentTable.students.remove(self.studentData)
     
     # Remove the widget
     if result != "Student removed successfully.":

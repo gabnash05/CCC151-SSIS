@@ -53,6 +53,7 @@ class ProgramTable(QtWidgets.QWidget):
     for i, header in enumerate(self.headers):
       label = QtWidgets.QLabel(header, self.tableHeaderFrame)
       label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+      label.setStyleSheet("font: 9pt 'Inter'; font-weight: bold;")
       label.setObjectName(f"headerLabel_{i}")
 
       # Set width constraints

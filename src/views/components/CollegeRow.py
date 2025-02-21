@@ -15,6 +15,7 @@ class CollegeRow(QtWidgets.QWidget):
     super().__init__(parent)
     # Store StudentRow Variables
     self.collegeData = collegeData
+    self.collegeTable = self.parentWidget().parentWidget().parentWidget().parentWidget()
 
     self.setupUI()
   
@@ -125,6 +126,9 @@ class CollegeRow(QtWidgets.QWidget):
 
     # Remove from csv
     result = removeCollege(self.collegeData["College Code"])
+
+    # Remove from college list
+    self.collegeTable.colleges.remove(self.collegeData)
     
     # Remove the widget
     if result != "College removed successfully.":
