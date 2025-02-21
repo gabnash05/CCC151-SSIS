@@ -25,6 +25,7 @@ class StudentTable(QtWidgets.QWidget):
     self.students = []
     self.sortByIndex = 0
     self.sortingOrder = 0
+    self.searchActive = False
 
     self.initialStudentsToDisplay()
 
@@ -162,9 +163,14 @@ class StudentTable(QtWidgets.QWidget):
       "College Code": studentData[6]
     }
 
-    self.students.append(newStudent)
+    if any(student["ID Number"] == newStudent["ID Number"] for student in self.students):
+      return
 
-    self.refreshDisplayStudents()
+    if self.searchActive:
+      self.parentWidget.searchStudents()
+    else:
+      self.students.append(newStudent)
+      self.refreshDisplayStudents()
 
   # Edits a StudentRow in StudentTable
   def editStudentInTable(self, studentData):

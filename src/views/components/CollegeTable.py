@@ -25,8 +25,10 @@ class CollegeTable(QtWidgets.QWidget):
     self.colleges = []
     self.sortByIndex = 0
     self.sortingOrder = 0
+    self.searchActive = False
 
     self.initialCollegesToDisplay()
+    
 
   # UI Setup
   def setupUI(self):
@@ -118,7 +120,7 @@ class CollegeTable(QtWidgets.QWidget):
                               reverse=True)
     
     self.clearScrollArea()
-
+    
     for college in sortedColleges:
       self.addCollegeRowToTable(college)
   
@@ -156,9 +158,14 @@ class CollegeTable(QtWidgets.QWidget):
       "College Name": collegeData[1],
     }
 
-    self.colleges.append(newCollege)
+    if any(college["College Code"] == newCollege["College Code"] for college in self.colleges):
+      return
 
-    self.refreshDisplayColleges()
+    if self.searchActive:
+      self.parentWidget.searchColleges()
+    else:
+      self.colleges.append(newCollege)
+      self.refreshDisplayColleges()
 
   # Edits a CollegeRow in CollegeTable
   def editCollegeInTable(self, collegeData):

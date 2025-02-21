@@ -522,16 +522,15 @@ class CollegesPage(QtWidgets.QWidget):
     searchValue = self.searchBarLineEdit.text().strip()
     searchField = self.searchByComboBox.currentText()
 
-    if searchValue == "":
-      self.collegeTable.initialCollegesToDisplay()
-      return
+    self.collegeTable.searchActive = True
+
+    print("Search")
 
     if searchField == "Search By":
       colleges = searchCollegesByField(searchValue)
-      self.collegeTable.setColleges(colleges)
-      return
+    else:
+      colleges = searchCollegesByField(searchValue, searchField)
 
-    colleges = searchCollegesByField(searchValue, searchField)
     self.collegeTable.setColleges(colleges)
 
   # Handle key press events

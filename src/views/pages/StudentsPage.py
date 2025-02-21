@@ -537,16 +537,13 @@ class StudentsPage(QtWidgets.QWidget):
         searchValue = self.searchBarLineEdit.text().strip()
         searchField = self.searchByComboBox.currentText()
 
-        if searchValue == "":
-            self.studentTable.initialStudentsToDisplay()
-            return
+        self.studentTable.searchActive = True
 
         if searchField == "Search By":
             students = searchStudentsByField(searchValue)
-            self.studentTable.setStudents(students)
-            return 
-        
-        students = searchStudentsByField(searchValue, searchField)
+        else:
+            students = searchStudentsByField(searchValue, searchField)
+
         self.studentTable.setStudents(students)
 
     # Handle key press events

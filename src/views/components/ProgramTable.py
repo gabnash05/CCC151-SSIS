@@ -25,6 +25,7 @@ class ProgramTable(QtWidgets.QWidget):
     self.programs = []
     self.sortByIndex = 0
     self.sortingOrder = 0
+    self.searchActive = False
 
     self.initialProgramsToDisplay()
 
@@ -158,9 +159,14 @@ class ProgramTable(QtWidgets.QWidget):
       "College Code": programData[2],
     }
 
-    self.programs.append(newProgram)
+    if any(program["Program Code"] == newProgram["Program Code"] for program in self.programs):
+      return
 
-    self.refreshDisplayPrograms()
+    if self.searchActive:
+      self.parentWidget.searchPrograms()
+    else:
+      self.programs.append(newProgram)
+      self.refreshDisplayPrograms()
 
   # Edits a StudentRow in ProgramTable
   def editProgramInTable(self, programData):

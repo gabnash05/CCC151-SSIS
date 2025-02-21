@@ -528,16 +528,13 @@ class ProgramsPage(QtWidgets.QWidget):
     searchValue = self.searchBarLineEdit.text().strip()
     searchField = self.searchByComboBox.currentText()
 
-    if searchValue == "":
-      self.programTable.initialProgramsToDisplay()
-      return
+    self.programTable.searchActive = True
 
     if searchField == "Search By":
       programs = searchProgramsByField(searchValue)
-      self.programTable.setPrograms(programs)
-      return
+    else:
+      programs = searchProgramsByField(searchValue, searchField)
 
-    programs = searchProgramsByField(searchValue, searchField)
     self.programTable.setPrograms(programs)
 
   # Handle key press events
