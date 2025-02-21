@@ -5,11 +5,26 @@
 
 This project is developed in fulfillment of the requirements for the subject **CCC151 - Information Management Systems**.
 
-
+<br></br>
 ## About This Project
 
 Lexis is a student information system built using Python, PyQt6, and using CSV data storage **without a DBMS**. It provides full CRUDL capabilities, including features such as **sorting**, **searching**, and **unique ID management**.
 
+<br></br>
+
+## **Features**
+- Store **STUDENT**, **PROGRAM**, and **COLLEGE** records for any University
+- **ADD**, **EDIT**, and **DELETE** records
+- **SORT** and **SEARCH** records by multiple fields  
+- Intuitive **PyQt6** UI  
+- **CSV**-based database (lightweight storage)  
+
+<br></br>
+
+## **Demo**
+*Screenshots Unavailable*
+
+<br></br>
 
 ## **Setup Instructions**
 
@@ -20,10 +35,15 @@ git clone https://github.com/gabnash05/CCC151-SSIS.git
 cd CCC151-SSIS
 ```
 ### **2. Create and Activate a Virtual Environment**
-
-```sh
-python -m venv ssis_env
-```
+- **Windows Command Prompt:**
+  ```sh
+  python -m venv ssis_env
+  ```
+- **Linux/macOS:**
+  ```sh
+  source venv/bin/activate
+  ```
+You’ll see (venv) appear in the terminal, indicating that you're inside the virtual environment.
 
 ### **3. Activate the Virtual Environment**
 
@@ -47,16 +67,18 @@ python -m venv ssis_env
 ```sh
 pip install -e .
 ```
----
+This installs all required dependencies including PyQt6 and any other libraries listed in `requirements.txt`
+___
 
+<br></br>
 
 ## **Running the Project**
 
 Make sure the virtual environment is activated and all dependencies were installed properly
 ```sh
-python src/main.py
+python -m src.main
 ```
----
+<br></br>
 
 ## **Deactivating the Virtual Environment**
 
@@ -65,7 +87,7 @@ When you're done working, deactivate the virtual environment:
 deactivate
 ```
 
----
+<br></br>
 
 ## **Troubleshooting**
 
@@ -79,16 +101,7 @@ If `pip install -r requirements.txt` fails, try updating `pip`:
 pip install --upgrade pip
 ```
 
-(Optional) If you want to see if all modules are working properly, you can **Run Tests**:
-```sh
-pytest
-```
-
-If `pytest` is not found, install:
-```sh
-pip install pytest pytest-mock
-```
----
+<br></br>
 
 ## **License**
 This project is for educational purposes only.

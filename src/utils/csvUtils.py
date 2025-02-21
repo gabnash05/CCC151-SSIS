@@ -63,42 +63,49 @@ def getRowsByFieldCsv(filepath: str, searchValue: str, searchField: str = None) 
     if not data:
       return []
     
-    searchWords = searchValue.lower().split()
-
+    # Searching by a specific field
     if searchField:
       if searchField not in data[0]:
         print(f"Error: Field '{searchField}' not found in CSV")
         return []
+      
       return [
         record for record in data
-        if any(word in record[searchField].lower() for word in searchWords)
+        if searchValue.lower() in record[searchField].lower()
       ]
+    
+    # Searching without a search field
+    
+    # Check if searching for Student
+    isStudentCsv = "First Name" in data[0] and "Last Name" in data[0]
+    if isStudentCsv:
+      # Check if searching for multiple words (e.g., "Lucy Smith" or "BS Bi") and split if its a name
+      if " " in searchValue and (searchValue.startswith(("BS", "BA", "BT"))):
+        searchWords = [searchValue.lower()]
+      else:
+        searchWords = searchValue.lower().split()
 
-    # SEARCH FOR STUDENT
-    if len(data[0]) > 3:
       filteredRecords = []
       for record in data:
         firstName = record["First Name"].lower()
         lastName = record["Last Name"].lower()
         fullName = f"{firstName} {lastName}"
-        
-        # Check if all search words appear somewhere in the full name
+
+        # Check if all search words appear in the full name
         if all(word in fullName for word in searchWords):
           filteredRecords.append(record)
-        
-        # If the search term is a single word, check all fields
+
+        # If only one word, check all fields (e.g., searching for "Lucy" or "BSCS")
         elif len(searchWords) == 1:
           if any(searchWords[0] in value.lower() for value in record.values()):
             filteredRecords.append(record)
 
       return filteredRecords
-    
-    # SEARCH FOR PROGRAM AND COLLEGE
-    else:
-      return [
-        record for record in data
-        if any(searchValue.lower() in value.lower() for value in record.values())
-      ]
+  
+    return [
+      record for record in data
+      if any(searchValue.lower() in value.lower() for value in record.values())
+    ]
 
     
   except Exception as error:
@@ -153,6 +160,7 @@ def updateRowByFieldCsv(filepath: str, searchField: str, searchValue: str, updat
       if record[searchField].lower() == searchValue.lower():
         record.update(updateData)
         isUpdated = True
+        break
 
     if isUpdated:
       return writeCsv(filepath, records)

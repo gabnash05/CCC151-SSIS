@@ -53,10 +53,10 @@ def updateCollege(originalCollegeCode: str, newCollegeCode: Any, newCollegeName:
   if not College.collegeCodeExists(originalCollegeCode):
     return "College Code does not exist"
 
-  updateData = {key: value for key, value in {
+  updateData = {
     "College Code": newCollegeCode, 
     "College Name": newCollegeName,
-  }.items() if value is not None}
+  }
 
   isSuccessful = College.updateCollegeRecord(originalCollegeCode, updateData)
 

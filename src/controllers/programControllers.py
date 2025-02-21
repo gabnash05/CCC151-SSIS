@@ -60,17 +60,18 @@ def updateProgram(originalProgramCode: str, newProgramCode: Any, newProgramName:
   if not College.collegeCodeExists(newCollegeCode):
     return "College Code does not exist"
 
-  updateData = {key: value for key, value in {
+  updateData = {
     "Program Code": newProgramCode,
     "Program Name": newProgramName,
     "College Code": newCollegeCode,
-  }.items() if value is not None}
+  }
 
   isSuccessful = Program.updateProgramRecordByCode(originalProgramCode, updateData)
 
-  if isSuccessful and newProgramCode:
+  if isSuccessful and (newProgramCode or newCollegeCode):
     updateData = {
-      "Program Code": newProgramCode
+      "Program Code": newProgramCode,
+      "College Code": newCollegeCode
     }
 
     studentsToUpdate = Student.getAllStudentRecordsByProgram(originalProgramCode)

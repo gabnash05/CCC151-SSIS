@@ -115,7 +115,7 @@ def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: 
   if not College.collegeCodeExists(newCollegeCode):
     return "College Code does not exist"
   
-  updateData = {key: value for key, value in {
+  updateData = {
     "ID Number": newIdNumber,
     "First Name": newFirstName,
     "Last Name": newLastName,
@@ -123,7 +123,7 @@ def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: 
     "Gender": newGender,
     "Program Code": newProgramCode,
     "College Code": newCollegeCode
-  }.items() if value is not None}
+  }
 
   isSuccessful = Student.updateStudentRecordById(originalId, updateData)
 

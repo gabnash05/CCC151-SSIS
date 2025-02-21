@@ -26,3 +26,6 @@ tempCodeRunnerFile.*
 
 # pytest
 .pytest_cache
+
+# tests
+tests/
