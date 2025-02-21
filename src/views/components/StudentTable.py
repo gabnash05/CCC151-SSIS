@@ -198,6 +198,9 @@ class StudentTable(QtWidgets.QWidget):
     self.students.clear()
 
     students = getAllStudents()
+    if not students:
+      return
+    
     self.students.extend(students)
 
     self.refreshDisplayStudents()
@@ -223,22 +226,3 @@ class StudentTable(QtWidgets.QWidget):
       self.sortingOrder = sortingOrder
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if __name__ == "__main__":
-  app = QtWidgets.QApplication(sys.argv)
-  window = StudentTable()
-  window.show()
-  sys.exit(app.exec())

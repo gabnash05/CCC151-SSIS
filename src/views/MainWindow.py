@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QMainWindow, QStackedWidget, QVBoxLayout
 from PyQt6.QtGui import QIcon
 from PyQt6 import uic
 
+from controllers.studentControllers import initializeAllCsv
 from views.pages.StudentsPage import StudentsPage
 from views.pages.ProgramsPage import ProgramsPage 
 from views.pages.CollegesPage import CollegesPage
@@ -13,6 +14,9 @@ class MainWindow(QMainWindow):
 
     self.setWindowIcon(QIcon("assets/LogoIcon.png"))
     self.setWindowTitle("Lexis")
+
+    # Initialize CSV storage
+    initializeAllCsv()
 
     # Create pages
     self.studentsPage = StudentsPage()

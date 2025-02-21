@@ -76,7 +76,7 @@ ___
 
 Make sure the virtual environment is activated and all dependencies were installed properly
 ```sh
-python -m src.main
+python -m main
 ```
 <br></br>
 

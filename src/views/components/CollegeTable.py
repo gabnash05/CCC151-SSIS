@@ -183,6 +183,9 @@ class CollegeTable(QtWidgets.QWidget):
     self.colleges.clear()
 
     colleges = getAllColleges()
+    if not colleges:
+      return
+    
     self.colleges.extend(colleges)
 
     self.refreshDisplayColleges()
@@ -207,23 +210,3 @@ class CollegeTable(QtWidgets.QWidget):
     else:
       self.sortingOrder = sortingOrder
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if __name__ == "__main__":
-  app = QtWidgets.QApplication(sys.argv)
-  window = CollegeTable()
-  window.show()
-  sys.exit(app.exec())

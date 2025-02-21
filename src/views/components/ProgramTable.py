@@ -191,6 +191,9 @@ class ProgramTable(QtWidgets.QWidget):
     self.programs.clear()
 
     programs = getAllPrograms()
+    if not programs:
+      return
+    
     self.programs.extend(programs)
 
     self.refreshDisplayPrograms()
@@ -215,23 +218,3 @@ class ProgramTable(QtWidgets.QWidget):
     else:
       self.sortingOrder = sortingOrder
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if __name__ == "__main__":
-  app = QtWidgets.QApplication(sys.argv)
-  window = ProgramTable()
-  window.show()
-  sys.exit(app.exec())
