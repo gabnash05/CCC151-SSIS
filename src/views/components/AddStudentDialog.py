@@ -184,39 +184,3 @@ class AddStudentDialog(QtWidgets.QDialog):
   def showStatusMessage(self, message):
     self.statusBar.setText(message)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Example usage in Main Window
-class MainWindow(QtWidgets.QMainWindow):
-  def __init__(self):
-    super().__init__()
-    self.setWindowTitle("Student Management")
-
-    self.add_student_button = QtWidgets.QPushButton("Add Student", self)
-    self.add_student_button.clicked.connect(self.open_add_student_dialog)
-
-    self.setCentralWidget(self.add_student_button)
-
-  def open_add_student_dialog(self):
-    dialog = AddStudentDialog(self)
-    dialog.exec()
-
-
-if __name__ == "__main__":
-  app = QtWidgets.QApplication([])
-  window = MainWindow()
-  window.show()
-  app.exec()

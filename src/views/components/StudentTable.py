@@ -127,13 +127,13 @@ class StudentTable(QtWidgets.QWidget):
   # Changes the set of students in StudentTable
   def setStudents(self, newStudents):
     if newStudents == None:
-      self.statusMessageSignal.emit("No Students Found", 3000)
+      print("No records to set")
       return
     
     self.students.clear()
 
     self.students.extend(newStudents)
-
+    
     self.refreshDisplayStudents()
 
   # Deletes all StudentRows in StudentTable

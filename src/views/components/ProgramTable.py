@@ -128,7 +128,7 @@ class ProgramTable(QtWidgets.QWidget):
   # Changes the set of programs in ProgramTable
   def setPrograms(self, newPrograms):
     if newPrograms == None:
-      self.statusMessageSignal.emit("No Programs Found", 3000)
+      print("No records to set")
       return
     
     self.programs.clear()

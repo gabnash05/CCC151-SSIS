@@ -546,36 +546,13 @@ class StudentsPage(QtWidgets.QWidget):
         else:
             students = searchStudentsByField(searchValue, searchField)
 
-        self.studentTable.setStudents(students)
+        if students:
+            self.studentTable.setStudents(students)
+        else:
+            self.statusMessageSignal.emit("No Students Found", 3000)
+            self.studentTable.clearScrollArea()
 
     # Handle key press events
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Return:
             self.enterPressedSignal.emit()
-
-
-
-
-
-
-class MainWindow(QtWidgets.QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Main Window")
-
-        # Create and set the student page
-        self.student_page = StudentsPage(self)
-        self.setCentralWidget(self.student_page)
-
-if __name__ == "__main__":
-    # Create an application object
-    app = QtWidgets.QApplication(sys.argv)
-    
-    # Create the MainWindow instance
-    main_window = MainWindow()
-
-    # Show the main window
-    main_window.show()
-
-    # Start the application's event loop
-    sys.exit(app.exec())
