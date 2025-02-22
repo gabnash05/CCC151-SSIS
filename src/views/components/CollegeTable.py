@@ -159,7 +159,6 @@ class CollegeTable(QtWidgets.QWidget):
     }
 
     self.colleges.append(newCollege)
-
     self.refreshDisplayColleges()
 
   # Edits a CollegeRow in CollegeTable

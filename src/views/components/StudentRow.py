@@ -75,10 +75,10 @@ class StudentRow(QtWidgets.QWidget):
     nameLabel.setMinimumWidth(150)
 
 
-    # ELITE STUDENTS
-    if studentName == "Joaquin Ermita" or studentName == "Rene Jr Estrella":
+    # ELITE STUDENTS HAHAHAHAHA
+    if studentName == "Joaquin Ermita":
       nameLabel.setStyleSheet("color: #FFD700; font-weight: bold;")
-    elif studentName == "Kesa Sysn":
+    elif studentName == "Kesa Sysn" or studentName == "Franxine Gamboa":
       nameLabel.setStyleSheet("color: pink; font-weight: bold;")
     elif studentName == "Vincee Jandayan":
       nameLabel.setStyleSheet("color: #B9FF66; font-weight: bold;")
