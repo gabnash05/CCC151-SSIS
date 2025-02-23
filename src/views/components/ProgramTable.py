@@ -58,7 +58,7 @@ class ProgramTable(QtWidgets.QWidget):
       # Set width constraints
       # Set width constraints
       if i == 1:  # Name column
-        label.setMinimumWidth(500)
+        label.setMinimumWidth(400)
       else:
         label.setMinimumWidth(60)
 

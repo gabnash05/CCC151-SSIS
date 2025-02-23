@@ -65,7 +65,7 @@ class ProgramRow(QtWidgets.QWidget):
     programNameLabel = QtWidgets.QLabel(self.rowFrame)
     programNameLabel.setText(str(programName))
     programNameLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-    programNameLabel.setMinimumWidth(500)
+    programNameLabel.setMinimumWidth(400)
     programNameLabel.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     rowLayout.addWidget(programNameLabel)
 
