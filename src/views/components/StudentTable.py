@@ -1,5 +1,3 @@
-import sys
-import time
 from operator import itemgetter
 
 from PyQt6 import QtWidgets, QtCore

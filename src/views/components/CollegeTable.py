@@ -1,4 +1,3 @@
-import sys
 from operator import itemgetter
 
 from PyQt6 import QtWidgets, QtCore

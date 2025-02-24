@@ -1,5 +1,5 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
-from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import pyqtSignal
 
 from controllers.programControllers import searchProgramsByField
 from controllers.collegeControllers import getAllColleges
