@@ -16,6 +16,7 @@ class ProgramTable(QtWidgets.QWidget):
   # Signals
   statusMessageSignal = pyqtSignal(str, int)
   editProgramSignal = pyqtSignal(list)
+  updateTablesSignal = pyqtSignal()
 
   def __init__(self, parent=None):
     super().__init__(parent)
@@ -158,11 +159,11 @@ class ProgramTable(QtWidgets.QWidget):
   def addProgramRowToTable(self, programData):
     programRow = ProgramRow(programData, self.scrollContent)
     programRow.statusMessageSignal.connect(self.statusMessageSignal)
-    programRow.editProgramSignal.connect(self.editProgramSignal.emit)
+    programRow.editProgramSignal.connect(self.editProgramSignal)
+    programRow.updateTablesSignal.connect(self.updateTablesSignal)
     self.scrollLayout.addWidget(programRow)
     self.scrollLayout.addWidget(programRow.separator)
 
-  
   # Reloads ProgramTable when new student is adden from AddStudentDialog
   def addNewProgramToTable(self, programData):
     newProgram = {
@@ -204,11 +205,6 @@ class ProgramTable(QtWidgets.QWidget):
     self.programs = programs
 
     self.refreshDisplayPrograms()
-  
-  # Sends signal for deleting program
-  def handleProgramDeleted(self, message, duration):
-    self.refreshDisplayPrograms()
-    self.statusMessageSignal.emit(message, duration)
 
   # Updates the sortByIndex for sorting in refreshDisplayPrograms
   def updateSortByIndex(self):

@@ -15,6 +15,7 @@ class ProgramsPage(QtWidgets.QWidget):
 
   statusMessageSignal = pyqtSignal(str, int)
   spacebarPressedSignal = pyqtSignal()
+  updateTablesSignal = pyqtSignal()
 
   def __init__(self, parent=None):
     super().__init__(parent)
@@ -25,6 +26,7 @@ class ProgramsPage(QtWidgets.QWidget):
 
     # CONNECT SIGNALS
     self.programTable.statusMessageSignal.connect(self.displayMessageToStatusBar)
+    self.programTable.updateTablesSignal.connect(self.updateTablesSignal)
 
     self.addProgramButton.clicked.connect(self.openAddProgramDialog)
     self.programTable.editProgramSignal.connect(self.openUpdateProgramDialog)
@@ -520,13 +522,12 @@ class ProgramsPage(QtWidgets.QWidget):
   def openUpdateProgramDialog(self, programData):
     self.updateDialog = UpdateProgramDialog(self, programData)
     self.updateDialog.programUpdatedTableSignal.connect(self.programTable.editProgramInTable)
+    self.updateDialog.updateTablesSignal.connect(self.updateTablesSignal)
     self.updateDialog.statusMessageSignal.connect(self.displayMessageToStatusBar)
     self.updateDialog.exec()
 
   # Search students
   def searchPrograms(self):
-    self.displayMessageToStatusBar("Searching...", 3000)
-    
     searchValue = self.searchBarLineEdit.text().strip()
     searchField = self.searchByComboBox.currentText()
 
