@@ -15,6 +15,7 @@ class CollegesPage(QtWidgets.QWidget):
 
   statusMessageSignal = pyqtSignal(str, int)
   spacebarPressedSignal = pyqtSignal()
+  updateTablesSignal = pyqtSignal()
 
   def __init__(self, parent=None):
     super().__init__(parent)
@@ -25,6 +26,7 @@ class CollegesPage(QtWidgets.QWidget):
 
     # CONNECT SIGNALS
     self.collegeTable.statusMessageSignal.connect(self.displayMessageToStatusBar)
+    self.collegeTable.updateTablesSignal.connect(self.updateTablesSignal)
 
     self.addCollegeButton.clicked.connect(self.openAddCollegeDialog)
     self.collegeTable.editCollegeSignal.connect(self.openUpdateCollegeDialog)
@@ -514,6 +516,7 @@ class CollegesPage(QtWidgets.QWidget):
   def openUpdateCollegeDialog(self, collegeData):
     self.updateDialog = UpdateCollegeDialog(self, collegeData)
     self.updateDialog.collegeUpdatedTableSignal.connect(self.collegeTable.editCollegeInTable)
+    self.updateDialog.updateTablesSignal.connect(self.updateTablesSignal)
     self.updateDialog.statusMessageSignal.connect(self.displayMessageToStatusBar)
     self.updateDialog.exec()
 

@@ -16,6 +16,7 @@ class CollegeTable(QtWidgets.QWidget):
   # Signals
   statusMessageSignal = pyqtSignal(str, int)
   editCollegeSignal = pyqtSignal(list)
+  updateTablesSignal = pyqtSignal()
 
   def __init__(self, parent=None):
     super().__init__(parent)
@@ -159,6 +160,7 @@ class CollegeTable(QtWidgets.QWidget):
     collegeRow = CollegeRow(collegeData, self.scrollContent)
     collegeRow.statusMessageSignal.connect(self.statusMessageSignal)
     collegeRow.editCollegeSignal.connect(self.editCollegeSignal.emit)
+    collegeRow.updateTablesSignal.connect(self.updateTablesSignal)
     self.scrollLayout.addWidget(collegeRow)
     self.scrollLayout.addWidget(collegeRow.separator)
   
@@ -199,11 +201,6 @@ class CollegeTable(QtWidgets.QWidget):
 
     self.refreshDisplayColleges()
   
-  # Sends signal for deleting college
-  def handleCollegeDeleted(self, message, duration):
-    self.refreshDisplayColleges()
-    self.statusMessageSignal.emit(message, duration)
-
   # Updates the sortByIndex for sorting in refreshDisplayColleges
   def updateSortByIndex(self):
     sortByIndex = self.parentWidget.sortByComboBox.currentIndex()

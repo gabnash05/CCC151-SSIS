@@ -10,6 +10,7 @@ from controllers.collegeControllers import removeCollege
 class CollegeRow(QtWidgets.QWidget):
   statusMessageSignal = pyqtSignal(str, int)
   editCollegeSignal = pyqtSignal(list)
+  updateTablesSignal = pyqtSignal()
 
   def __init__(self, collegeData, parent=None):
     super().__init__(parent)
@@ -142,6 +143,7 @@ class CollegeRow(QtWidgets.QWidget):
         layout.removeWidget(self.separator)
       self.separator.deleteLater()
     self.deleteLater()
+    self.updateTablesSignal.emit()
     self.statusMessageSignal.emit(result, 3000)
 
   # Sends Signal to update a student
@@ -152,7 +154,7 @@ class CollegeRow(QtWidgets.QWidget):
   def showDeleteConfirmation(self, parent, collegeCode):
     msgBox = QtWidgets.QMessageBox(parent)
     msgBox.setWindowTitle("Confirm Deletion")
-    msgBox.setText(f"Are you sure you want to delete {collegeCode}?")
+    msgBox.setText(f"Are you sure you want to delete {collegeCode}? Programs and students under this college will have their colleges set to 'N/A'.")
     msgBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
     msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
 

@@ -10,6 +10,7 @@ from controllers.programControllers import removeProgram
 class ProgramRow(QtWidgets.QWidget):
   statusMessageSignal = pyqtSignal(str, int)
   editProgramSignal = pyqtSignal(list)
+  updateTablesSignal = pyqtSignal()
 
   def __init__(self, programData, parent=None):
     super().__init__(parent)
@@ -149,7 +150,9 @@ class ProgramRow(QtWidgets.QWidget):
         layout.removeWidget(self)
         layout.removeWidget(self.separator)
       self.separator.deleteLater()
+
     self.deleteLater()
+    self.updateTablesSignal.emit()
     self.statusMessageSignal.emit(result, 3000)
 
   # Sends Signal to update a student
@@ -160,7 +163,7 @@ class ProgramRow(QtWidgets.QWidget):
   def showDeleteConfirmation(self, parent, programCode):
     msgBox = QtWidgets.QMessageBox(parent)
     msgBox.setWindowTitle("Confirm Deletion")
-    msgBox.setText(f"Are you sure you want to delete {programCode}?")
+    msgBox.setText(f"Are you sure you want to delete {programCode}? Students under this program will have their program set to 'N/A'.")
     msgBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
     msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
 

@@ -4,7 +4,8 @@ from controllers.collegeControllers import getAllColleges, updateCollege
 
 class UpdateCollegeDialog(QtWidgets.QDialog):
   collegeUpdatedTableSignal = QtCore.pyqtSignal(list)
-  statusMessageSignal = QtCore.pyqtSignal(str, int) 
+  statusMessageSignal = QtCore.pyqtSignal(str, int)
+  updateTablesSignal = QtCore.pyqtSignal()
 
   def __init__(self, parent=None, collegeData=None):
     super().__init__(parent)
@@ -115,6 +116,7 @@ class UpdateCollegeDialog(QtWidgets.QDialog):
 
       # Send signal to MainWindow to call addStudent in StudentTable
       self.collegeUpdatedTableSignal.emit([self.originalCollegeCode, collegeCode, collegeName])
+      self.updateTablesSignal.emit()
       self.statusMessageSignal.emit("Updating College", 1000)
 
       # Closes the QDialog

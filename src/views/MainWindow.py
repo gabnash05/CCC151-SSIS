@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QStackedWidget, QVBoxLayout
+from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtGui import QIcon
 from PyQt6 import uic
 
@@ -34,20 +34,27 @@ class MainWindow(QMainWindow):
     self.studentsPage.programsSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.programsPage))
     self.studentsPage.collegesSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.collegesPage))
 
-    # self.programsPage.studentsSidebarButton.clicked.connect(self.studentsPage.searchStudents)
-    # self.collegesPage.studentsSidebarButton.clicked.connect(self.studentsPage.searchStudents)
-
     self.programsPage.studentsSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.studentsPage))
-    self.programsPage.collegesSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.collegesPage)) 
+    self.programsPage.collegesSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.collegesPage))
 
     self.collegesPage.studentsSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.studentsPage))
-    self.collegesPage.programsSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.programsPage))   
+    self.collegesPage.programsSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.programsPage))
+
+    # self.programsPage.studentsSidebarButton.clicked.connect(self.studentsPage.studentTable.refreshDisplayStudents)
+    # self.collegesPage.studentsSidebarButton.clicked.connect(self.studentsPage.studentTable.refreshDisplayStudents)
+    # self.studentsPage.programsSidebarButton.clicked.connect(self.programsPage.programTable.refreshDisplayPrograms)
+    # self.collegesPage.programsSidebarButton.clicked.connect(self.programsPage.programTable.refreshDisplayPrograms)
+    # self.studentsPage.collegesSidebarButton.clicked.connect(self.collegesPage.collegeTable.refreshDisplayColleges)
+    # self.programsPage.collegesSidebarButton.clicked.connect(self.collegesPage.collegeTable.refreshDisplayColleges)
 
     # Connect signals
     self.studentsPage.statusMessageSignal.connect(self.handleStatusMessage)
     self.programsPage.statusMessageSignal.connect(self.handleStatusMessage)
     self.collegesPage.statusMessageSignal.connect(self.handleStatusMessage)
-    
+
+    self.programsPage.updateTablesSignal.connect(self.studentsPage.searchStudents)
+    self.collegesPage.updateTablesSignal.connect(self.studentsPage.searchStudents)
+    self.collegesPage.updateTablesSignal.connect(self.programsPage.searchPrograms)
   
   def handleStatusMessage(self, message, duration):
     self.statusBar.showMessage(message, duration)
