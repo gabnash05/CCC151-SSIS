@@ -176,6 +176,7 @@ class UpdateStudentDialog(QtWidgets.QDialog):
 
     if result == "Student updated successfully.":
       self.showStatusMessage(result)
+      self.statusBar.setStyleSheet("background-color: none; color: green; border-top: 1px solid #666666; padding: 4px; text-align: center")
 
       # Send signal to MainWindow to call addStudent in StudentTable
       self.studentUpdatedTableSignal.emit([self.originalStudentID, idNumber, firstName, lastName, gender, yearLevel, programCode, collegeCode])

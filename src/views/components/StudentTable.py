@@ -1,7 +1,10 @@
 import sys
+import time
+from operator import itemgetter
 
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import QApplication
 
 from views.components.StudentRow import StudentRow
 from controllers.studentControllers import getAllStudents
@@ -108,40 +111,53 @@ class StudentTable(QtWidgets.QWidget):
   
   # Displays data provided to the table
   def refreshDisplayStudents(self):
+    if not self.students or "ID Number" not in self.students[0]:
+      self.clearScrollArea()
+      self.statusMessageSignal.emit("No students found", 3000)
+      return
+    
     self.updateSortByIndex()
-
-    # 2 Layer sorting based on predefined sortByField tuples
-    if self.sortingOrder == 0:
-      sortedStudents = sorted(self.students, 
-                              key=lambda x: (x[self.sortByFields[self.sortByIndex][0]], x[self.sortByFields[self.sortByIndex][1]]))
-    elif self.sortingOrder == 1:
-      sortedStudents = sorted(self.students, 
-                              key=lambda x: (x[self.sortByFields[self.sortByIndex][0]], x[self.sortByFields[self.sortByIndex][1]]),
-                              reverse=True)
+    
+    primaryField, secondaryField = self.sortByFields[self.sortByIndex]
+    reverseOrder = (self.sortingOrder == 1)
+    
+    # In-place sorting using Timsort (O(n log n))
+    self.students.sort(key=itemgetter(primaryField, secondaryField), reverse=reverseOrder)
     
     self.clearScrollArea()
 
-    for student in sortedStudents:
+    self.scrollArea.setUpdatesEnabled(False)
+
+    for student in self.students:
       self.addStudentRowToTable(student)
+      QApplication.processEvents()
+    
+    self.scrollArea.setUpdatesEnabled(True)
   
   # Changes the set of students in StudentTable
   def setStudents(self, newStudents):
     if newStudents == None:
       print("No records to set")
       return
-    
-    self.students.clear()
 
-    self.students.extend(newStudents)
+    self.students = newStudents
     
     self.refreshDisplayStudents()
 
   # Deletes all StudentRows in StudentTable
   def clearScrollArea(self):
-    for i in reversed(range(self.scrollLayout.count())):
-      widget = self.scrollLayout.itemAt(i).widget()
-      if widget is not None:
-        widget.deleteLater()
+    if self.scrollLayout.count() == 0:
+      return
+
+    self.scrollArea.setUpdatesEnabled(False)
+
+    while self.scrollLayout.count():
+      item = self.scrollLayout.takeAt(0)
+      widget = item.widget()
+      if widget:
+        widget.setParent(None)
+    
+    self.scrollArea.setUpdatesEnabled(True)
 
   # Generates StudentRows into StudentTable
   def addStudentRowToTable(self, studentData):
@@ -192,13 +208,12 @@ class StudentTable(QtWidgets.QWidget):
   # Gets all students in the student.csv file
   def initialStudentsToDisplay(self):
     self.clearScrollArea()
-    self.students.clear()
 
     students = getAllStudents()
     if not students:
       return
     
-    self.students.extend(students)
+    self.students = students
 
     self.refreshDisplayStudents()
   

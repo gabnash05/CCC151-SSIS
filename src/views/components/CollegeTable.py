@@ -1,7 +1,9 @@
 import sys
+from operator import itemgetter
 
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import QApplication
 
 from views.components.CollegeRow import CollegeRow
 from controllers.collegeControllers import getAllColleges
@@ -104,44 +106,53 @@ class CollegeTable(QtWidgets.QWidget):
   
   # Displays data provided to the table
   def refreshDisplayColleges(self):
-    self.updateSortByIndex()
-
-    if self.colleges == [None]:
+    if not self.colleges or "College Code" not in self.colleges[0]:
       self.clearScrollArea()
+      self.statusMessageSignal.emit("No students found", 3000)
       return
-
-    # 2 Layer sorting based on predefined sortByField tuples
-    if self.sortingOrder == 0:
-      sortedColleges = sorted(self.colleges, 
-                              key=lambda x: (x[self.sortByFields[self.sortByIndex][0]], x[self.sortByFields[self.sortByIndex][1]]))
-    elif self.sortingOrder == 1:
-      sortedColleges = sorted(self.colleges, 
-                              key=lambda x: (x[self.sortByFields[self.sortByIndex][0]], x[self.sortByFields[self.sortByIndex][1]]),
-                              reverse=True)
+    
+    self.updateSortByIndex()
+    
+    primaryField, secondaryField = self.sortByFields[self.sortByIndex]
+    reverseOrder = (self.sortingOrder == 1)
+    
+    # In-place sorting using Timsort (O(n log n))
+    self.colleges.sort(key=itemgetter(primaryField, secondaryField), reverse=reverseOrder)
     
     self.clearScrollArea()
-    
-    for college in sortedColleges:
+
+    self.scrollArea.setUpdatesEnabled(False)
+
+    for college in self.colleges:
       self.addCollegeRowToTable(college)
+      QApplication.processEvents()
+    
+    self.scrollArea.setUpdatesEnabled(True)
   
   # Changes the set of programs in ProgramTable
   def setColleges(self, newColleges):
     if newColleges == None:
       self.statusMessageSignal.emit("No Colleges Found", 3000)
       return
-    
-    self.colleges.clear()
 
-    self.colleges.extend(newColleges)
+    self.colleges = newColleges
 
     self.refreshDisplayColleges()
 
   # Deletes all ProgramRows in ProgramTable
   def clearScrollArea(self):
-    for i in reversed(range(self.scrollLayout.count())):
-      widget = self.scrollLayout.itemAt(i).widget()
-      if widget is not None:
-        widget.deleteLater()
+    if self.scrollLayout.count() == 0:
+      return
+
+    self.scrollArea.setUpdatesEnabled(False)
+
+    while self.scrollLayout.count():
+      item = self.scrollLayout.takeAt(0)
+      widget = item.widget()
+      if widget:
+        widget.setParent(None)
+    
+    self.scrollArea.setUpdatesEnabled(True)
 
   # Generates ProgramRows into ProgramTable
   def addCollegeRowToTable(self, collegeData):
@@ -179,13 +190,12 @@ class CollegeTable(QtWidgets.QWidget):
   # Gets all colleges in the college.csv file
   def initialCollegesToDisplay(self):
     self.clearScrollArea()
-    self.colleges.clear()
 
     colleges = getAllColleges()
     if not colleges:
       return
     
-    self.colleges.extend(colleges)
+    self.colleges = colleges
 
     self.refreshDisplayColleges()
   

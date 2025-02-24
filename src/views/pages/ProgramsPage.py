@@ -528,12 +528,13 @@ class ProgramsPage(QtWidgets.QWidget):
     searchValue = self.searchBarLineEdit.text().strip()
     searchField = self.searchByComboBox.currentText()
 
-    self.programTable.searchActive = True
-
-    if searchField == "Search By":
+    if searchValue == "":
       programs = searchProgramsByField(searchValue)
     else:
-      programs = searchProgramsByField(searchValue, searchField)
+      if searchField == "Search By":
+        programs = searchProgramsByField(searchValue)
+      else:
+        programs = searchProgramsByField(searchValue, searchField)
 
     if programs:
       self.programTable.setPrograms(programs)

@@ -127,6 +127,7 @@ class AddProgramDialog(QtWidgets.QDialog):
 
     if result == "Program added successfully.":
       self.showStatusMessage(result)
+      self.statusBar.setStyleSheet("background-color: none; color: green; border-top: 1px solid #666666; padding: 4px; text-align: center")
 
       # Send signal to ProgramPage to call addProgram in ProgramTable
       self.programAddedTableSignal.emit([programCode, programName, collegeCode])
