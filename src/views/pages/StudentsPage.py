@@ -539,13 +539,14 @@ class StudentsPage(QtWidgets.QWidget):
         searchValue = self.searchBarLineEdit.text().strip()
         searchField = self.searchByComboBox.currentText()
 
-        self.studentTable.searchActive = True
-
-        if searchField == "Search By":
+        if searchValue == "":
             students = searchStudentsByField(searchValue)
         else:
-            students = searchStudentsByField(searchValue, searchField)
-
+            if searchField == "Search By":
+                students = searchStudentsByField(searchValue)
+            else:
+                students = searchStudentsByField(searchValue, searchField)
+        
         if students:
             self.studentTable.setStudents(students)
         else:

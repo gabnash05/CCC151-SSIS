@@ -124,6 +124,7 @@ class UpdateProgramDialog(QtWidgets.QDialog):
 
     if result == "Program updated successfully.":
       self.showStatusMessage(result)
+      self.statusBar.setStyleSheet("background-color: none; color: green; border-top: 1px solid #666666; padding: 4px; text-align: center")
 
       # Send signal to MainWindow to call addStudent in StudentTable
       self.programUpdatedTableSignal.emit([self.originalProgramCode, programCode, programName, collegeCode])

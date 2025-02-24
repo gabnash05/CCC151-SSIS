@@ -1,7 +1,9 @@
 import sys
+from operator import itemgetter
 
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import QApplication
 
 from views.components.ProgramRow import ProgramRow
 from controllers.programControllers import getAllPrograms
@@ -104,44 +106,53 @@ class ProgramTable(QtWidgets.QWidget):
   
   # Displays data provided to the table
   def refreshDisplayPrograms(self):
-    self.updateSortByIndex()
-
-    if self.programs == [None]:
+    if not self.programs or "Program Code" not in self.programs[0]:
       self.clearScrollArea()
+      self.statusMessageSignal.emit("No students found", 3000)
       return
-
-    # 2 Layer sorting based on predefined sortByField tuples
-    if self.sortingOrder == 0:
-      sortedPrograms = sorted(self.programs, 
-                              key=lambda x: (x[self.sortByFields[self.sortByIndex][0]], x[self.sortByFields[self.sortByIndex][1]]))
-    elif self.sortingOrder == 1:
-      sortedPrograms = sorted(self.programs, 
-                              key=lambda x: (x[self.sortByFields[self.sortByIndex][0]], x[self.sortByFields[self.sortByIndex][1]]),
-                              reverse=True)
+    
+    self.updateSortByIndex()
+    
+    primaryField, secondaryField = self.sortByFields[self.sortByIndex]
+    reverseOrder = (self.sortingOrder == 1)
+    
+    # In-place sorting using Timsort (O(n log n))
+    self.programs.sort(key=itemgetter(primaryField, secondaryField), reverse=reverseOrder)
     
     self.clearScrollArea()
 
-    for program in sortedPrograms:
+    self.scrollArea.setUpdatesEnabled(False)
+
+    for program in self.programs:
       self.addProgramRowToTable(program)
+      QApplication.processEvents()
+    
+    self.scrollArea.setUpdatesEnabled(True)
   
   # Changes the set of programs in ProgramTable
   def setPrograms(self, newPrograms):
     if newPrograms == None:
       print("No records to set")
       return
-    
-    self.programs.clear()
 
-    self.programs.extend(newPrograms)
+    self.programs = newPrograms
 
     self.refreshDisplayPrograms()
 
   # Deletes all ProgramRows in ProgramTable
   def clearScrollArea(self):
-    for i in reversed(range(self.scrollLayout.count())):
-      widget = self.scrollLayout.itemAt(i).widget()
-      if widget is not None:
-        widget.deleteLater()
+    if self.scrollLayout.count() == 0:
+      return
+
+    self.scrollArea.setUpdatesEnabled(False)
+
+    while self.scrollLayout.count():
+      item = self.scrollLayout.takeAt(0)
+      widget = item.widget()
+      if widget:
+        widget.setParent(None)
+    
+    self.scrollArea.setUpdatesEnabled(True)
 
   # Generates ProgramRows into ProgramTable
   def addProgramRowToTable(self, programData):
@@ -150,6 +161,7 @@ class ProgramTable(QtWidgets.QWidget):
     programRow.editProgramSignal.connect(self.editProgramSignal.emit)
     self.scrollLayout.addWidget(programRow)
     self.scrollLayout.addWidget(programRow.separator)
+
   
   # Reloads ProgramTable when new student is adden from AddStudentDialog
   def addNewProgramToTable(self, programData):
@@ -184,13 +196,12 @@ class ProgramTable(QtWidgets.QWidget):
   # Gets all programs in the program.csv file
   def initialProgramsToDisplay(self):
     self.clearScrollArea()
-    self.programs.clear()
 
     programs = getAllPrograms()
     if not programs:
       return
     
-    self.programs.extend(programs)
+    self.programs = programs
 
     self.refreshDisplayPrograms()
   
