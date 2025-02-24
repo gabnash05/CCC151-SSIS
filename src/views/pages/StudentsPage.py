@@ -536,6 +536,8 @@ class StudentsPage(QtWidgets.QWidget):
 
     # Search students
     def searchStudents(self):
+        self.displayMessageToStatusBar("Searching...", 3000)
+
         searchValue = self.searchBarLineEdit.text().strip()
         searchField = self.searchByComboBox.currentText()
 
