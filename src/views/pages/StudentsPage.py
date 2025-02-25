@@ -27,6 +27,8 @@ class StudentsPage(QtWidgets.QWidget):
         self.addStudentButton.clicked.connect(self.openAddStudentDialog)
         self.studentTable.editStudentSignal.connect(self.openUpdateStudentDialog)
 
+        self.sortByComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
+        self.sortingOrderComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
         self.sortByComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
         self.sortingOrderComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
 
@@ -343,7 +345,6 @@ class StudentsPage(QtWidgets.QWidget):
         self.searchByComboBox.addItem("")
         self.searchByComboBox.addItem("")
         self.searchByComboBox.addItem("")
-        self.searchByComboBox.addItem("")
         self.horizontalLayout_8.addWidget(self.searchByComboBox)
 
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
@@ -409,7 +410,6 @@ class StudentsPage(QtWidgets.QWidget):
         self.sortByComboBox.setCurrentIndex(0) 
         self.sortByComboBox.model().item(0).setEnabled(False)
 
-        self.sortByComboBox.addItem("")
         self.sortByComboBox.addItem("")
         self.sortByComboBox.addItem("")
         self.sortByComboBox.addItem("")

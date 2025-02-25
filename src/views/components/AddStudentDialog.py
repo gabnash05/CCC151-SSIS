@@ -53,7 +53,8 @@ class AddStudentDialog(QtWidgets.QDialog):
     self.genderInput = QtWidgets.QComboBox(self)
     self.genderInput.addItems(["Male", "Female", "Others"])
     self.idInput = QtWidgets.QLineEdit(self)
-    self.yearLevelInput = QtWidgets.QLineEdit(self)
+    self.yearLevelInput = QtWidgets.QComboBox(self)
+    self.yearLevelInput.addItems(["1", "2", "3", "4", "5"])
     self.programCodeInput = QtWidgets.QComboBox(self)
     self.collegeCodeInput = QtWidgets.QComboBox(self)
 
@@ -144,7 +145,7 @@ class AddStudentDialog(QtWidgets.QDialog):
     idNumber = self.idInput.text().strip() or None
     firstName = self.firstNameInput.text().strip() or None
     lastName = self.lastNameInput.text().strip() or None
-    yearLevel = self.yearLevelInput.text().strip() or None
+    yearLevel = self.yearLevelInput.currentText().strip() or None
     gender = self.genderInput.currentText() or None
     programCode = self.programCodeInput.currentText() or None
     collegeCode = self.collegeCodeInput.currentText() or None

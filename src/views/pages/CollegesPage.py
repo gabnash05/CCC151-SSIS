@@ -29,6 +29,8 @@ class CollegesPage(QtWidgets.QWidget):
     self.addCollegeButton.clicked.connect(self.openAddCollegeDialog)
     self.collegeTable.editCollegeSignal.connect(self.openUpdateCollegeDialog)
 
+    self.sortByComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
+    self.sortingOrderComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
     self.sortByComboBox.currentIndexChanged.connect(self.collegeTable.refreshDisplayColleges)
     self.sortingOrderComboBox.currentIndexChanged.connect(self.collegeTable.refreshDisplayColleges)
 

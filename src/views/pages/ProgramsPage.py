@@ -29,6 +29,8 @@ class ProgramsPage(QtWidgets.QWidget):
     self.addProgramButton.clicked.connect(self.openAddProgramDialog)
     self.programTable.editProgramSignal.connect(self.openUpdateProgramDialog)
 
+    self.sortByComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
+    self.sortingOrderComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
     self.sortByComboBox.currentIndexChanged.connect(self.programTable.refreshDisplayPrograms)
     self.sortingOrderComboBox.currentIndexChanged.connect(self.programTable.refreshDisplayPrograms)
 
