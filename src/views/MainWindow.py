@@ -40,12 +40,7 @@ class MainWindow(QMainWindow):
     self.collegesPage.studentsSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.studentsPage))
     self.collegesPage.programsSidebarButton.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.programsPage))
 
-    # self.programsPage.studentsSidebarButton.clicked.connect(self.studentsPage.studentTable.refreshDisplayStudents)
-    # self.collegesPage.studentsSidebarButton.clicked.connect(self.studentsPage.studentTable.refreshDisplayStudents)
-    # self.studentsPage.programsSidebarButton.clicked.connect(self.programsPage.programTable.refreshDisplayPrograms)
-    # self.collegesPage.programsSidebarButton.clicked.connect(self.programsPage.programTable.refreshDisplayPrograms)
-    # self.studentsPage.collegesSidebarButton.clicked.connect(self.collegesPage.collegeTable.refreshDisplayColleges)
-    # self.programsPage.collegesSidebarButton.clicked.connect(self.collegesPage.collegeTable.refreshDisplayColleges)
+    self.logoButton.clicked.connect(self.refreshTables)
 
     # Connect signals
     self.studentsPage.statusMessageSignal.connect(self.handleStatusMessage)
@@ -59,3 +54,8 @@ class MainWindow(QMainWindow):
   def handleStatusMessage(self, message, duration):
     self.statusBar.showMessage(message, duration)
 
+  def refreshTables(self):
+    self.handleStatusMessage("Refreshing tables...", 3000)
+    self.studentsPage.studentTable.refreshDisplayStudents()
+    self.programsPage.programTable.refreshDisplayPrograms()
+    self.collegesPage.collegeTable.refreshDisplayColleges()

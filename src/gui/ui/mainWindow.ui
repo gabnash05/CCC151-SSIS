@@ -145,6 +145,9 @@ QFrame {
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
+         <property name="toolTip">
+          <string>Refresh Tables</string>
+         </property>
          <property name="text">
           <string/>
          </property>

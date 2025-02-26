@@ -285,6 +285,7 @@ class StudentsPage(QtWidgets.QWidget):
         self.horizontalLayout_8.setContentsMargins(0, 15, 0, 20)
         self.horizontalLayout_8.setSpacing(10)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
+
         self.searchBarLineEdit = QtWidgets.QLineEdit(parent=self.searchBarFrame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -303,6 +304,7 @@ class StudentsPage(QtWidgets.QWidget):
         self.searchBarLineEdit.setStyleSheet("")
         self.searchBarLineEdit.setObjectName("searchBarLineEdit")
         self.horizontalLayout_8.addWidget(self.searchBarLineEdit)
+
         self.searchButton = QtWidgets.QPushButton(parent=self.searchBarFrame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
