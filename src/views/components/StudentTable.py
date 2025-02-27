@@ -29,7 +29,8 @@ class StudentTable(QtWidgets.QTableWidget):
     self.sortingOrder = 0
 
     self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
-
+    
+    # For mouse features
     self.setMouseTracking(True)
     self.viewport().setMouseTracking(True)
     self.viewport().installEventFilter(self)
@@ -84,6 +85,8 @@ class StudentTable(QtWidgets.QTableWidget):
     
     self.setHorizontalHeaderLabels(self.headers)
 
+  #--------------------------------------------------------------------------
+  
   def refreshDisplayStudents(self):
     if not self.students or "ID Number" not in self.students[0]:
       self.setRowCount(0)
@@ -221,16 +224,40 @@ class StudentTable(QtWidgets.QTableWidget):
     self.students = students
     self.refreshDisplayStudents()
 
-  def handleStudentDeleted(self, message, duration):
-    self.refreshDisplayStudents()
-    self.statusMessageSignal.emit(message, duration)
-
   def updateSortByIndex(self):
     sortByIndex = self.parentWidget.sortByComboBox.currentIndex()
     sortingOrder = self.parentWidget.sortingOrderComboBox.currentIndex()
     
     self.sortByIndex = max(0, sortByIndex - 1)
     self.sortingOrder = max(0, sortingOrder)
+  
+  def openUpdateStudentDialog(self, studentRowData):
+    selectedRows = list(set(index.row() for index in self.selectedIndexes()))
+    if not selectedRows or len(selectedRows) == 1:
+      studentData = list(studentRowData.values())
+      self.updateDialog = UpdateStudentDialog(self, studentData)
+      self.updateDialog.studentUpdatedTableSignal.connect(self.editStudentsInTable)
+      self.updateDialog.statusMessageSignal.connect(self.parentWidget.displayMessageToStatusBar)
+      self.updateDialog.exec()
+      return
+
+    studentsData = [
+      [
+        self.item(row, 0).text() if self.item(row, 0) else "",  # ID Number
+        self.item(row, 1).text().split()[0] if self.item(row, 1) else "",  # First Name
+        " ".join(self.item(row, 1).text().split()[1:]) if self.item(row, 1) else "",  # Last Name
+        self.item(row, 3).text() if self.item(row, 3) else "",  # Year Level
+        self.item(row, 2).text() if self.item(row, 2) else "",  # Gender
+        self.item(row, 4).text() if self.item(row, 4) else "",  # Program Code
+        self.item(row, 5).text() if self.item(row, 5) else "",  # College Code
+      ]
+      for row in selectedRows
+    ]
+
+    self.updateDialog = UpdateBatchStudentDialog(self, studentsData)
+    self.updateDialog.studentUpdatedTableSignal.connect(self.editStudentsInTable)
+    self.updateDialog.statusMessageSignal.connect(self.parentWidget.displayMessageToStatusBar)
+    self.updateDialog.exec()
 
   def deleteSelectedRow(self, student):
     selectedRows = sorted(set(index.row() for index in self.selectedIndexes()), reverse=True)
@@ -261,7 +288,7 @@ class StudentTable(QtWidgets.QTableWidget):
       if failedDeletions:
         self.statusMessageSignal.emit(f"Failed to remove: {', '.join(failedDeletions)}", 3000)
       else:
-        self.statusMessageSignal.emit("Selected students remove successfully.", 3000)
+        self.statusMessageSignal.emit("Selected students removed successfully.", 3000)
     
     # Multiple Deletions
     else:
@@ -293,36 +320,7 @@ class StudentTable(QtWidgets.QTableWidget):
       self.removeRow(rowToRemove)
 
       self.statusMessageSignal.emit(result, 3000)
-  
-  def openUpdateStudentDialog(self, studentRowData):
-    selectedRows = list(set(index.row() for index in self.selectedIndexes()))
-    if not selectedRows or len(selectedRows) == 1:
-      studentData = list(studentRowData.values())
-      self.updateDialog = UpdateStudentDialog(self, studentData)
-      self.updateDialog.studentUpdatedTableSignal.connect(self.editStudentsInTable)
-      self.updateDialog.statusMessageSignal.connect(self.parentWidget.displayMessageToStatusBar)
-      self.updateDialog.exec()
-      return
 
-    studentsData = [
-      [
-        self.item(row, 0).text() if self.item(row, 0) else "",  # ID Number
-        self.item(row, 1).text().split()[0] if self.item(row, 1) else "",  # First Name
-        " ".join(self.item(row, 1).text().split()[1:]) if self.item(row, 1) else "",  # Last Name
-        self.item(row, 3).text() if self.item(row, 3) else "",  # Year Level
-        self.item(row, 2).text() if self.item(row, 2) else "",  # Gender
-        self.item(row, 4).text() if self.item(row, 4) else "",  # Program Code
-        self.item(row, 5).text() if self.item(row, 5) else "",  # College Code
-      ]
-      for row in selectedRows
-    ]
-
-    self.updateDialog = UpdateBatchStudentDialog(self, studentsData)
-    self.updateDialog.studentUpdatedTableSignal.connect(self.editStudentsInTable)
-    self.updateDialog.statusMessageSignal.connect(self.parentWidget.displayMessageToStatusBar)
-    self.updateDialog.exec()
-
-  # Creates a pop up when deleting a student
   def showDeleteConfirmation(self, parent, studentName):
     msgBox = QtWidgets.QMessageBox(parent)
     msgBox.setWindowTitle("Confirm Deletion")
@@ -360,7 +358,10 @@ class StudentTable(QtWidgets.QTableWidget):
     # Show the dialog and return the user's choice
     return msgBox.exec() == QtWidgets.QMessageBox.StandardButton.Yes
   
-  # Hover effect for the edit and delete buttons
+  def handleStudentDeleted(self, message, duration):
+    self.refreshDisplayStudents()
+    self.statusMessageSignal.emit(message, duration)
+
   def eventFilter(self, obj, event):
     if obj == self.viewport():
       if event.type() == QtCore.QEvent.Type.MouseMove:

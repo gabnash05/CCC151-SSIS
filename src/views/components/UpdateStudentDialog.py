@@ -38,7 +38,7 @@ class UpdateStudentDialog(QtWidgets.QDialog):
                        }
 
                        QComboBox QAbstractItemView {
-                          background-color: black;  /* Dropdown options have a black background */
+                          background-color: rgb(37, 37, 37);
                       }
                        
                        QComboBox::drop-down { 

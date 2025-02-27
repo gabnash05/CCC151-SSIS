@@ -1,20 +1,24 @@
 from operator import itemgetter
 
-from PyQt6 import QtWidgets, QtCore
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QApplication
+from PyQt6 import QtWidgets, QtCore, QtGui
+from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtWidgets import QGraphicsOpacityEffect, QTableWidgetItem
+from PyQt6.QtGui import QIcon
 
-from views.components.ProgramRow import ProgramRow
+from views.components.UpdateProgramDialog import UpdateProgramDialog
+
 from controllers.programControllers import getAllPrograms
+from controllers.programControllers import removeProgram
 
-class ProgramTable(QtWidgets.QWidget):
-  # Student variables
+class ProgramTable(QtWidgets.QTableWidget):
+  # Program variables
   headers = ["Program Code", "Program Name", "College Code", "Operations"]
   sortByFields = [("Program Code", "Program Name"), ("Program Name", "College Code"), ("College Code", "Program Name")]
 
   # Signals
   statusMessageSignal = pyqtSignal(str, int)
   editProgramSignal = pyqtSignal(list)
+  deleteProgramSignal = pyqtSignal(str)
   updateTablesSignal = pyqtSignal()
 
   def __init__(self, parent=None):
@@ -23,147 +27,145 @@ class ProgramTable(QtWidgets.QWidget):
     self.parentWidget = parent
 
     self.setupUI()
-
     self.programs = []
     self.sortByIndex = 0
     self.sortingOrder = 0
 
+    self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+
+    # For mouse features
+    self.setMouseTracking(True)
+    self.viewport().setMouseTracking(True)
+    self.viewport().installEventFilter(self)
+
     self.initialProgramsToDisplay()
 
-  # UI Setup
   def setupUI(self):
-    # Updating Status Bar
-    self.statusMessageSignal.emit("Program Table Loading", 3000)
+    self.setColumnCount(len(self.headers))
+    self.setSelectionBehavior(QtWidgets.QTableWidget.SelectionBehavior.SelectRows)
+    self.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)
+    self.setSortingEnabled(False)
+    self.setStyleSheet("""
+                        QHeaderView::section { 
+                          font-weight: bold; 
+                          font-size: 9pt;
+                        }
+                       QHeaderView::section:vertical {
+                          font-weight: normal; 
+                          font-size: 9pt;
+                        }
+                        QPushButton { 
+                          font: 9pt "Inter"; 
+                          font-weight: bold; 
+                          padding: 0px 15px; 
+                          border-radius: 3px; 
+                        } 
+                       
+                        QTableWidget {
+                            gridline-color: transparent;
+                        }
+                        QTableWidget::item {
+                            border-bottom: 1px solid rgb(120, 139, 140); 
+                            border-right: 1px solid transparent;
+                        }
+                       
+                        #deleteButton { background-color: rgb(160, 63, 63); } 
+                        #editButton { background-color: rgb(63, 150, 160); } 
+                        #editButton::hover { background-color: rgb(83, 170, 180); } 
+                        #deleteButton::hover { background-color: rgb(180, 83, 83); } 
+                        QFrame { border: none; background: transparent; } 
+                        QLabel { border: none; background: transparent; font: 9pt "Inter"; }
+                      """)
     
-    # Main Layout
-    self.mainLayout = QtWidgets.QVBoxLayout(self)
-    self.mainLayout.setContentsMargins(0, 0, 0, 0)
-    self.mainLayout.setSpacing(0)
+    self.verticalHeader().setDefaultSectionSize(40)  # Increase row height
+    self.verticalHeader().setFixedWidth(35)
+    self.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Fixed)
     
-    # Table Header Frame
-    self.tableHeaderFrame = QtWidgets.QFrame(self)
-    self.tableHeaderFrame.setMinimumSize(QtCore.QSize(0, 50))
-    self.tableHeaderFrame.setMaximumSize(QtCore.QSize(16777215, 50))
-    self.tableHeaderFrame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
-    self.tableHeaderFrame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-
-    self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tableHeaderFrame)
-    self.horizontalLayout_2.setContentsMargins(15, 0, 15, 0)
-
-    # Set Alignment and Resizing Policies
-    for i, header in enumerate(self.headers):
-      label = QtWidgets.QLabel(header, self.tableHeaderFrame)
-      label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-      label.setStyleSheet("font: 9pt 'Inter'; font-weight: bold;")
-      label.setObjectName(f"headerLabel_{i}")
-
-      # Set width constraints
-      # Set width constraints
-      if i == 1:  # Name column
-        label.setMinimumWidth(400)
-      else:
-        label.setMinimumWidth(60)
-
-      self.horizontalLayout_2.addWidget(label, 1)
-
-    self.mainLayout.addWidget(self.tableHeaderFrame)
-
-    # Separator Line (QFrame) between Header and Data
-    self.headerSeparator = QtWidgets.QFrame(self)
-    self.headerSeparator.setFrameShape(QtWidgets.QFrame.Shape.HLine)
-    self.headerSeparator.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
-    self.headerSeparator.setStyleSheet("background-color: rgb(120, 139, 140);")
-    self.headerSeparator.setMaximumHeight(1)  # Thin line
-    self.mainLayout.addWidget(self.headerSeparator)
+    header = self.horizontalHeader()
+    header.setMinimumHeight(40)
+    header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+    header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.Fixed)
     
-    # Scroll Area
-    self.scrollArea = QtWidgets.QScrollArea(self)
-    self.scrollArea.setWidgetResizable(True)
-    self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-    self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-
-    # Scroll Content Widget
-    self.scrollContent = QtWidgets.QWidget()
-    self.scrollLayout = QtWidgets.QVBoxLayout(self.scrollContent)
-    self.scrollLayout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
-    self.scrollLayout.setContentsMargins(0, 0, 0, 0)
-    self.scrollLayout.setSpacing(2)
-    
-    scrollAreaStyle = """
-      QScrollArea { background: transparent; border: none; font: Inter; }
-      QScrollArea::viewport { background: transparent; }
-      QScrollArea QWidget { background: transparent; }
-      QScrollBar:vertical, QScrollBar:horizontal { background: #222222; border-radius: 5px; width: 10px; height: 10px; }
-      QScrollBar::handle:vertical, QScrollBar::handle:horizontal { background: #AAAAAA; border-radius: 5px; min-height: 20px; min-width: 20px; }
-      QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover { background: #777777; }
-    """
-    self.scrollArea.setStyleSheet(scrollAreaStyle)
-
-    self.scrollArea.setWidget(self.scrollContent)
-    self.mainLayout.addWidget(self.scrollArea)
+    self.setHorizontalHeaderLabels(self.headers)
 
   #--------------------------------------------------------------------------
   
-  # Displays data provided to the table
   def refreshDisplayPrograms(self):
     if not self.programs or "Program Code" not in self.programs[0]:
-      self.clearScrollArea()
-      self.statusMessageSignal.emit("No students found", 3000)
+      self.setRowCount(0)
+      self.statusMessageSignal.emit("No programs found", 3000)
       return
     
     self.updateSortByIndex()
-    
     primaryField, secondaryField = self.sortByFields[self.sortByIndex]
     reverseOrder = (self.sortingOrder == 1)
     
-    # In-place sorting using Timsort (O(n log n))
     self.programs.sort(key=itemgetter(primaryField, secondaryField), reverse=reverseOrder)
-    
-    self.clearScrollArea()
-
-    self.scrollArea.setUpdatesEnabled(False)
-
-    for program in self.programs:
-      self.addProgramRowToTable(program)
-      QApplication.processEvents()
-    
-    self.scrollArea.setUpdatesEnabled(True)
+    self.populateTable()
   
-  # Changes the set of programs in ProgramTable
   def setPrograms(self, newPrograms):
-    if newPrograms == None:
+    if newPrograms is None:
       print("No records to set")
       return
 
     self.programs = newPrograms
-
     self.refreshDisplayPrograms()
 
-  # Deletes all ProgramRows in ProgramTable
-  def clearScrollArea(self):
-    if self.scrollLayout.count() == 0:
-      return
-
-    self.scrollArea.setUpdatesEnabled(False)
-
-    while self.scrollLayout.count():
-      item = self.scrollLayout.takeAt(0)
-      widget = item.widget()
-      if widget:
-        widget.setParent(None)
+  def populateTable(self):
+    self.setRowCount(len(self.programs))
     
-    self.scrollArea.setUpdatesEnabled(True)
+    for row, program in enumerate(self.programs):
+      self.setItem(row, 0, QtWidgets.QTableWidgetItem(str(program["Program Code"])))
 
-  # Generates ProgramRows into ProgramTable
-  def addProgramRowToTable(self, programData):
-    programRow = ProgramRow(programData, self.scrollContent)
-    programRow.statusMessageSignal.connect(self.statusMessageSignal)
-    programRow.editProgramSignal.connect(self.editProgramSignal)
-    programRow.updateTablesSignal.connect(self.updateTablesSignal)
-    self.scrollLayout.addWidget(programRow)
-    self.scrollLayout.addWidget(programRow.separator)
+      programName = QTableWidgetItem(program["Program Name"])
+      self.setItem(row, 1, programName)
 
-  # Reloads ProgramTable when new student is adden from AddStudentDialog
+      collegeCode = QTableWidgetItem(program["College Code"])
+      collegeCode.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+      self.setItem(row, 2, collegeCode)
+      
+      operationsWidget = QtWidgets.QWidget()
+      operationsLayout = QtWidgets.QHBoxLayout()
+      operationsLayout.setContentsMargins(0, 0, 0, 0)
+      operationsLayout.setSpacing(0)
+
+      editButton = QtWidgets.QPushButton()
+      editButton.setObjectName("editButton")
+      editButton.setIcon(QIcon("assets/edit.png"))
+      editButton.setFixedSize(30, 30)
+      editButton.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+      editButton.clicked.connect(lambda _, s=program: self.openUpdateProgramDialog(s))
+      
+      self.editOpacity = QGraphicsOpacityEffect()
+      editButton.setGraphicsEffect(self.editOpacity)
+      self.editOpacity.setOpacity(0.0) 
+
+      deleteButton = QtWidgets.QPushButton()
+      deleteButton.setObjectName("deleteButton")
+      deleteButton.setIcon(QIcon("assets/delete.png"))
+      deleteButton.setFixedSize(30, 30)
+      deleteButton.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+      deleteButton.clicked.connect(lambda _, s=program: self.deleteSelectedRow(s))
+
+      self.deleteOpacity = QGraphicsOpacityEffect()
+      deleteButton.setGraphicsEffect(self.deleteOpacity)
+      self.deleteOpacity.setOpacity(0.0)
+
+      operationsLayout.addWidget(editButton)
+      operationsLayout.addWidget(deleteButton)
+      operationsWidget.setLayout(operationsLayout)
+      operationsWidget.setStyleSheet(operationsWidget.setStyleSheet("""
+        QPushButton { font: 9pt "Inter"; font-weight: bold; padding: 0px 15px; border-radius: 3px; }
+        QPushButton#editButton { background-color: rgb(63, 150, 160); }
+        QPushButton#deleteButton { background-color: rgb(160, 63, 63); }
+        QPushButton#editButton:hover { background-color: rgb(83, 170, 180); }
+        QPushButton#deleteButton:hover { background-color: rgb(180, 83, 83); }
+      """))
+      
+      self.setCellWidget(row, 3, operationsWidget)
+
+    self.viewport().installEventFilter(self)
+
   def addNewProgramToTable(self, programData):
     newProgram = {
       "Program Code": programData[0],
@@ -177,15 +179,19 @@ class ProgramTable(QtWidgets.QWidget):
     self.programs.append(newProgram)
     self.refreshDisplayPrograms()
 
-  # Edits a StudentRow in ProgramTable
-  def editProgramInTable(self, programData):
-    originalProgramCode = programData[0]
+  def editProgramInTable(self, programsData):
+    for programData in programsData:
+      originalProgramCode = programData[0]
 
-    newProgram = {
-      "Program Code": programData[1],
-      "Program Name": programData[2],
-      "College Code": programData[3],
-    }
+      newProgram = {
+        key: value
+        for key, value in {
+          "Program Code": programData[1],
+          "Program Name": programData[2],
+          "College Code": programData[3],
+        }.items()
+        if value is not None
+      }
 
     for program in self.programs:
       if program["Program Code"] == originalProgramCode:
@@ -193,30 +199,156 @@ class ProgramTable(QtWidgets.QWidget):
     
     self.refreshDisplayPrograms()
 
-  # Gets all programs in the program.csv file
   def initialProgramsToDisplay(self):
-    self.clearScrollArea()
-
+    self.setRowCount(0)
     programs = getAllPrograms()
     if not programs:
       return
     
     self.programs = programs
-
     self.refreshDisplayPrograms()
 
-  # Updates the sortByIndex for sorting in refreshDisplayPrograms
   def updateSortByIndex(self):
     sortByIndex = self.parentWidget.sortByComboBox.currentIndex()
     sortingOrder = self.parentWidget.sortingOrderComboBox.currentIndex()
 
-    if sortByIndex <= 0:
-      self.sortByIndex = 0
-    else:
-      self.sortByIndex = sortByIndex - 1
-    
-    if sortingOrder < 0:
-      self.sortingOrder = 0
-    else:
-      self.sortingOrder = sortingOrder
+    self.sortByIndex = max(0, sortByIndex - 1)
+    self.sortingOrder = max(0, sortingOrder)
 
+  def openUpdateProgramDialog(self, programRowData):
+    selectedRows = list(set(index.row() for index in self.selectedIndexes()))
+    programData = list(programRowData.values())
+    self.updateDialog = UpdateProgramDialog(self, programData)
+    self.updateDialog.programUpdatedTableSignal.connect(self.editProgramInTable)
+    self.updateDialog.updateTablesSignal.connect(self.updateTablesSignal)
+    self.updateDialog.statusMessageSignal.connect(self.parentWidget.displayMessageToStatusBar)
+
+    if len(selectedRows) > 1:
+      self.statusMessageSignal.emit("Programs can only be updated one at a time.", 3000)
+      
+    self.updateDialog.exec()
+
+
+  def deleteSelectedRow(self, program):
+    selectedRows = sorted(set(index.row() for index in self.selectedIndexes()), reverse=True)
+    selectedRowCount = len(selectedRows)
+
+    # Single Deletion
+    if len(selectedRows) > 1:
+      programCodes = f'\n{"\n".join(f'{self.item(row, 0).text()}' for row in selectedRows)}'
+
+      promptText = f"the following programs?\n{programCodes}" if selectedRowCount < 20 else f"{selectedRowCount} programs"
+
+      if not self.showDeleteConfirmation(self, promptText):
+        return
+      
+      failedDeletions = []
+
+      for row in sorted(selectedRows, reverse=True):  # Reverse to avoid shifting indices
+        program = self.programs[row]
+        result = removeProgram(program["Program Code"])
+
+        if result == "Program removed successfully.":
+          self.programs.pop(row)
+          self.removeRow(row)
+        else:
+          failedDeletions.append(program["Program Code"])
+
+      # Emit status message
+      if failedDeletions:
+        self.statusMessageSignal.emit(f"Failed to remove: {', '.join(failedDeletions)}", 3000)
+      else:
+        self.statusMessageSignal.emit("Selected programs removed successfully.", 3000)
+    
+    # Multiple Deletions
+    else:
+      if not self.showDeleteConfirmation(self, program["Program Name"]):
+        return
+
+      # Remove from CSV
+      result = removeProgram(program["Program Code"])
+
+      if result != "Program removed successfully.":
+        self.statusMessageSignal.emit(result, 3000)
+        return
+
+      # Find the row index of the program
+      rowToRemove = -1
+      for row in range(self.rowCount()):
+        if self.item(row, 0) and self.item(row, 0).text() == str(program["Program Code"]):
+          rowToRemove = row
+          break
+
+      if rowToRemove == -1:
+        self.statusMessageSignal.emit("Error: Program not found in table.", 3000)
+        return
+
+      # Remove program from internal list
+      self.programs.remove(program)
+
+      # Remove row from QTableWidget
+      self.removeRow(rowToRemove)
+      self.updateTablesSignal.emit()
+      self.statusMessageSignal.emit(result, 3000)
+
+  def showDeleteConfirmation(self, parent, programName):
+    msgBox = QtWidgets.QMessageBox(parent)
+    msgBox.setWindowTitle("Confirm Deletion")
+    msgBox.setText(f"Are you sure you want to delete {programName}?")
+    msgBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+
+    for button in msgBox.findChildren(QtWidgets.QPushButton):
+      button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+
+    msgBox.setStyleSheet("""
+      QMessageBox {
+        background-color: rgb(37, 37, 37);
+        color: white;
+        border-radius: 10px;
+      }
+      QMessageBox QLabel {
+        color: white;
+        font-family: \"Inter\";
+      }
+      QMessageBox QPushButton {
+        font: 9pt "Inter";
+        font-weight: bold;
+        padding: 0px, 15px;
+        background-color: rgb(63, 150, 160);
+        border-radius: 3px;
+        padding: 5px 15px;
+      }
+                         
+      QMessageBox QPushButton::hover {
+        background-color: rgb(83, 170, 180);
+      }
+    """)
+
+    # Show the dialog and return the user's choice
+    return msgBox.exec() == QtWidgets.QMessageBox.StandardButton.Yes
+  
+  def handleProgramDeleted(self, message, duration):
+    self.refreshDisplayPrograms()
+    self.statusMessageSignal.emit(message, duration)
+
+  def eventFilter(self, obj, event):
+    if obj == self.viewport():
+      if event.type() == QtCore.QEvent.Type.MouseMove:
+        index = self.indexAt(event.pos())  # Get index of row under mouse
+        if index.isValid():
+          self.toggleButtons(index.row())
+        else:
+          self.toggleButtons(-1)  # Hide buttons when not over a valid row
+      elif event.type() == QtCore.QEvent.Type.Leave:
+        self.toggleButtons(-1)  # Hide buttons when mouse leaves the table
+    return super().eventFilter(obj, event)
+
+  def toggleButtons(self, row):
+    for r in range(self.rowCount()):
+      operationsWidget = self.cellWidget(r, 3)
+      if operationsWidget:
+        for i in range(operationsWidget.layout().count()):
+          widget = operationsWidget.layout().itemAt(i).widget()
+          if widget and isinstance(widget.graphicsEffect(), QGraphicsOpacityEffect):
+            widget.graphicsEffect().setOpacity(1.0 if r == row else 0.0)

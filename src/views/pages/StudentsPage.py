@@ -338,7 +338,6 @@ class StudentsPage(QtWidgets.QWidget):
 
         self.searchByComboBox.addItem("Search By")
         self.searchByComboBox.setCurrentIndex(0) 
-        #self.searchByComboBox.model().item(0).setEnabled(False)
 
         self.searchByComboBox.setObjectName("searchByComboBox")
         self.searchByComboBox.addItem("")
@@ -525,7 +524,6 @@ class StudentsPage(QtWidgets.QWidget):
         self.addDialog.studentAddedTableSignal.connect(self.studentTable.addNewStudentToTable)
         self.addDialog.studentAddedWindowSignal.connect(self.displayMessageToStatusBar)
         self.addDialog.exec()
-
 
     # Search students
     def searchStudents(self):

@@ -12,7 +12,7 @@ class ProgramsPage(QtWidgets.QWidget):
   searchByFields = ["Program Code", "Program Name", "College Code"]
 
   statusMessageSignal = pyqtSignal(str, int)
-  spacebarPressedSignal = pyqtSignal()
+  enterPressedSignal = pyqtSignal()
   updateTablesSignal = pyqtSignal()
 
   def __init__(self, parent=None):
@@ -27,7 +27,6 @@ class ProgramsPage(QtWidgets.QWidget):
     self.programTable.updateTablesSignal.connect(self.updateTablesSignal)
 
     self.addProgramButton.clicked.connect(self.openAddProgramDialog)
-    self.programTable.editProgramSignal.connect(self.openUpdateProgramDialog)
 
     self.sortByComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
     self.sortingOrderComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
@@ -35,7 +34,7 @@ class ProgramsPage(QtWidgets.QWidget):
     self.sortingOrderComboBox.currentIndexChanged.connect(self.programTable.refreshDisplayPrograms)
 
     self.searchButton.clicked.connect(self.searchPrograms)
-    self.spacebarPressedSignal.connect(self.searchPrograms)
+    self.enterPressedSignal.connect(self.searchPrograms)
 
     self.displayMessageToStatusBar("Programs Page Loaded", 3000)
       
@@ -505,29 +504,17 @@ class ProgramsPage(QtWidgets.QWidget):
     self.sortingOrderComboBox.setItemText(0, _translate("mainWindow", "Ascending"))
     self.sortingOrderComboBox.setItemText(1, _translate("mainWindow", "Descending"))
 
-  # UPDATE
-  # Display messages to custom status bar
   def displayMessageToStatusBar(self, message, duration):
     self.statusMessageSignal.emit(message, duration)
 
-  # UPDATE
-  # Open Add Student Dialog
   def openAddProgramDialog(self):
     self.addDialog = AddProgramDialog(self)
     self.addDialog.programAddedTableSignal.connect(self.programTable.addNewProgramToTable)
     self.addDialog.programAddedWindowSignal.connect(self.displayMessageToStatusBar)
     self.addDialog.exec()
 
-  # Open Update Program Dialog
-  def openUpdateProgramDialog(self, programData):
-    self.updateDialog = UpdateProgramDialog(self, programData)
-    self.updateDialog.programUpdatedTableSignal.connect(self.programTable.editProgramInTable)
-    self.updateDialog.updateTablesSignal.connect(self.updateTablesSignal)
-    self.updateDialog.statusMessageSignal.connect(self.displayMessageToStatusBar)
-    self.updateDialog.exec()
-
-  # Search students
   def searchPrograms(self):
+    print("search")
     searchValue = self.searchBarLineEdit.text().strip()
     searchField = self.searchByComboBox.currentText()
 
@@ -545,8 +532,7 @@ class ProgramsPage(QtWidgets.QWidget):
       self.statusMessageSignal.emit("No Programs Found", 3000)
       self.programTable.clearScrollArea()
 
-  # Handle key press events
   def keyPressEvent(self, event):
     if event.key() == Qt.Key.Key_Return:
-      self.spacebarPressedSignal.emit()
+      self.enterPressedSignal.emit()
 
