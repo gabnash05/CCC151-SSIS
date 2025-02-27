@@ -25,7 +25,6 @@ class StudentsPage(QtWidgets.QWidget):
         self.studentTable.statusMessageSignal.connect(self.displayMessageToStatusBar)
 
         self.addStudentButton.clicked.connect(self.openAddStudentDialog)
-        self.studentTable.editStudentSignal.connect(self.openUpdateStudentDialog)
 
         self.sortByComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
         self.sortingOrderComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
@@ -168,12 +167,12 @@ class StudentsPage(QtWidgets.QWidget):
 "}\n"
 "\n"
 "/* DATA TABLE */\n"
-"#scrollArea QLabel {\n"
+"QTableWidget QLabel {\n"
 "    font: 9pt \"Inter\";\n"
 "    font-weight: 500;\n"
 "}\n"
 "\n"
-"#scrollArea Line {\n"
+"#QTableWidget Line {\n"
 "    background-color: rgb(120, 139, 140);\n"
 "}")
         self.setContentsMargins(0, 0, 0, 0)
@@ -527,12 +526,6 @@ class StudentsPage(QtWidgets.QWidget):
         self.addDialog.studentAddedWindowSignal.connect(self.displayMessageToStatusBar)
         self.addDialog.exec()
 
-    # Open Update Student Dialog
-    def openUpdateStudentDialog(self, studentData):
-        self.updateDialog = UpdateStudentDialog(self, studentData)
-        self.updateDialog.studentUpdatedTableSignal.connect(self.studentTable.editStudentInTable)
-        self.updateDialog.statusMessageSignal.connect(self.displayMessageToStatusBar)
-        self.updateDialog.exec()
 
     # Search students
     def searchStudents(self):
@@ -553,7 +546,7 @@ class StudentsPage(QtWidgets.QWidget):
             self.studentTable.setStudents(students)
         else:
             self.statusMessageSignal.emit("No Students Found", 3000)
-            self.studentTable.clearScrollArea()
+            self.studentTable.setStudents([])
 
     # Handle key press events
     def keyPressEvent(self, event):

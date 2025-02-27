@@ -35,7 +35,11 @@ class UpdateStudentDialog(QtWidgets.QDialog):
 
                        QComboBox { 
                           background-color: rgba(0, 0, 0, 0); 
-                       }  
+                       }
+
+                       QComboBox QAbstractItemView {
+                          background-color: black;  /* Dropdown options have a black background */
+                      }
                        
                        QComboBox::drop-down { 
                           subcontrol-origin: padding; subcontrol-position: top right; width: 15px; 
@@ -56,8 +60,9 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     self.lastNameInput = QtWidgets.QLineEdit(self)
     self.lastNameInput.setText(studentData[2])
 
-    self.yearLevelInput = QtWidgets.QLineEdit(self)
-    self.yearLevelInput.setText(studentData[3])
+    self.yearLevelInput = QtWidgets.QComboBox(self)
+    self.yearLevelInput.addItems(["1", "2", "3", "4", "5"])
+    self.yearLevelInput.setCurrentText(studentData[3])
 
     self.genderInput = QtWidgets.QComboBox(self)
     self.genderInput.addItems(["Male", "Female", "Others"])
@@ -86,14 +91,14 @@ class UpdateStudentDialog(QtWidgets.QDialog):
 
     # Section Headers
     self.titleLabel = QtWidgets.QLabel("Update Student")
-    self.titleLabel.setFont(QtGui.QFont("Inter", 18, QtGui.QFont.Weight.Bold))
+    self.titleLabel.setStyleSheet("font-size: 24px; font-weight: bold;")
     self.titleLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
     self.personalInfoLabel = QtWidgets.QLabel("Personal Information")
-    self.personalInfoLabel.setFont(QtGui.QFont("Inter", 14, QtGui.QFont.Weight.Bold))
+    self.personalInfoLabel.setStyleSheet("font-size: 19px; font-weight: bold;")
 
     self.studentInfoLabel = QtWidgets.QLabel("Student Information")
-    self.studentInfoLabel.setFont(QtGui.QFont("Inter", 14, QtGui.QFont.Weight.Bold))
+    self.studentInfoLabel.setStyleSheet("font-size: 19px; font-weight: bold;")
 
     # Update Button
     self.updateButton = QtWidgets.QPushButton("Update Student")
@@ -167,7 +172,7 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     idNumber = self.idInput.text().strip() or None
     firstName = self.firstNameInput.text().strip() or None
     lastName = self.lastNameInput.text().strip() or None
-    yearLevel = self.yearLevelInput.text().strip() or None
+    yearLevel = self.yearLevelInput.currentText().strip() or None
     gender = self.genderInput.currentText() or None
     programCode = self.programCodeInput.currentText() or None
     collegeCode = self.collegeCodeInput.currentText() or None
@@ -180,7 +185,7 @@ class UpdateStudentDialog(QtWidgets.QDialog):
       
 
       # Send signal to MainWindow to call addStudent in StudentTable
-      self.studentUpdatedTableSignal.emit([self.originalStudentID, idNumber, firstName, lastName, gender, yearLevel, programCode, collegeCode])
+      self.studentUpdatedTableSignal.emit([[self.originalStudentID, idNumber, firstName, lastName, gender, yearLevel, programCode, collegeCode]])
       self.statusMessageSignal.emit("Updating Student", 1000)
 
       # Closes the QDialog

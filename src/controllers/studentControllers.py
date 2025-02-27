@@ -103,26 +103,30 @@ def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: 
   # converts year level into an int
   if isinstance(newYearLevel, str) and newYearLevel.isdigit():
     newYearLevel = int(newYearLevel)
-  if not validateYearLevel(newYearLevel):
+  if newYearLevel and not validateYearLevel(newYearLevel):
     return("Year Level must be a positive integer.")
   
-  if not validateGender(newGender):
+  if newGender and not validateGender(newGender):
     return "Gender must be Male, Female, or Others."
   
-  if not Program.programCodeExists(newProgramCode):
+  if newProgramCode and not Program.programCodeExists(newProgramCode):
     return "Program Code does not exist"
   
-  if not College.collegeCodeExists(newCollegeCode):
+  if newCollegeCode and not College.collegeCodeExists(newCollegeCode):
     return "College Code does not exist"
   
   updateData = {
-    "ID Number": newIdNumber,
-    "First Name": newFirstName,
-    "Last Name": newLastName,
-    "Year Level": newYearLevel,
-    "Gender": newGender,
-    "Program Code": newProgramCode,
-    "College Code": newCollegeCode
+    key: value
+    for key, value in {
+      "ID Number": newIdNumber,
+      "First Name": newFirstName,
+      "Last Name": newLastName,
+      "Year Level": newYearLevel,
+      "Gender": newGender,
+      "Program Code": newProgramCode,
+      "College Code": newCollegeCode
+    }.items()
+    if value is not None
   }
 
   isSuccessful = Student.updateStudentRecordById(originalId, updateData)

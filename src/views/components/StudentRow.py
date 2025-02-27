@@ -14,6 +14,7 @@ class StudentRow(QtWidgets.QWidget):
   def __init__(self, studentData, parent=None):
     super().__init__(parent)
     # Store StudentRow Variables
+    
     self.studentData = studentData
     self.studentTable = self.parentWidget().parentWidget().parentWidget().parentWidget()
 

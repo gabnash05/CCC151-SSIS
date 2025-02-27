@@ -1,13 +1,15 @@
 from operator import itemgetter
 
-from PyQt6 import QtWidgets, QtCore
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QApplication
+from PyQt6 import QtWidgets, QtCore, QtGui
+from PyQt6.QtWidgets import QGraphicsOpacityEffect, QTableWidgetItem
+from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtGui import QIcon
 
-from views.components.StudentRow import StudentRow
-from controllers.studentControllers import getAllStudents
+from controllers.studentControllers import getAllStudents, removeStudent
+from views.components.UpdateStudentDialog import UpdateStudentDialog
+from views.components.UpdateBatchStudentDialog import UpdateBatchStudentDialog
 
-class StudentTable(QtWidgets.QWidget):
+class StudentTable(QtWidgets.QTableWidget):
   # Student variables
   headers = ["ID Number", "Name", "Gender", "Year Level", "Program", "College", "Operations"]
   sortByFields = [("ID Number", "Last Name"), ("First Name", "Last Name"), ("Last Name", "First Name"), ("Gender", "Last Name"), ("Year Level", "Last Name"), ("Program Code", "Last Name"), ("College Code", "Last Name")]
@@ -15,157 +17,161 @@ class StudentTable(QtWidgets.QWidget):
   # Signals
   statusMessageSignal = pyqtSignal(str, int)
   editStudentSignal = pyqtSignal(list)
+  deleteStudentSignal = pyqtSignal(str)
 
   def __init__(self, parent=None):
     super().__init__(parent)
-
     self.parentWidget = parent
 
     self.setupUI()
-
     self.students = []
     self.sortByIndex = 0
     self.sortingOrder = 0
 
+    self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+
+    self.setMouseTracking(True)
+    self.viewport().setMouseTracking(True)
+    self.viewport().installEventFilter(self)
+
     self.initialStudentsToDisplay()
 
-  # UI Setup
   def setupUI(self):
-    # Updating Status Bar
-    self.statusMessageSignal.emit("Student Table Loading", 3000)
+    self.setColumnCount(len(self.headers))
+    self.setSelectionBehavior(QtWidgets.QTableWidget.SelectionBehavior.SelectRows)
+    self.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)
+    self.setSortingEnabled(False)
+    self.setStyleSheet("""
+                        QHeaderView::section { 
+                          font-weight: bold; 
+                          font-size: 9pt;
+                        }
+                       QHeaderView::section:vertical {
+                          font-weight: normal; 
+                          font-size: 9pt;
+                        }
+                        QPushButton { 
+                          font: 9pt "Inter"; 
+                          font-weight: bold; 
+                          padding: 0px 15px; 
+                          border-radius: 3px; 
+                        } 
+                       
+                        QTableWidget {
+                            gridline-color: transparent;
+                        }
+                        QTableWidget::item {
+                            border-bottom: 1px solid rgb(120, 139, 140); 
+                            border-right: 1px solid transparent;
+                        }
+                       
+                        #deleteButton { background-color: rgb(160, 63, 63); } 
+                        #editButton { background-color: rgb(63, 150, 160); } 
+                        #editButton::hover { background-color: rgb(83, 170, 180); } 
+                        #deleteButton::hover { background-color: rgb(180, 83, 83); } 
+                        QFrame { border: none; background: transparent; } 
+                        QLabel { border: none; background: transparent; font: 9pt "Inter"; }
+                      """)
     
-    # Main Layout
-    self.mainLayout = QtWidgets.QVBoxLayout(self)
-    self.mainLayout.setContentsMargins(0, 0, 0, 0)
-    self.mainLayout.setSpacing(0)
+    self.verticalHeader().setDefaultSectionSize(40)  # Increase row height
+    self.verticalHeader().setFixedWidth(35)
+    self.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Fixed)
     
-    # Table Header Frame
-    self.tableHeaderFrame = QtWidgets.QFrame(self)
-    self.tableHeaderFrame.setMinimumSize(QtCore.QSize(0, 50))
-    self.tableHeaderFrame.setMaximumSize(QtCore.QSize(16777215, 50))
-    self.tableHeaderFrame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
-    self.tableHeaderFrame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-
-    self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tableHeaderFrame)
-    self.horizontalLayout_2.setContentsMargins(15, 0, 15, 0)
-
-    # Set Alignment and Resizing Policies
-    for i, header in enumerate(self.headers):
-      label = QtWidgets.QLabel(header, self.tableHeaderFrame)
-      label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-      label.setStyleSheet("font: 9pt 'Inter'; font-weight: bold;")
-      label.setObjectName(f"headerLabel_{i}")
-
-      # Set width constraints
-      if i == 1:  # Name column
-        label.setMinimumWidth(150)
-      elif i == 6:  # Operations column
-        label.setMinimumWidth(100)
-        label.setMaximumSize(QtCore.QSize(90, 16777215)) 
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Preferred)
-        label.setSizePolicy(sizePolicy)
-      else:
-        label.setMinimumWidth(60)
-
-      self.horizontalLayout_2.addWidget(label, 1)
-
-    self.mainLayout.addWidget(self.tableHeaderFrame)
-
-    # Separator Line (QFrame) between Header and Data
-    self.headerSeparator = QtWidgets.QFrame(self)
-    self.headerSeparator.setFrameShape(QtWidgets.QFrame.Shape.HLine)
-    self.headerSeparator.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
-    self.headerSeparator.setStyleSheet("background-color: rgb(120, 139, 140);")
-    self.headerSeparator.setMaximumHeight(1)  # Thin line
-    self.mainLayout.addWidget(self.headerSeparator)
+    header = self.horizontalHeader()
+    header.setMinimumHeight(40)
+    header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+    header.setSectionResizeMode(6, QtWidgets.QHeaderView.ResizeMode.Fixed)
     
-    # Scroll Area
-    self.scrollArea = QtWidgets.QScrollArea(self)
-    self.scrollArea.setWidgetResizable(True)
-    self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-    self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+    self.setHorizontalHeaderLabels(self.headers)
 
-    # Scroll Content Widget
-    self.scrollContent = QtWidgets.QWidget()
-    self.scrollLayout = QtWidgets.QVBoxLayout(self.scrollContent)
-    self.scrollLayout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
-    self.scrollLayout.setContentsMargins(0, 0, 0, 0)
-    self.scrollLayout.setSpacing(2)
-    
-    scrollAreaStyle = """
-      QScrollArea { background: transparent; border: none; font: Inter; }
-      QScrollArea::viewport { background: transparent; }
-      QScrollArea QWidget { background: transparent; }
-      QScrollBar:vertical, QScrollBar:horizontal { background: #222222; border-radius: 5px; width: 10px; height: 10px; }
-      QScrollBar::handle:vertical, QScrollBar::handle:horizontal { background: #AAAAAA; border-radius: 5px; min-height: 20px; min-width: 20px; }
-      QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover { background: #777777; }
-    """
-    self.scrollArea.setStyleSheet(scrollAreaStyle)
-
-    self.scrollArea.setWidget(self.scrollContent)
-    self.mainLayout.addWidget(self.scrollArea)
-
-  #--------------------------------------------------------------------------
-  
-  # Displays data provided to the table
   def refreshDisplayStudents(self):
     if not self.students or "ID Number" not in self.students[0]:
-      self.clearScrollArea()
+      self.setRowCount(0)
       self.statusMessageSignal.emit("No students found", 3000)
       return
     
     self.updateSortByIndex()
-    
     primaryField, secondaryField = self.sortByFields[self.sortByIndex]
     reverseOrder = (self.sortingOrder == 1)
     
-    # In-place sorting using Timsort (O(n log n))
     self.students.sort(key=itemgetter(primaryField, secondaryField), reverse=reverseOrder)
-    
-    self.clearScrollArea()
+    self.populateTable()
 
-    self.scrollArea.setUpdatesEnabled(False)
-
-    for student in self.students:
-      self.addStudentRowToTable(student)
-      QApplication.processEvents()
-    
-    self.scrollArea.setUpdatesEnabled(True)
-  
-  # Changes the set of students in StudentTable
   def setStudents(self, newStudents):
-    if newStudents == None:
+    if newStudents is None:
       print("No records to set")
       return
-
-    self.students = newStudents
     
+    self.students = newStudents
     self.refreshDisplayStudents()
 
-  # Deletes all StudentRows in StudentTable
-  def clearScrollArea(self):
-    if self.scrollLayout.count() == 0:
-      return
-
-    self.scrollArea.setUpdatesEnabled(False)
-
-    while self.scrollLayout.count():
-      item = self.scrollLayout.takeAt(0)
-      widget = item.widget()
-      if widget:
-        widget.setParent(None)
+  def populateTable(self):
+    self.setRowCount(len(self.students))
     
-    self.scrollArea.setUpdatesEnabled(True)
+    for row, student in enumerate(self.students):
+      self.setItem(row, 0, QtWidgets.QTableWidgetItem(str(student["ID Number"])))
 
-  # Generates StudentRows into StudentTable
-  def addStudentRowToTable(self, studentData):
-    studentRow = StudentRow(studentData, self.scrollContent)
-    studentRow.statusMessageSignal.connect(self.statusMessageSignal)
-    studentRow.editStudentSignal.connect(self.editStudentSignal.emit)
-    self.scrollLayout.addWidget(studentRow)
-    self.scrollLayout.addWidget(studentRow.separator)
-  
-  # Reloads StudentTable when new student is adden from AddStudentDialog
+      nameItem = QTableWidgetItem(f"{student['First Name']} {student['Last Name']}")
+      self.setItem(row, 1, nameItem)
+
+      genderItem = QTableWidgetItem(student["Gender"])
+      genderItem.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+      self.setItem(row, 2, genderItem)
+
+      yearLevelItem = QTableWidgetItem(student["Year Level"])
+      yearLevelItem.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+      self.setItem(row, 3, yearLevelItem)
+
+      programCodeItem = QTableWidgetItem(student["Program Code"])
+      programCodeItem.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+      self.setItem(row, 4, programCodeItem)
+
+      collegeCodeItem = QTableWidgetItem(student["College Code"])
+      collegeCodeItem.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+      self.setItem(row, 5, collegeCodeItem)
+      
+      operationsWidget = QtWidgets.QWidget()
+      operationsLayout = QtWidgets.QHBoxLayout()
+      operationsLayout.setContentsMargins(0, 0, 0, 0)
+      operationsLayout.setSpacing(0)
+
+      editButton = QtWidgets.QPushButton()
+      editButton.setObjectName("editButton")
+      editButton.setIcon(QIcon("assets/edit.png"))
+      editButton.setFixedSize(30, 30)
+      editButton.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+      editButton.clicked.connect(lambda _, s=student: self.openUpdateStudentDialog(s))
+      
+      self.editOpacity = QGraphicsOpacityEffect()
+      editButton.setGraphicsEffect(self.editOpacity)
+      self.editOpacity.setOpacity(0.0) 
+
+      deleteButton = QtWidgets.QPushButton()
+      deleteButton.setObjectName("deleteButton")
+      deleteButton.setIcon(QIcon("assets/delete.png"))
+      deleteButton.setFixedSize(30, 30)
+      deleteButton.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+      deleteButton.clicked.connect(lambda _, s=student: self.deleteSelectedRow(s))
+
+      self.deleteOpacity = QGraphicsOpacityEffect()
+      deleteButton.setGraphicsEffect(self.deleteOpacity)
+      self.deleteOpacity.setOpacity(0.0)
+
+      operationsLayout.addWidget(editButton)
+      operationsLayout.addWidget(deleteButton)
+      operationsWidget.setLayout(operationsLayout)
+      operationsWidget.setStyleSheet(operationsWidget.setStyleSheet("""
+        QPushButton { font: 9pt "Inter"; font-weight: bold; padding: 0px 15px; border-radius: 3px; }
+        QPushButton#editButton { background-color: rgb(63, 150, 160); }
+        QPushButton#deleteButton { background-color: rgb(160, 63, 63); }
+        QPushButton#editButton:hover { background-color: rgb(83, 170, 180); }
+        QPushButton#deleteButton:hover { background-color: rgb(180, 83, 83); }
+      """))
+      
+      self.setCellWidget(row, 6, operationsWidget)
+
+    self.viewport().installEventFilter(self)
+
   def addNewStudentToTable(self, studentData):
     newStudent = {
       "ID Number": studentData[0],
@@ -179,60 +185,199 @@ class StudentTable(QtWidgets.QWidget):
 
     if any(student["ID Number"] == newStudent["ID Number"] for student in self.students):
       return
-
+    
     self.students.append(newStudent)
     self.refreshDisplayStudents()
 
-  # Edits a StudentRow in StudentTable
-  def editStudentInTable(self, studentData):
-    originalIDNumber = studentData[0]
-
-    newStudent = {
-      "ID Number": studentData[1],
-      "First Name": studentData[2],
-      "Last Name": studentData[3],
-      "Gender": studentData[4],
-      "Year Level": studentData[5],
-      "Program Code": studentData[6],
-      "College Code": studentData[7]
-    }
-
-    for student in self.students:
-      if student["ID Number"] == originalIDNumber:
-        student.update(newStudent)
+  def editStudentsInTable(self, studentsData):
+    for studentData in studentsData:
+      originalIDNumber = studentData[0]
+      newStudent = {
+        key: value
+        for key, value in {
+          "ID Number": studentData[1],
+          "First Name": studentData[2],
+          "Last Name": studentData[3],
+          "Year Level": studentData[5],
+          "Gender": studentData[4],
+          "Program Code": studentData[6],
+          "College Code": studentData[7]
+        }.items()
+        if value is not None
+      }
+        
+      for student in self.students:
+        if student["ID Number"] == originalIDNumber:
+          student.update(newStudent)
     
     self.refreshDisplayStudents()
 
-  # Gets all students in the student.csv file
   def initialStudentsToDisplay(self):
-    self.clearScrollArea()
-
+    self.setRowCount(0)
     students = getAllStudents()
     if not students:
       return
     
     self.students = students
-
     self.refreshDisplayStudents()
-  
-  # Sends signal for deleting student
+
   def handleStudentDeleted(self, message, duration):
     self.refreshDisplayStudents()
     self.statusMessageSignal.emit(message, duration)
 
-  # Updates the sortByIndex for sorting in refreshDisplayStudents
   def updateSortByIndex(self):
     sortByIndex = self.parentWidget.sortByComboBox.currentIndex()
     sortingOrder = self.parentWidget.sortingOrderComboBox.currentIndex()
-
-    if sortByIndex <= 0:
-      self.sortByIndex = 0
-    else:
-      self.sortByIndex = sortByIndex - 1
     
-    if sortingOrder < 0:
-      self.sortingOrder = 0
+    self.sortByIndex = max(0, sortByIndex - 1)
+    self.sortingOrder = max(0, sortingOrder)
+
+  def deleteSelectedRow(self, student):
+    selectedRows = sorted(set(index.row() for index in self.selectedIndexes()), reverse=True)
+    selectedRowCount = len(selectedRows)
+
+    # Single Deletion
+    if len(selectedRows) > 1:
+      studentNames = f'\n{"\n".join(f'{self.item(row, 1).text()}' for row in selectedRows)}'
+
+      promptText = f"the following students?\n{studentNames}" if selectedRowCount < 20 else f"{selectedRowCount} students"
+
+      if not self.showDeleteConfirmation(self, promptText):
+        return
+      
+      failedDeletions = []
+
+      for row in sorted(selectedRows, reverse=True):  # Reverse to avoid shifting indices
+        student = self.students[row]
+        result = removeStudent(student["ID Number"])
+
+        if result == "Student removed successfully.":
+          self.students.pop(row)
+          self.removeRow(row)
+        else:
+          failedDeletions.append(student["ID Number"])
+
+      # Emit status message
+      if failedDeletions:
+        self.statusMessageSignal.emit(f"Failed to remove: {', '.join(failedDeletions)}", 3000)
+      else:
+        self.statusMessageSignal.emit("Selected students remove successfully.", 3000)
+    
+    # Multiple Deletions
     else:
-      self.sortingOrder = sortingOrder
+      if not self.showDeleteConfirmation(self, f'{student["First Name"]} {student["Last Name"]}'):
+        return
 
+      # Remove from CSV
+      result = removeStudent(student["ID Number"])
 
+      if result != "Student removed successfully.":
+        self.statusMessageSignal.emit(result, 3000)
+        return
+
+      # Find the row index of the student
+      rowToRemove = -1
+      for row in range(self.rowCount()):
+        if self.item(row, 0) and self.item(row, 0).text() == str(student["ID Number"]):
+          rowToRemove = row
+          break
+
+      if rowToRemove == -1:
+        self.statusMessageSignal.emit("Error: Student not found in table.", 3000)
+        return
+
+      # Remove student from internal list
+      self.students.remove(student)
+
+      # Remove row from QTableWidget
+      self.removeRow(rowToRemove)
+
+      self.statusMessageSignal.emit(result, 3000)
+  
+  def openUpdateStudentDialog(self, studentRowData):
+    selectedRows = list(set(index.row() for index in self.selectedIndexes()))
+    if not selectedRows or len(selectedRows) == 1:
+      studentData = list(studentRowData.values())
+      self.updateDialog = UpdateStudentDialog(self, studentData)
+      self.updateDialog.studentUpdatedTableSignal.connect(self.editStudentsInTable)
+      self.updateDialog.statusMessageSignal.connect(self.parentWidget.displayMessageToStatusBar)
+      self.updateDialog.exec()
+      return
+
+    studentsData = [
+      [
+        self.item(row, 0).text() if self.item(row, 0) else "",  # ID Number
+        self.item(row, 1).text().split()[0] if self.item(row, 1) else "",  # First Name
+        " ".join(self.item(row, 1).text().split()[1:]) if self.item(row, 1) else "",  # Last Name
+        self.item(row, 3).text() if self.item(row, 3) else "",  # Year Level
+        self.item(row, 2).text() if self.item(row, 2) else "",  # Gender
+        self.item(row, 4).text() if self.item(row, 4) else "",  # Program Code
+        self.item(row, 5).text() if self.item(row, 5) else "",  # College Code
+      ]
+      for row in selectedRows
+    ]
+
+    self.updateDialog = UpdateBatchStudentDialog(self, studentsData)
+    self.updateDialog.studentUpdatedTableSignal.connect(self.editStudentsInTable)
+    self.updateDialog.statusMessageSignal.connect(self.parentWidget.displayMessageToStatusBar)
+    self.updateDialog.exec()
+
+  # Creates a pop up when deleting a student
+  def showDeleteConfirmation(self, parent, studentName):
+    msgBox = QtWidgets.QMessageBox(parent)
+    msgBox.setWindowTitle("Confirm Deletion")
+    msgBox.setText(f"Are you sure you want to delete {studentName}?")
+    msgBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+
+    for button in msgBox.findChildren(QtWidgets.QPushButton):
+      button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+
+    msgBox.setStyleSheet("""
+      QMessageBox {
+        background-color: rgb(37, 37, 37);
+        color: white;
+        border-radius: 10px;
+      }
+      QMessageBox QLabel {
+        color: white;
+        font-family: \"Inter\";
+      }
+      QMessageBox QPushButton {
+        font: 9pt "Inter";
+        font-weight: bold;
+        padding: 0px, 15px;
+        background-color: rgb(63, 150, 160);
+        border-radius: 3px;
+        padding: 5px 15px;
+      }
+                         
+      QMessageBox QPushButton::hover {
+        background-color: rgb(83, 170, 180);
+      }
+    """)
+
+    # Show the dialog and return the user's choice
+    return msgBox.exec() == QtWidgets.QMessageBox.StandardButton.Yes
+  
+  # Hover effect for the edit and delete buttons
+  def eventFilter(self, obj, event):
+    if obj == self.viewport():
+      if event.type() == QtCore.QEvent.Type.MouseMove:
+        index = self.indexAt(event.pos())  # Get index of row under mouse
+        if index.isValid():
+          self.toggleButtons(index.row())
+        else:
+          self.toggleButtons(-1)  # Hide buttons when not over a valid row
+      elif event.type() == QtCore.QEvent.Type.Leave:
+        self.toggleButtons(-1)  # Hide buttons when mouse leaves the table
+    return super().eventFilter(obj, event)
+
+  def toggleButtons(self, row):
+    for r in range(self.rowCount()):
+      operationsWidget = self.cellWidget(r, 6)
+      if operationsWidget:
+        for i in range(operationsWidget.layout().count()):
+          widget = operationsWidget.layout().itemAt(i).widget()
+          if widget and isinstance(widget.graphicsEffect(), QGraphicsOpacityEffect):
+            widget.graphicsEffect().setOpacity(1.0 if r == row else 0.0)

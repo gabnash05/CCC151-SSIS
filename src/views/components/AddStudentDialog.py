@@ -158,7 +158,7 @@ class AddStudentDialog(QtWidgets.QDialog):
 
       # Send signal to MainWindow to call addStudent in StudentTable
       self.studentAddedTableSignal.emit([idNumber, firstName, lastName, gender, yearLevel, programCode, collegeCode])
-      self.studentAddedWindowSignal.emit("Student Added", 1000)
+      self.studentAddedWindowSignal.emit("Student Added", 3000)
 
       # Closes the QDialog
       self.accept()
