@@ -33,7 +33,6 @@ class CollegesPage(QtWidgets.QWidget):
     self.sortByComboBox.currentIndexChanged.connect(self.collegeTable.refreshDisplayColleges)
     self.sortingOrderComboBox.currentIndexChanged.connect(self.collegeTable.refreshDisplayColleges)
 
-    self.searchButton.clicked.connect(self.searchColleges)
     self.spacebarPressedSignal.connect(self.searchColleges)
 
     self.displayMessageToStatusBar("Programs Page Loaded", 3000)
@@ -307,6 +306,20 @@ class CollegesPage(QtWidgets.QWidget):
     self.searchBarLineEdit.setStyleSheet("")
     self.searchBarLineEdit.setObjectName("searchBarLineEdit")
     self.horizontalLayout_8.addWidget(self.searchBarLineEdit)
+
+    # Refresh Button (Initially Hidden)
+    self.refreshButton = QtWidgets.QPushButton(parent=self.searchBarFrame)
+    self.refreshButton.setStyleSheet("background-color: rgb(37, 37, 37);")
+    self.refreshButton.setSizePolicy(sizePolicy)
+    self.refreshButton.setMinimumSize(QtCore.QSize(0, 40))
+    self.refreshButton.setMaximumSize(QtCore.QSize(16777215, 60))
+    self.refreshButton.setFont(font)
+    self.refreshButton.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+    self.refreshButton.setObjectName("refreshButton")
+    self.refreshButton.setText("Refresh")
+    self.refreshButton.setVisible(False)
+    self.horizontalLayout_8.addWidget(self.refreshButton)
+    
     self.searchButton = QtWidgets.QPushButton(parent=self.searchBarFrame)
     sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
     sizePolicy.setHorizontalStretch(0)
@@ -325,6 +338,9 @@ class CollegesPage(QtWidgets.QWidget):
     self.searchButton.setStyleSheet("")
     self.searchButton.setObjectName("searchButton")
     self.horizontalLayout_8.addWidget(self.searchButton)
+
+    self.searchButton.clicked.connect(self.searchColleges)
+    self.refreshButton.clicked.connect(self.handleRefresh)
     
     # searchByComboBox
     self.searchByComboBox = QtWidgets.QComboBox(parent=self.searchBarFrame)
@@ -520,17 +536,25 @@ class CollegesPage(QtWidgets.QWidget):
 
     if searchValue == "":
       colleges = searchCollegesByField(searchValue)
+      self.refreshButton.setVisible(False)
     else:
       if searchField == "Search By":
         colleges = searchCollegesByField(searchValue)
       else:
         colleges = searchCollegesByField(searchValue, searchField)
+      
+      self.refreshButton.setVisible(True)
 
     if colleges:
       self.collegeTable.setColleges(colleges)
     else:
       self.statusMessageSignal.emit("No colleges found", 3000)
-      self.studentTable.setStudents([])
+      self.collegeTable.setColleges([])
+
+  def handleRefresh(self):
+    self.searchBarLineEdit.clear()
+    self.searchColleges()
+    self.refreshButton.setVisible(False)
 
   # Handle key press events
   def keyPressEvent(self, event):

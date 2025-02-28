@@ -33,7 +33,6 @@ class ProgramsPage(QtWidgets.QWidget):
     self.sortByComboBox.currentIndexChanged.connect(self.programTable.refreshDisplayPrograms)
     self.sortingOrderComboBox.currentIndexChanged.connect(self.programTable.refreshDisplayPrograms)
 
-    self.searchButton.clicked.connect(self.searchPrograms)
     self.enterPressedSignal.connect(self.searchPrograms)
 
     self.displayMessageToStatusBar("Programs Page Loaded", 3000)
@@ -289,6 +288,7 @@ class ProgramsPage(QtWidgets.QWidget):
     self.horizontalLayout_8.setContentsMargins(0, 15, 0, 20)
     self.horizontalLayout_8.setSpacing(10)
     self.horizontalLayout_8.setObjectName("horizontalLayout_8")
+
     self.searchBarLineEdit = QtWidgets.QLineEdit(parent=self.searchBarFrame)
     sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
     sizePolicy.setHorizontalStretch(0)
@@ -300,8 +300,10 @@ class ProgramsPage(QtWidgets.QWidget):
     font = QtGui.QFont()
     font.setFamily("Inter")
     font.setPointSize(9)
-    font.setBold(False)
-    font.setItalic(False)
+    self.searchBarLineEdit.setFont(font)
+    self.searchBarLineEdit.setObjectName("searchBarLineEdit")
+    self.horizontalLayout_8.addWidget(self.searchBarLineEdit)
+
     self.searchBarLineEdit.setFont(font)
     self.searchBarLineEdit.setAutoFillBackground(False)
     self.searchBarLineEdit.setStyleSheet("")
@@ -312,6 +314,20 @@ class ProgramsPage(QtWidgets.QWidget):
     sizePolicy.setHorizontalStretch(0)
     sizePolicy.setVerticalStretch(0)
     sizePolicy.setHeightForWidth(self.searchButton.sizePolicy().hasHeightForWidth())
+
+    # Refresh Button (Initially Hidden)
+    self.refreshButton = QtWidgets.QPushButton(parent=self.searchBarFrame)
+    self.refreshButton.setStyleSheet("background-color: rgb(37, 37, 37);")
+    self.refreshButton.setSizePolicy(sizePolicy)
+    self.refreshButton.setMinimumSize(QtCore.QSize(0, 40))
+    self.refreshButton.setMaximumSize(QtCore.QSize(16777215, 60))
+    self.refreshButton.setFont(font)
+    self.refreshButton.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+    self.refreshButton.setObjectName("refreshButton")
+    self.refreshButton.setText("Refresh")
+    self.refreshButton.setVisible(False)
+    self.horizontalLayout_8.addWidget(self.refreshButton) 
+    
     self.searchButton.setSizePolicy(sizePolicy)
     self.searchButton.setMinimumSize(QtCore.QSize(0, 40))
     self.searchButton.setMaximumSize(QtCore.QSize(16777215, 60))
@@ -348,6 +364,9 @@ class ProgramsPage(QtWidgets.QWidget):
     self.searchByComboBox.addItem("")
     self.searchByComboBox.addItem("")
     self.horizontalLayout_8.addWidget(self.searchByComboBox)
+
+    self.searchButton.clicked.connect(self.searchPrograms)
+    self.refreshButton.clicked.connect(self.handleRefresh)
 
     spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
     self.horizontalLayout_8.addItem(spacerItem2)
@@ -514,22 +533,32 @@ class ProgramsPage(QtWidgets.QWidget):
     self.addDialog.exec()
 
   def searchPrograms(self):
+    self.displayMessageToStatusBar("Searching...", 3000)
+
     searchValue = self.searchBarLineEdit.text().strip()
     searchField = self.searchByComboBox.currentText()
-
+    
     if searchValue == "":
       programs = searchProgramsByField(searchValue)
+      self.refreshButton.setVisible(False)
     else:
       if searchField == "Search By":
         programs = searchProgramsByField(searchValue)
       else:
         programs = searchProgramsByField(searchValue, searchField)
+      
+      self.refreshButton.setVisible(True)
 
     if programs:
       self.programTable.setPrograms(programs)
     else:
       self.statusMessageSignal.emit("No Programs Found", 3000)
-      self.studentTable.setStudents([])
+      self.programTable.setPrograms([])
+
+  def handleRefresh(self):
+      self.searchBarLineEdit.clear()
+      self.searchPrograms()
+      self.refreshButton.setVisible(False)
 
   def keyPressEvent(self, event):
     if event.key() == Qt.Key.Key_Return:

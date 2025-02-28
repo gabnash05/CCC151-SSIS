@@ -31,7 +31,6 @@ class StudentsPage(QtWidgets.QWidget):
         self.sortByComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
         self.sortingOrderComboBox.currentIndexChanged.connect(self.studentTable.refreshDisplayStudents)
 
-        self.searchButton.clicked.connect(self.searchStudents)
         self.enterPressedSignal.connect(self.searchStudents)
 
         self.displayMessageToStatusBar("Students Page Loaded", 3000)
@@ -304,6 +303,19 @@ class StudentsPage(QtWidgets.QWidget):
         self.searchBarLineEdit.setObjectName("searchBarLineEdit")
         self.horizontalLayout_8.addWidget(self.searchBarLineEdit)
 
+        # Refresh Button (Initially Hidden)
+        self.refreshButton = QtWidgets.QPushButton(parent=self.searchBarFrame)
+        self.refreshButton.setStyleSheet("background-color: rgb(37, 37, 37);")
+        self.refreshButton.setSizePolicy(sizePolicy)
+        self.refreshButton.setMinimumSize(QtCore.QSize(0, 40))
+        self.refreshButton.setMaximumSize(QtCore.QSize(16777215, 60))
+        self.refreshButton.setFont(font)
+        self.refreshButton.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.refreshButton.setObjectName("refreshButton")
+        self.refreshButton.setText("Refresh")
+        self.refreshButton.setVisible(False)
+        self.horizontalLayout_8.addWidget(self.refreshButton)
+
         self.searchButton = QtWidgets.QPushButton(parent=self.searchBarFrame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -322,6 +334,9 @@ class StudentsPage(QtWidgets.QWidget):
         self.searchButton.setStyleSheet("")
         self.searchButton.setObjectName("searchButton")
         self.horizontalLayout_8.addWidget(self.searchButton)
+
+        self.searchButton.clicked.connect(self.searchStudents)
+        self.refreshButton.clicked.connect(self.handleRefresh)
         
         # searchByComboBox
         self.searchByComboBox = QtWidgets.QComboBox(parent=self.searchBarFrame)
@@ -534,17 +549,25 @@ class StudentsPage(QtWidgets.QWidget):
 
         if searchValue == "":
             students = searchStudentsByField(searchValue)
+            self.refreshButton.setVisible(False)
         else:
             if searchField == "Search By":
                 students = searchStudentsByField(searchValue)
             else:
                 students = searchStudentsByField(searchValue, searchField)
+            
+            self.refreshButton.setVisible(True)
         
         if students:
             self.studentTable.setStudents(students)
         else:
             self.statusMessageSignal.emit("No Students Found", 3000)
             self.studentTable.setStudents([])
+
+    def handleRefresh(self):
+        self.searchBarLineEdit.clear()
+        self.searchStudents()
+        self.refreshButton.setVisible(False)
 
     # Handle key press events
     def keyPressEvent(self, event):
