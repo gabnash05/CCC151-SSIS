@@ -2,6 +2,8 @@ import csv
 import os
 from typing import List, Dict, Optional
 
+from utils.collegeUtils import getCollegeCode
+
 # Creates a new csv file for data if csv file does not already exist
 def initializeCsv(filepath: str, headers: List[str]) -> bool:
   try:
@@ -28,6 +30,11 @@ def readCsv(filepath: str) -> List[Dict[str,str]]:
       reader = csv.DictReader(file)
       data = list(reader)
     
+    if str(filepath).endswith("students.csv"):
+      for record in data:
+        collegeCode = getCollegeCode(record["ID Number"])
+        record["College Code"] = collegeCode
+    
     return data
   
   except Exception as error:
@@ -52,6 +59,7 @@ def writeCsv(filepath: str, data: List[Dict[str, str]]) -> bool:
     print(f"Error writing to CSV: {error}")
     return False
 
+#FIXME: handle when searching for college code for students
 # Gets rows from csv file that matches a field and value as an array of dicts
 def getRowsByFieldCsv(filepath: str, searchValue: str, searchField: Optional[str] = None) -> List[Dict[str, str]]:
   try:
@@ -68,6 +76,15 @@ def getRowsByFieldCsv(filepath: str, searchValue: str, searchField: Optional[str
       isStudentCsv = "First Name" in fieldnames and "Last Name" in fieldnames
 
       for record in reader:
+        if isStudentCsv:
+          collegeCode = getCollegeCode(record["ID Number"])
+          record["College Code"] = collegeCode
+
+          if searchField == "College Code":
+            if collegeCode.lower() == searchValue.lower():
+              matching_records.append(record)
+            continue
+
         if searchField:
           if searchField not in fieldnames:
             print(f"Error: Field '{searchField}' not found in CSV")
@@ -87,6 +104,10 @@ def getRowsByFieldCsv(filepath: str, searchValue: str, searchField: Optional[str
             firstName = record["First Name"].lower()
             lastName = record["Last Name"].lower()
             fullName = f"{firstName} {lastName}"
+
+            # Add college code to the record
+            collegeCode = getCollegeCode(record["ID Number"])
+            record["College Code"] = collegeCode
 
             # Check if all search words appear in the full name
             if all(word in fullName for word in searchWords):
@@ -232,4 +253,3 @@ def checkIdIfExistsCsv(filepath: str, id: str) -> bool:
   except Exception as error:
     print(f"Error checking if ID is : {error}")
     return False
-

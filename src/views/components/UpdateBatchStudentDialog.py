@@ -50,7 +50,6 @@ class UpdateBatchStudentDialog(QtWidgets.QDialog):
                           background-color: rgb(35, 35, 35); 
                        }""")
     
-
     self.titleLabel = QtWidgets.QLabel("Update Multiple Students")
     self.titleLabel.setStyleSheet("font-size: 24px; font-weight: bold;")
     self.titleLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)

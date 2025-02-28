@@ -71,7 +71,6 @@ def updateProgram(originalProgramCode: str, newProgramCode: Any, newProgramName:
   if isSuccessful and (newProgramCode or newCollegeCode):
     updateData = {
       "Program Code": newProgramCode,
-      "College Code": newCollegeCode
     }
 
     studentsToUpdate = Student.getAllStudentRecordsByProgram(originalProgramCode)

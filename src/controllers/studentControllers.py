@@ -95,6 +95,7 @@ def getStudentsByGender(gender: str) -> List[Dict[str, str]]:
   
   return Student.getAllStudentRecordsByGender(gender)
 
+#FIXME: handle when updating college code for students
 # UPDATE STUDENT FORM: updates a student record
 def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: str, newYearLevel: int, newGender: str, newProgramCode: str, newCollegeCode: str) -> str:
   if not validateIdNumber(originalId):
@@ -124,7 +125,6 @@ def updateStudent(originalId, newIdNumber: str, newFirstName: str, newLastName: 
       "Year Level": newYearLevel,
       "Gender": newGender,
       "Program Code": newProgramCode,
-      "College Code": newCollegeCode
     }.items()
     if value is not None
   }

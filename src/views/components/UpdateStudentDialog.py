@@ -1,4 +1,5 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
+from PyQt6.QtCore import Qt
 
 from controllers.programControllers import searchProgramsByField
 from controllers.collegeControllers import getAllColleges
@@ -88,6 +89,13 @@ class UpdateStudentDialog(QtWidgets.QDialog):
       if studentData[5] != "N/A":
         programIndex = programCodeList.index(studentData[5])
         self.programCodeInput.setCurrentIndex(programIndex)
+    
+    else:
+      self.collegeCodeInput.clear()
+      collegeCodeList.insert(0, "")
+      self.collegeCodeInput.addItems(collegeCodeList)
+      self.collegeCodeInput.model().item(0).setEnabled(False)
+      
 
     # Section Headers
     self.titleLabel = QtWidgets.QLabel("Update Student")

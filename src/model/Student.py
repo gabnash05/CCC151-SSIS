@@ -15,6 +15,7 @@ class Student:
     self.programCode = programCode
     self.collegeCode = collegeCode
 
+  #FIXME: remove College Code
   def toDict(self) -> None:
     return {
       "ID Number": self.idNumber,
@@ -23,7 +24,6 @@ class Student:
       "Year Level": self.yearLevel,
       "Gender": self.gender,
       "Program Code": self.programCode,
-      "College Code": self.collegeCode
     }
   
   # Only for initializing when the application starts
@@ -61,11 +61,13 @@ class Student:
   # Get all student records by last name
   @staticmethod
   def getAllStudentRecordsByLastName(lastName: str) -> List[Dict[str, str]]:
+    print(2)
     return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, lastName, Student.STUDENT_HEADERS[2])
   
   # Get all student records by year level
   @staticmethod
   def getAllStudentRecordsByYearLevel(yearLevel: int) -> List[Dict[str, str]]:
+    print(1)
     return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, str(yearLevel), Student.STUDENT_HEADERS[3])
 
   # Get all student records by gender
@@ -82,7 +84,7 @@ class Student:
   @staticmethod
   def getAllStudentRecordsByCollege(college: str) -> List[Dict[str, str]]:
     return csvUtils.getRowsByFieldCsv(Student.STUDENT_CSV_FILEPATH, college, Student.STUDENT_HEADERS[6])
-
+  
   # Updates student information
   @staticmethod
   def updateStudentRecordById(studentId: str, updateData: Dict[str, str]) -> bool:
