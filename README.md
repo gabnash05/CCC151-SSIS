@@ -30,13 +30,13 @@ ___
 <br></br>
 
 ## **Added Updates**
-✅ Refactor the table view to allow **multi-selection** of rows for **batch operations** (Batch deletions and edits)
+- ✅ Refactor the table view to allow **multi-selection** of rows for **batch operations** (Batch deletions and edits)
 
 ## **Future Updates**
-- Add csv **importing** and **exporting**
-- Add **user authentication** and make operations **role-based**. (Admins can add new colleges, but regular users can only view, add, update, and delete student records.)
-- Add **pagination** to prevent gui loading lag
-- Add an **executable** file to remove installation and setup process
+- 🔜 Add csv **importing** and **exporting**
+- 🔜 Add **user authentication** and make operations **role-based**. (Admins can add new colleges, but regular users can only view, add, update, and delete student records.)
+- 🔜 Add **pagination** to prevent gui loading lag
+- 🔜Add an **executable** file to remove installation and setup process
 
 <br></br>
 
