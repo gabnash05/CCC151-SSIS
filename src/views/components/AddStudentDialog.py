@@ -49,12 +49,23 @@ class AddStudentDialog(QtWidgets.QDialog):
 
     # Create form fields
     self.firstNameInput = QtWidgets.QLineEdit(self)
+    self.firstNameInput.setPlaceholderText("John")
+
     self.lastNameInput = QtWidgets.QLineEdit(self)
+    self.lastNameInput.setPlaceholderText("Doe")
+
     self.genderInput = QtWidgets.QComboBox(self)
     self.genderInput.addItems(["Male", "Female", "Others"])
+
     self.idInput = QtWidgets.QLineEdit(self)
+    self.idInput.setPlaceholderText("YYYY-NNNN (e.g., 2025-0001)")
+    regex = QtCore.QRegularExpression(r"^\d{4}-\d{4}$")
+    validator = QtGui.QRegularExpressionValidator(regex, self.idInput)
+    self.idInput.setValidator(validator)
+
     self.yearLevelInput = QtWidgets.QComboBox(self)
     self.yearLevelInput.addItems(["1", "2", "3", "4", "5"])
+    
     self.programCodeInput = QtWidgets.QComboBox(self)
     self.collegeCodeInput = QtWidgets.QComboBox(self)
 

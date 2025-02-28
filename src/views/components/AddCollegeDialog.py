@@ -47,7 +47,10 @@ class AddCollegeDialog(QtWidgets.QDialog):
 
     # Create form fields
     self.collegeCodeInput = QtWidgets.QLineEdit(self)
+    self.collegeCodeInput.setPlaceholderText("CCS")
+
     self.collegeNameInput = QtWidgets.QLineEdit(self)
+    self.collegeNameInput.setPlaceholderText("College of Computer Studies")
 
     # Section headers
     self.titleLabel = QtWidgets.QLabel("Add College")

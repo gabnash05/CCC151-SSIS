@@ -71,6 +71,9 @@ class UpdateStudentDialog(QtWidgets.QDialog):
 
     self.idInput = QtWidgets.QLineEdit(self)
     self.idInput.setText(studentData[0])
+    regex = QtCore.QRegularExpression(r"^\d{4}-\d{4}$")
+    validator = QtGui.QRegularExpressionValidator(regex, self.idInput)
+    self.idInput.setValidator(validator)
     # Prevent editing of student ID
     #self.idInput.setReadOnly(True)  
 
