@@ -8,51 +8,55 @@ This project is developed in fulfillment of the requirements for the subject **C
 <br></br>
 ## About This Project
 
-Lexis is a student information system built using Python, PyQt6, and using CSV data storage **without a DBMS**. It provides full CRUDL capabilities, including features such as **sorting**, **searching**, and **unique ID management**.
+Lexis is a student information system built using Python, PyQt6, and using CSV data storage **without a DBMS**. It provides full CRUDL capabilities, including features such as **sorting**, **searching**, **unique ID management**, and **batch operations**.
 
 <br></br>
 
 ## **Features**
 - Store **STUDENT**, **PROGRAM**, and **COLLEGE** records for any University
 - **ADD**, **EDIT**, and **DELETE** records
-- **SORT** and **SEARCH** records by multiple fields  
+- **SORT** records by multiple fields 
+- **SEARCH** with or without specifying field
 - Intuitive **PyQt6** UI  
-- **CSV**-based database (lightweight storage)  
+- **CSV**-based database (lightweight storage)
+- **BATCH OPERATIONS** (batch updates and deletes)
+- **UNIQUE ID** storage
 
 <br></br>
 
-#### **STUDENT**, **PROGRAM**, and **COLLEGE** pages. 
-These three sections allow you to search, sort, add, edit, and delete records efficiently. You can navigate between these pages to manage student information, academic programs, and college details.
-![Description](assets/gifs/clip1.gif)
+#### STUDENTS PAGE
+![Students Page](assets/readme/students_page.png)
 
-#### **ADDING a record**. 
-To add a new record, navigate to the respective section (Student, Program, or College), click the "Add" button, and fill out the necessary fields in the form. Once submitted, the new entry will appear in the table.
-![Description](assets/gifs/clip4.gif)
+#### PROGRAMS PAGE
+![Programs Page](assets/readme/programs_page.png)
 
-#### **SEARCHING for records**. 
-The search feature allows you to quickly find specific records. You can filter results by entering a search term in the search bar. The system will match records based on all available fields unless you specify a particular search field in the "Search By" dropdown.
-![Description](assets/gifs/clip2.gif)
+#### COLLEGES PAGE
+![Colleges Page](assets/readme/colleges_page.png)
 
-#### **SORTING records**. 
-You can organize the data by sorting records based on their attributes. Choose an attribute (e.g., Last Name, ID Number, or College) and toggle between ascending or descending order to rearrange the list accordingly.
-![Description](assets/gifs/clip5.gif)
+#### ADDING RECORDS
+![Adding Records](assets/readme/add_records.png)
 
-#### **UPDATING a record**. 
-To modify an existing record, click the Edit Button signified by a "Pen" that appears at the end when hovering over the record you selected. A form will appear, allowing you to update the necessary fields. After saving, the changes will reflect immediately in the database.
-![Description](assets/gifs/clip3.gif)
+#### UPDATING RECORDS
+![Updating Records](assets/readme/update_records.png)
 
-#### **DELETING a record**. 
-If you need to remove a record, click the Delete Button siginified by a "Trash Can" that appears at the end when hovering over the record you selected. A confirmation prompt will appear to prevent accidental deletions. Once confirmed, the record will be permanently removed.
-![Description](assets/gifs/clip8.gif)
+#### BATCH OPERATIONS
+![Batch Operations](assets/readme/batch_operations_update.gif)
+
+![Batch Operations](assets/readme/batch_operations_delete.gif)
+
 ___
 
 <br></br>
 
+## **Added Updates**
+- ✅ Refactor the table view to allow **multi-selection** of rows for **batch operations** (Batch deletions and edits)
+
 ## **Future Updates**
-- Refactor the table view to allow **multi-selection** of rows for **batch operations** (Batch deletions)
-- Add csv **importing** and **exporting**
-- Add **user authentication** and make operations **role-based**. (Admins can add new colleges, but regular users can only view, add, update, and delete student records.)
-- Add an **executable** file to remove installation and setup process
+- 🔜 Add csv **importing** and **exporting**
+- 🔜 Add **user authentication** and make operations **role-based**. (Admins can add new colleges, but regular users can only view, add, update, and delete student records.)
+- 🔜 Add **pagination** to prevent gui loading lag
+- 🔜Add a **dashboard** page to show program and college statistics and graphs
+- 🔜Add an **executable** file to remove installation and setup process
 
 <br></br>
 

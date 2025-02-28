@@ -16,6 +16,7 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     
     # Store the student ID for reference
     self.originalStudentID = studentData[0]
+    self.originalStudentName = f'{studentData[1]} {studentData[2]}'
 
     self.setupUI(studentData)
 
@@ -188,13 +189,14 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     programCode = self.programCodeInput.currentText() or None
     collegeCode = self.collegeCodeInput.currentText() or None
 
-    result = updateStudent(self.originalStudentID, idNumber, firstName, lastName, yearLevel, gender, programCode, collegeCode)
+    if not self.showUpdateConfirmation(self):
+      return
+
+    result = updateStudent(self.originalStudentID, idNumber, firstName, lastName, yearLevel, gender, programCode, collegeCode, True)
 
     if result == "Student updated successfully.":
       self.showStatusMessage(result)
       
-      
-
       # Send signal to MainWindow to call addStudent in StudentTable
       self.studentUpdatedTableSignal.emit([[self.originalStudentID, idNumber, firstName, lastName, gender, yearLevel, programCode, collegeCode]])
       self.statusMessageSignal.emit("Updating Student", 1000)
@@ -211,6 +213,43 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     # Close dialog
     self.accept()
 
+  def showUpdateConfirmation(self, parent):
+    msgBox = QtWidgets.QMessageBox(parent)
+    msgBox.setWindowTitle("Confirm Update")
+    msgBox.setText(f"Are you sure you want to update {self.originalStudentName}?")
+    msgBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+
+    for button in msgBox.findChildren(QtWidgets.QPushButton):
+      button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+
+    msgBox.setStyleSheet("""
+      QMessageBox {
+        background-color: rgb(37, 37, 37);
+        color: white;
+        border-radius: 10px;
+      }
+      QMessageBox QLabel {
+        color: white;
+        font-family: \"Inter\";
+      }
+      QMessageBox QPushButton {
+        font: 9pt "Inter";
+        font-weight: bold;
+        padding: 0px, 15px;
+        background-color: rgb(63, 150, 160);
+        border-radius: 3px;
+        padding: 5px 15px;
+      }
+                         
+      QMessageBox QPushButton::hover {
+        background-color: rgb(83, 170, 180);
+      }
+    """)
+
+    # Show the dialog and return the user's choice
+    return msgBox.exec() == QtWidgets.QMessageBox.StandardButton.Yes
+  
   def showStatusMessage(self, message):
     self.statusBar.setText(message)
 

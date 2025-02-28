@@ -1,0 +1,600 @@
+ID Number,First Name,Last Name,Year Level,Gender,Program Code
+2022-6788,Piper,Ross,3,Male,BSGE
+2024-8313,Eli,Smith,4,Others,BSGE
+2021-6660,David,Jenkins,1,Others,BTLED-IA
+2022-8377,Aiden,Allen,3,Others,BSRT
+2023-6669,Adrian,Ramirez,2,Others,BSChE
+2021-3897,Aaliyah,King,3,Female,BS Accountancy
+2023-2532,Lucas,Green,3,Female,BS EnvSci
+2024-3693,Leo,Clark,2,Male,BS CyberSec
+2023-1061,Olivia,Lee,5,Male,BSCS
+2024-8345,Charlotte,Davis,4,Others,BS Marine Bio
+2021-9413,Gabriel,Wright,4,Female,BSEd-PE
+2023-6594,Angel,Stewart,3,Others,BS NavalEng
+2022-7997,Abigail,Morales,5,Male,BS GameDev
+2021-1025,Eli,Martinez,3,Others,BSGE
+2023-3926,Christopher,Mendoza,5,Others,BSECE
+2022-5039,Aria,Rodriguez,3,Female,BS Bio
+2022-6450,Samuel,Diaz,4,Others,BS Forensic Sci
+2021-6110,Julian,Ruiz,4,Male,BSIT
+2023-7999,Skylar,Silva,5,Female,BSEd-Values
+2022-7154,Michael,Reed,3,Female,BSEd-PE
+2022-9733,Madison,Garcia,2,Male,BSME
+2021-2608,Sebastian,Harris,1,Female,BS AeroEng
+2021-1624,Ariana,Ramos,1,Others,BSChE
+2023-5510,Valentina,Cox,4,Female,BSEd-SpEd
+2022-4843,Lucas,Thompson,3,Others,BTLED-HE
+2022-3237,Henry,Long,1,Others,BS Accountancy
+2021-7639,Alexander,Alvarez,4,Others,BSOT
+2022-8969,Lillian,Austin,3,Male,BSBA-MM
+2024-3743,Dylan,Murphy,4,Others,BSN Midwifery
+2022-3718,Savannah,Ross,5,Others,BA Filipino
+2022-2550,John,King,5,Female,BSRE
+2024-8526,Dylan,Kim,1,Female,BS AI
+2022-3640,Charles,Lewis,2,Male,BSBA-HRM
+2022-8520,Harper,Evans,4,Others,BA IR
+2022-6027,Madeline,Cox,3,Others,BA SocSci
+2023-2891,Piper,Sanchez,3,Female,BSOT
+2024-9589,Elena,Lopez,3,Female,BS Econ
+2021-1892,Claire,Mendoza,2,Female,BS Radiology
+2023-2853,Naomi,Evans,2,Female,BS Stat
+2022-6528,Ava,Reed,2,Female,BS Geology
+2021-5085,Nora,McDonald,1,Others,BS Applied Physics
+2022-8753,Adrian,Lopez,2,Others,BS Math
+2023-8825,David,White,5,Female,BSEE
+2021-7396,Eva,Cruz,2,Female,BSCE
+2021-2703,Kennedy,Rodriguez,5,Male,BA DevCom
+2024-3889,Harper,Castillo,5,Female,BS Forensic Sci
+2021-9423,William,Ruiz,2,Female,BSEE
+2023-6053,Piper,Warren,2,Female,BS Marine Bio
+2024-9076,Alice,Carter,3,Others,BS EnvSci
+2023-1100,Sebastian,Hill,1,Others,BS NavalEng
+2024-5234,Elena,Martin,2,Others,BSN
+2023-8209,Sophia,Richardson,2,Male,BA Phil
+2021-4456,Luna,Cruz,3,Male,BSIT
+2021-4258,Elena,Moore,5,Male,BSCS
+2024-6339,Paisley,Henderson,4,Others,BSME
+2021-8721,Aria,Wilson,5,Female,BA Phil
+2022-2619,Aaliyah,Alvarez,1,Others,BSEd-Values
+2024-9181,Theodore,Davis,4,Female,BS Accountancy
+2023-3527,Cameron,Baker,5,Male,BA Hist
+2021-5196,Violet,Torres,4,Others,BSBA-FM
+2021-3350,Ellie,Edwards,3,Others,BS Entrepreneurship
+2022-6733,Lillian,Cox,4,Female,BSMLS
+2021-3523,Angel,Brown,4,Female,BS NavalEng
+2024-8190,Maya,Perez,1,Others,BSDent
+2024-6893,Isaac,Webb,3,Female,BSPH
+2024-2949,Easton,Marshall,5,Female,BSBA-OM
+2021-2856,Anthony,Brooks,4,Female,BA IR
+2021-9793,Penelope,Young,4,Male,BS Bio
+2023-6616,Abigail,Gomez,1,Female,BSEd-Values
+2023-9492,Melody,Gordon,1,Female,BS Marine Bio
+2021-6897,Matthew,Silva,4,Female,BS Biotech
+2021-9965,Abigail,Mendoza,1,Female,BS Bio
+2023-7613,Wyatt,Jordan,2,Others,BTLED-IA
+2022-9082,Isabella,Parker,2,Female,BS Marine Bio
+2021-4510,Sophia,Myers,4,Others,BS Radiology
+2022-6372,Isaac,Henderson,3,Others,BSEMC
+2024-4391,Julian,Cruz,2,Female,BS Applied Physics
+2024-9989,Luke,Rogers,2,Others,BSSE
+2022-9028,Hailey,Miller,1,Male,BTLED-HE
+2022-2475,Zoey,Garcia,3,Male,BSMLS
+2024-6635,Josiah,Rivera,4,Others,BS Marine Bio
+2022-4237,Ezekiel,Chavez,3,Others,BS CyberSec
+2024-1036,Henry,Flores,1,Female,BSN
+2024-1877,Jaxon,Harrison,4,Others,BSEE
+2023-8585,Samuel,Bryant,2,Others,BS Psych
+2023-5909,Samuel,Harris,2,Female,BA Eng
+2022-3479,Ella,Campbell,4,Male,BS Marine Bio
+2022-2931,Gabriel,White,3,Male,BSME
+2024-9112,Charlotte,Hernandez,5,Male,BS Geology
+2023-8942,Wyatt,Kim,2,Female,BS Chem
+2022-2291,Elena,Martin,4,Male,BA SocSci
+2024-9369,Aaliyah,Walker,3,Others,BSBA-FM
+2023-9503,Joseph,Johnson,4,Others,BA DevCom
+2021-8456,Aiden,Hill,5,Female,BS Marine Bio
+2022-7119,Maya,Patel,3,Female,BS Forensic Sci
+2024-2938,Charles,Martin,5,Female,BPharm
+2023-6021,Naomi,Martin,4,Female,BS Math
+2023-3015,Naomi,Jordan,3,Male,BS AI
+2023-4641,Autumn,Ray,1,Male,BS Biotech
+2024-5509,Melody,Ruiz,1,Male,BSEd-SocSci
+2024-9020,Naomi,Long,4,Others,BSCS
+2023-3410,John,Reed,4,Others,BSBA-HRM
+2021-3798,Isaiah,Robinson,2,Others,BTLED-HE
+2022-8534,Maya,Nguyen,4,Male,BSIS
+2022-2972,Sebastian,Cunningham,4,Male,BA SocSci
+2021-1152,Leah,Nelson,4,Others,BS Psych
+2022-7589,Wyatt,Ross,4,Male,BSN
+2023-5385,Owen,Sanchez,5,Male,BS Psych
+2023-2305,Adam,Graham,3,Male,BS Biotech
+2023-7879,Claire,Howard,1,Male,BSIS
+2024-5284,Colton,Jenkins,2,Female,BS Bio
+2024-3950,Isaiah,Reyes,3,Others,BA Hist
+2024-6352,Noah,Henderson,1,Others,BSEMC
+2022-9419,Claire,Foster,1,Others,BS Applied Physics
+2023-2347,Evelyn,Ruiz,2,Female,BS Marine Bio
+2024-6323,Scarlett,Hernandez,3,Female,BSChE
+2021-8397,Hazel,Franklin,4,Male,BSDent
+2024-9240,Alice,Cunningham,2,Female,BSSE
+2021-4791,Sadie,Carter,2,Female,BSEd-Math
+2021-2954,Evelyn,Mendoza,4,Female,BS Chem
+2022-5370,Ezekiel,Warren,3,Others,BSCE
+2024-7515,Samuel,Austin,4,Others,BSOT
+2023-6955,Luna,Torres,5,Others,BS Finance
+2023-4970,William,Lewis,4,Female,BSBA-HRM
+2024-6915,Autumn,Reed,5,Others,BSEd-Values
+2021-3372,Riley,Garcia,5,Female,BSEMC
+2024-1842,Olivia,Jones,5,Others,BS Marine Bio
+2022-4906,Connor,Rivera,1,Female,BA SocSci
+2022-8880,Joseph,Hughes,2,Others,BSOT
+2023-9584,Joshua,Robinson,4,Others,BS Geology
+2021-2662,Savannah,Myers,3,Female,BS EnvSci
+2021-8589,Claire,Medina,1,Male,BS Stat
+2024-9697,Madeline,Henderson,5,Female,BS AI
+2022-4302,Savannah,Graham,2,Female,BA Comm
+2021-1293,Jonathan,Rogers,2,Female,BSBA-HRM
+2022-4036,Angel,Lee,2,Male,BS Finance
+2021-3174,Isaac,Perez,2,Female,BS DataSci
+2022-2525,Oliver,Scott,1,Others,BS Geology
+2023-1850,Robert,Bryant,5,Male,BSBA-FM
+2024-7375,Samuel,McDonald,2,Female,BSChE
+2024-4208,Luna,Chavez,2,Others,BSBA-IB
+2021-6241,Caleb,Cruz,1,Female,BA Filipino
+2022-3504,William,Moore,5,Others,BSEE
+2024-7137,Madeline,Turner,4,Female,BS Stat
+2024-6454,Savannah,Thomas,4,Others,BSPH
+2024-3488,Piper,Walker,4,Female,BSRT
+2022-6567,William,Cook,2,Others,BS Chem
+2023-5584,Riley,James,5,Female,BS EnvSci
+2023-1769,Thomas,Bailey,5,Others,BSEd-Sci
+2022-7560,Riley,Gordon,1,Others,BS Stat
+2021-7059,Nora,Rodriguez,1,Male,BSBA-IB
+2023-4241,Daniel,Warren,4,Female,BSBA-IB
+2024-1895,Ezekiel,Cruz,2,Female,BA Eng
+2021-3684,Aiden,Thompson,2,Female,BSPH
+2021-4872,Eli,Wilson,2,Male,BSSE
+2023-7231,Robert,Mitchell,3,Female,BSEE
+2023-8519,Lucas,Mitchell,4,Male,BA SocSci
+2022-9732,Skylar,Elliott,4,Female,BS Geology
+2023-6852,Angel,Harrison,2,Female,BSDA
+2024-3320,Dylan,Lopez,3,Female,BS Applied Physics
+2021-4141,Abigail,Taylor,2,Others,BSSE
+2022-7637,Michael,Hernandez,5,Female,BS Econ
+2021-9554,Eva,Graham,3,Female,BA Hist
+2021-7240,Aurora,Perez,5,Female,BSEd-SocSci
+2022-7453,Lucy,Warren,5,Male,BS Bio
+2023-1366,Melody,Walker,5,Male,BSRE
+2022-2433,Elena,Roberts,2,Female,BSOT
+2024-3252,Zoe,Baker,4,Female,BSCS
+2022-5864,Hazel,Allen,1,Male,BSPH
+2023-9290,Connor,Anderson,3,Male,BS Geology
+2024-7723,Aria,Moore,1,Female,BSIS
+2024-2084,Hailey,Phillips,1,Female,BSPT
+2021-3010,Savannah,Marshall,2,Female,BS Biotech
+2022-4277,Matthew,Lee,3,Female,BSRE
+2024-2244,Grace,Flores,1,Others,BSN
+2022-9025,Samuel,Moore,1,Male,BSEd-Sci
+2021-5363,Charlotte,Medina,2,Others,BSCE
+2024-7865,Olivia,Hernandez,1,Female,BSN
+2021-6490,Andrew,Morales,4,Others,BS Applied Physics
+2022-5055,Oliver,Jimenez,5,Others,BS Applied Physics
+2024-4661,Sadie,Mitchell,2,Male,BSEE
+2024-5387,Daniel,Cunningham,4,Male,BSCE
+2021-7247,James,Ray,1,Others,BS Marine Bio
+2021-8655,Luna,Marshall,3,Others,BSSE
+2022-1702,William,Mendoza,2,Others,BS Psych
+2021-7758,Ella,Medina,4,Others,BA Hist
+2024-6958,Caleb,Gordon,2,Male,BA IR
+2021-6825,Elijah,Ruiz,4,Female,BS EnvSci
+2022-7083,Nova,Campbell,5,Others,BSChE
+2024-7020,Zoe,Sanchez,5,Male,BSME
+2022-7767,Nova,Ward,4,Others,BSEd-SpEd
+2024-4387,Riley,Graham,5,Female,BS Entrepreneurship
+2022-9671,Owen,Rogers,5,Others,BS Accountancy
+2024-5785,Joshua,Bailey,3,Female,BA Filipino
+2021-9946,Joseph,Franklin,1,Male,BS Psych
+2021-7664,Evelyn,Allen,3,Female,BA Eng
+2022-3796,Ava,Hernandez,3,Male,BSDent
+2022-1537,Emma,Bryant,5,Female,BS Finance
+2023-7638,Leo,Elliott,3,Female,BS Stat
+2024-1970,Daniel,Gordon,1,Female,BSBA-IB
+2024-7112,Thomas,Morales,3,Male,BS Entrepreneurship
+2023-9355,Joshua,Gordon,3,Male,BTLED-HE
+2021-9766,Eva,James,5,Others,BS AI
+2022-9837,Easton,Perez,1,Female,BSN
+2021-5873,Abigail,Foster,1,Male,BSME
+2021-7928,Ethan,Hall,2,Others,BSME
+2024-7886,Violet,Thomas,5,Others,BS Public Ad
+2021-4704,Aaliyah,Morales,4,Male,BS AeroEng
+2024-5998,Ella,Walker,1,Others,BS Bio
+2024-1005,Delilah,Moore,4,Female,BA Eng
+2021-2442,Elena,Ortiz,5,Others,BSEMC
+2021-3820,Ella,Graham,5,Others,BSEd-Eng
+2023-1860,Aiden,Long,4,Female,BS NavalEng
+2023-4096,Piper,Carter,2,Male,BPharm
+2021-6451,Luna,Mendoza,3,Female,BA IR
+2023-6069,Adrian,Nelson,2,Male,BSEd-Fil
+2021-7330,Daniel,Scott,1,Male,BS CyberSec
+2021-9114,Audrey,Jimenez,3,Male,BA SocSci
+2023-2025,Elena,Campbell,1,Others,BSPH
+2021-7902,Noah,Scott,4,Male,BS Bio
+2023-1504,Violet,Campbell,4,Male,BA Hist
+2022-2067,Naomi,Rodriguez,5,Others,BSBA-OM
+2023-9185,Savannah,Gonzalez,3,Male,BSDA
+2021-1922,Kennedy,Lopez,3,Others,BS Geology
+2024-5427,Penelope,Jenkins,5,Male,BS Marine Bio
+2024-6792,Christian,Harris,1,Female,BSBA-FM
+2021-6898,Benjamin,Harrison,4,Others,BS Chem
+2023-5875,Savannah,Fisher,4,Female,BA SocSci
+2021-8350,Aaron,Clark,3,Others,BS GameDev
+2024-8077,Samuel,Walker,1,Female,BSDent
+2023-5172,Matthew,Wright,1,Male,BSOT
+2021-2667,Gabriel,Rivera,2,Female,BS CyberSec
+2021-7546,Abigail,Price,4,Female,BA DevCom
+2022-9210,Lillian,Castillo,1,Others,BS Accountancy
+2023-3807,Savannah,Walker,2,Others,BSSE
+2024-1212,Naomi,Jones,2,Others,BSEd-PE
+2023-7274,Bella,Montgomery,1,Others,BSCS
+2022-7424,Ezekiel,Austin,1,Male,BSEMC
+2024-2915,Ezekiel,Gutierrez,2,Male,BSIT
+2023-9523,Jackson,Alvarez,1,Female,BA DevCom
+2021-8878,Anthony,Graham,4,Female,BSIE
+2022-1340,Leo,Torres,3,Female,BS CyberSec
+2022-7028,Noah,Turner,2,Others,BTLED-HE
+2022-7570,Daniel,Miller,4,Others,BS Marine Bio
+2024-2391,Leo,Jones,5,Female,BSEd-Fil
+2021-2879,Layla,Gray,5,Female,BSBA-HRM
+2022-2230,Lillian,Sanchez,3,Male,BS Radiology
+2023-2321,Christopher,McDonald,1,Male,BSEd-Eng
+2022-3053,Penelope,Perez,4,Others,BS CyberSec
+2023-7717,Benjamin,Elliott,5,Others,BS Psych
+2021-3194,Leah,Gomez,3,Female,BSEMC
+2021-4446,Hannah,Fisher,3,Others,BSEd-Values
+2023-2236,Naomi,Martin,4,Female,BSEd-Sci
+2021-6147,Aurora,Jenkins,5,Male,BS Biotech
+2022-2941,Christian,Wilson,3,Female,BSSE
+2022-2566,Hannah,Murphy,3,Male,BSEd-PE
+2024-5873,Lillian,Kim,1,Female,BSEd-Values
+2022-5780,Wyatt,King,2,Female,BTLED-HE
+2022-6756,Noah,Lewis,2,Female,BSEd-SocSci
+2024-2858,Savannah,Miller,4,Male,BSEd-PE
+2023-4312,Emilia,Jones,3,Others,BA Phil
+2024-9497,Leo,Roberts,1,Others,BS Biotech
+2021-1347,Paisley,Jimenez,5,Others,BSEd-Eng
+2021-3552,Charles,Ruiz,1,Others,BSCE
+2022-2175,Grace,Garcia,1,Male,BSEd-SocSci
+2024-9135,Robert,Parker,2,Female,BS Chem
+2023-8856,Miles,Turner,1,Others,BS Public Ad
+2024-5872,Eva,Franklin,1,Male,BSECE
+2022-5226,Theodore,Cooper,5,Female,BSIT
+2022-8555,Aiden,Garcia,5,Female,BS NavalEng
+2022-7076,Ezekiel,Thomas,4,Others,BS Bio
+2022-7606,Julian,Stewart,4,Male,BS Entrepreneurship
+2023-2860,Luke,Thomas,1,Others,BSEd-SocSci
+2022-2519,Riley,Richardson,4,Others,BS NavalEng
+2022-6153,Cameron,Wilson,5,Male,BS Finance
+2024-7063,Audrey,Hernandez,4,Male,BS Chem
+2021-5785,Samuel,Wright,1,Female,BA DevCom
+2024-9205,Luna,Mendoza,2,Others,BS Chem
+2022-2304,Julian,Bailey,3,Female,BSBA-MM
+2024-1508,William,Gordon,5,Others,BSEE
+2021-6888,Brayden,Clark,3,Female,BS Applied Physics
+2023-7443,Miles,Flores,2,Male,BA Hist
+2021-8056,Olivia,Wood,4,Male,BA Filipino
+2021-4007,Hazel,Moore,3,Male,BS Finance
+2021-4366,Lucy,Elliott,5,Male,BSME
+2021-7190,Chloe,Williams,2,Male,BSN
+2021-9793,Hazel,Jenkins,3,Others,BSEd-Values
+2021-2081,Ethan,Richardson,4,Others,BS Geology
+2021-3429,Isaac,Brown,2,Male,BSPT
+2024-6595,Cameron,James,5,Others,BSPH
+2021-3313,Anthony,Cruz,4,Female,BSBA-HRM
+2024-6036,Delilah,Chavez,2,Male,BPharm
+2022-9156,Leah,Ramos,2,Female,BPharm
+2021-5505,Scarlett,Cunningham,5,Female,BSBA-IB
+2023-5739,Leo,Taylor,3,Others,BS GameDev
+2021-1016,Sadie,Evans,1,Female,BA Journ
+2022-5938,Naomi,Gomez,3,Others,BS Applied Physics
+2022-4578,Eva,Martinez,5,Female,BSRE
+2023-8280,Matthew,Reyes,1,Others,BSEMC
+2024-8074,Isabella,Garcia,1,Male,BS CyberSec
+2024-1903,Melody,Lee,5,Male,BS Forensic Sci
+2024-1823,Emilia,Allen,1,Male,BSEd-Sci
+2024-1135,Elijah,Martin,3,Male,BS Entrepreneurship
+2024-1809,Lily,Sanchez,5,Male,BSIT
+2021-2526,Brooklyn,Gonzalez,2,Female,BSEd-Values
+2024-5204,Easton,Reed,1,Male,BS NavalEng
+2023-2406,Lillian,Green,2,Female,BSEd-Sci
+2024-2080,Angel,Kelly,2,Female,BS Math
+2022-5649,Zoe,Kelly,4,Others,BSN Midwifery
+2021-5777,Christopher,Ramos,3,Others,BSBA-IB
+2024-6956,Everly,Franklin,3,Male,BSME
+2022-4624,Gabriel,Reed,3,Others,BSBA-IB
+2022-7884,Connor,Franklin,5,Female,BA Filipino
+2021-5830,William,Gutierrez,5,Male,BA Filipino
+2022-7336,Maya,King,3,Male,BA SocSci
+2022-4419,Joshua,Hernandez,4,Others,BS AeroEng
+2021-2041,Lillian,Webb,2,Others,BS Math
+2022-2502,Chloe,Harrison,3,Others,BS Stat
+2024-3066,Audrey,Richardson,4,Male,BSBA-FM
+2024-7643,Lillian,Ortiz,5,Female,BSBA-IB
+2021-9035,Michael,Wilson,5,Male,BS Stat
+2022-9133,Daniel,Carter,1,Male,BS AeroEng
+2022-5164,Oliver,Martinez,4,Others,BS Econ
+2021-1902,Sadie,Baker,1,Male,BS Psych
+2024-8521,Thomas,Walker,4,Female,BSBA-FM
+2021-2051,Luke,Wright,5,Female,BS Entrepreneurship
+2021-6104,Anthony,Jimenez,1,Others,BTLED-HE
+2021-5537,Isabella,Moore,1,Others,BSPT
+2022-4747,Leo,Bailey,2,Others,BA Filipino
+2023-4289,Henry,Adams,2,Others,BSEE
+2022-9198,Bella,Stewart,4,Female,BSPT
+2022-9551,Alexander,James,4,Male,BSN
+2023-4239,Nora,Johnson,2,Female,BSEd-Fil
+2024-5984,Henry,Price,2,Male,BSDA
+2023-2212,Delilah,Hernandez,4,Female,BSEd-PE
+2023-6579,Benjamin,Gray,1,Male,BS Forensic Sci
+2022-6052,Hannah,Garcia,5,Male,BS EnvSci
+2022-8550,Emilia,Garcia,5,Female,BS AeroEng
+2024-9761,Sebastian,Foster,2,Others,BSEd-Values
+2023-9075,Nova,Phillips,3,Female,BSEd-PE
+2024-6901,Emilia,Howard,5,Male,BSEd-Sci
+2024-6115,Thomas,Jones,2,Male,BSOT
+2022-5602,Violet,Ramirez,5,Others,BS Geology
+2024-5767,Angel,Sanders,5,Others,BSEd-SocSci
+2024-2388,Hailey,Watson,1,Male,BSCE
+2022-3251,Henry,Alvarez,1,Female,BS Forensic Sci
+2022-1402,Aria,Murphy,3,Male,BS Stat
+2021-7758,Hudson,Diaz,2,Female,BS Marine Bio
+2022-9371,Paisley,Johnson,5,Male,BSBA-HRM
+2022-3712,Jackson,Hernandez,2,Others,BS Biotech
+2023-5821,Lucy,Marshall,5,Female,BS Applied Physics
+2021-5920,Thomas,Lee,3,Female,BSDA
+2024-7345,Matthew,Cox,2,Female,BTLED-IA
+2024-1800,Andrew,Lopez,5,Others,BA IR
+2022-8448,Lillian,Johnson,4,Others,BS Applied Physics
+2021-5064,Lily,Chavez,4,Others,BS Geology
+2023-4705,Hazel,Collins,4,Female,BS EnvSci
+2022-8051,Sadie,Scott,3,Female,BSEd-Sci
+2022-5593,Matthew,Turner,2,Male,BS GameDev
+2021-5450,Liam,Evans,3,Female,BSCE
+2022-4248,Hudson,Anderson,1,Others,BSBA-FM
+2024-8436,Jonathan,Price,1,Others,BSBA-OM
+2022-7978,Connor,Bennet,4,Others,BS Entrepreneurship
+2022-4807,Piper,Fisher,5,Male,BSMLS
+2021-6912,Eva,Kim,1,Female,BSN Midwifery
+2022-8156,Melody,Adams,3,Others,BA Journ
+2021-4058,Nova,Jimenez,5,Female,BS Chem
+2024-9086,Eli,Jenkins,3,Others,BSPT
+2022-5981,Savannah,Miller,3,Male,BS DataSci
+2022-1113,Sophia,Jimenez,1,Others,BS Biotech
+2022-4420,Madison,Cox,2,Female,BSEd-PE
+2021-5134,Aurora,Johnson,5,Male,BSEd-Math
+2022-9450,Harper,Rogers,1,Male,BSIS
+2024-4791,Luna,Rivera,3,Others,BS Forensic Sci
+2024-7755,Madison,Rivera,3,Others,BA IR
+2023-5261,Lucy,Lopez,5,Female,BSDent
+2023-2959,Charlotte,King,2,Female,BSEd-PE
+2021-2569,Hailey,Jimenez,2,Female,BA Journ
+2021-1087,Angel,Bryant,3,Male,BSIT
+2024-2902,Nathan,Watson,2,Male,BSME
+2023-6980,David,Marshall,4,Others,BA IR
+2024-5908,Charlotte,Mitchell,1,Female,BS NavalEng
+2022-9068,Anthony,Mendoza,1,Male,BSMLS
+2024-1567,Hudson,Torres,1,Others,BSN
+2023-5230,Skylar,Lopez,1,Female,BS Marine Bio
+2021-6589,John,Patel,1,Female,BS Applied Physics
+2021-7238,Leah,Cunningham,2,Others,BSEd-SocSci
+2023-7043,Andrew,Williams,1,Others,BSEd-SpEd
+2021-9630,Audrey,Mendoza,2,Male,BSBA-HRM
+2023-1893,Mia,James,4,Female,BS Radiology
+2022-9637,Owen,Parker,5,Female,BS Forensic Sci
+2024-6074,Emma,Roberts,1,Others,BSBA-IB
+2022-5427,Noah,Austin,1,Others,BA DevCom
+2023-9177,Robert,Harrison,4,Male,BTLED-IA
+2021-7446,Riley,Wright,1,Male,BSEd-SocSci
+2024-6669,Kennedy,Clark,3,Others,BS Accountancy
+2023-3715,Aurora,Reed,1,Female,BS NavalEng
+2024-6874,Robert,Jackson,2,Others,BPharm
+2021-1264,Miles,Green,5,Male,BSEd-Sci
+2024-6963,Aaliyah,Diaz,5,Others,BS Bio
+2021-8342,Delilah,Richardson,4,Female,BS Psych
+2021-3629,Sophia,Miller,4,Female,BS Psych
+2024-9457,Ezekiel,Evans,5,Female,BA DevCom
+2021-8111,Ariana,Ray,5,Others,BSChE
+2024-3968,Delilah,Allen,1,Others,BSMLS
+2022-1808,Lucas,Jimenez,5,Female,BSBA-HRM
+2024-6917,Aiden,Morgan,4,Male,BSOT
+2023-3183,Caleb,Warren,3,Female,BSDA
+2024-8958,Eva,Scott,4,Female,BA Phil
+2024-2267,Aaron,Martin,1,Male,BS Finance
+2023-9939,Matthew,Stewart,2,Male,BSIE
+2022-3533,Abigail,Phillips,1,Female,BSBA-HRM
+2022-8267,Julian,White,3,Male,BSEd-Math
+2021-3140,Matthew,Roberts,2,Female,BTLED-HE
+2023-3911,Penelope,Green,1,Male,BSRE
+2023-2059,Hazel,Morris,3,Female,BS Econ
+2024-3542,Andrew,Brown,5,Others,BS Marine Bio
+2022-5153,Daniel,Sanders,2,Male,BS DataSci
+2023-2706,Henry,Perez,4,Female,BS Public Ad
+2021-6457,Adrian,Morgan,5,Female,BS AI
+2021-2762,Hailey,Mendoza,3,Female,BS Radiology
+2022-4821,Alexander,Ruiz,3,Female,BSIE
+2024-4493,William,Lewis,5,Female,BS Finance
+2024-1378,Ava,Nelson,4,Female,BS AeroEng
+2021-3689,Ethan,Johnson,1,Female,BSPT
+2022-2053,Evelyn,King,4,Female,BS Geology
+2021-9966,Luke,Watson,1,Others,BSIT
+2022-5247,Ariana,Thomas,3,Male,BSBA-FM
+2021-7464,Ryan,Morgan,1,Others,BSBA-IB
+2024-6282,John,Parker,2,Male,BSDent
+2023-4149,Savannah,Stewart,4,Female,BSEd-SpEd
+2021-4897,Anthony,Sanders,5,Female,BSEE
+2021-2533,William,Ortiz,1,Others,BSN Midwifery
+2024-5937,Audrey,Rivera,3,Male,BS Math
+2022-2439,Violet,Reyes,2,Male,BS CyberSec
+2024-7856,Miles,Alvarez,5,Male,BSBA-OM
+2022-6195,Caleb,Murphy,5,Others,BS Bio
+2023-7658,Josiah,Garcia,1,Others,BSPH
+2023-3793,Stella,Allen,3,Female,BSEd-Sci
+2022-8321,Evelyn,Ray,4,Others,BS Bio
+2024-7403,Olivia,Clark,2,Others,BSOT
+2023-8617,Hazel,Montgomery,4,Male,BSEd-Sci
+2022-3517,Owen,Jenkins,2,Others,BS EnvSci
+2021-4727,Michael,Sanders,2,Others,BSN
+2023-8925,Hazel,Jones,1,Male,BSME
+2021-6745,Kennedy,Bennet,5,Male,BSEd-Sci
+2022-8699,Lucy,Gordon,1,Male,BTLED-HE
+2024-8243,Matthew,Elliott,4,Female,BSChE
+2021-1387,Ella,Hernandez,5,Female,BSRE
+2021-6247,Alexander,Nelson,3,Others,BS Psych
+2021-1183,Eli,Torres,2,Male,BSEd-SocSci
+2021-2442,Julian,Perez,2,Female,BA Phil
+2024-1908,Andrew,Garcia,2,Others,BSCE
+2021-4199,Eli,Martinez,1,Male,BA IR
+2023-4199,Connor,Hughes,5,Female,BSEd-Eng
+2023-5862,Benjamin,Jenkins,1,Male,BS Entrepreneurship
+2021-5684,Nora,Phillips,4,Others,BS Radiology
+2023-2086,Claire,Medina,2,Others,BSN
+2022-3618,Noah,McDonald,5,Male,BSEd-SocSci
+2021-3759,Lucy,Richardson,4,Male,BS Applied Physics
+2024-7878,Wyatt,Rodriguez,4,Others,BS Applied Physics
+2022-6630,Naomi,Brown,4,Male,BS Radiology
+2022-8200,Hudson,Bailey,4,Female,BSPT
+2021-4473,Aria,Howard,3,Others,BSEd-Math
+2024-5420,Luke,Jackson,4,Male,BS Math
+2023-9873,Wyatt,Lopez,4,Female,BSEd-SpEd
+2024-6391,Aurora,McDonald,4,Female,BSMLS
+2021-2997,Ariana,Castillo,5,Female,BSBA-IB
+2022-5113,Caleb,Sanders,4,Others,BSBA-IB
+2021-1330,Skylar,Silva,3,Female,BSBA-MM
+2021-9803,Noah,Nelson,1,Female,BSBA-IB
+2024-2782,Dylan,Elliott,1,Male,BSRE
+2024-5025,Savannah,Young,5,Female,BSME
+2024-8350,Ellie,Collins,4,Male,BA Comm
+2022-4506,Benjamin,Mendoza,3,Others,BSRT
+2022-1245,Grace,Moore,2,Male,BS Radiology
+2024-9271,Madeline,Martin,5,Female,BS Chem
+2023-6060,Skylar,Gomez,2,Others,BS Public Ad
+2021-3312,Stella,Clark,3,Male,BSDA
+2023-2213,Aria,Montgomery,5,Others,BS Chem
+2023-7378,Matthew,Rodriguez,2,Female,BSBA-MM
+2022-5128,Chloe,Medina,3,Female,BSN Midwifery
+2024-7951,Claire,Mitchell,3,Male,BSBA-FM
+2021-8911,Anthony,Gutierrez,5,Others,BSBA-OM
+2022-6590,Claire,Howard,2,Male,BS Public Ad
+2022-1174,Aaron,Mitchell,5,Male,BS NavalEng
+2023-5183,John,Jones,5,Female,BS Chem
+2022-4327,Isaac,Jenkins,5,Female,BA SocSci
+2023-6010,Landon,Jenkins,4,Male,BSBA-IB
+2023-8892,Paisley,Bennet,3,Others,BS Econ
+2022-9510,Theodore,Warren,4,Female,BA Eng
+2022-6006,Benjamin,Parker,3,Others,BSEd-PE
+2024-4654,Everly,Ramos,5,Male,BA Comm
+2023-4511,Theodore,Thompson,1,Male,BSIT
+2023-2237,Benjamin,Stewart,4,Others,BS Psych
+2023-5452,Caleb,Kim,3,Female,BA IR
+2023-9196,Delilah,Rivera,2,Others,BS Forensic Sci
+2023-4706,Jackson,Cook,2,Male,BSChE
+2021-1250,Cameron,Lee,1,Others,BS Math
+2021-3809,Michael,Price,1,Others,BS GameDev
+2024-3335,Leo,Adams,3,Female,BA DevCom
+2024-6268,Audrey,Jenkins,5,Others,BS Psych
+2024-7792,Cameron,Rodriguez,3,Others,BSPH
+2024-8597,Gabriel,Hughes,1,Others,BSEd-Math
+2024-3107,Noah,Reyes,3,Male,BS Entrepreneurship
+2021-1294,Leah,Fisher,4,Female,BSDA
+2021-6456,Ethan,Thomas,5,Female,BSBA-FM
+2024-8285,Thomas,Phillips,2,Male,BSEd-Values
+2024-7173,Eli,Kim,3,Male,BS Radiology
+2021-5334,Emma,Reyes,5,Others,BSIS
+2023-8939,Dylan,Austin,4,Male,BS Stat
+2023-6150,Hazel,Perez,3,Others,BSRE
+2021-8781,Connor,White,2,Male,BA SocSci
+2021-1451,Savannah,Phillips,4,Female,BSEd-Fil
+2021-6115,Isaiah,Hernandez,4,Male,BS AeroEng
+2021-5975,Savannah,Murphy,2,Others,BTLED-IA
+2023-8549,Colton,Ortiz,1,Male,BSOT
+2024-1917,Christian,Garcia,3,Male,BS Finance
+2024-5146,Daniel,Jimenez,1,Others,BSEd-Math
+2024-4153,Christopher,Clark,3,Others,BS Geology
+2024-8770,Joseph,Campbell,1,Female,BS Chem
+2022-7603,Alexander,Fisher,5,Male,BS Entrepreneurship
+2024-5044,Sophia,Carter,1,Others,BSRT
+2021-1031,Theodore,Kim,4,Male,BSIS
+2022-2084,Christopher,Myers,3,Male,BSEd-PE
+2024-5735,Layla,Warren,5,Female,BSN
+2023-5248,Hailey,Jordan,2,Female,BSIT
+2022-2230,Hudson,Gray,3,Female,BS Entrepreneurship
+2023-9446,Noah,Martinez,4,Female,BSCS
+2022-8608,Stella,Torres,5,Others,BS NavalEng
+2022-1770,Ethan,Harris,5,Male,BPharm
+2022-1256,Hazel,Ruiz,4,Female,BSSE
+2021-8854,Hazel,Cunningham,4,Others,BSCE
+2024-5023,Nathan,Montgomery,3,Female,BS Entrepreneurship
+2023-1368,Kennedy,Nelson,5,Female,BSGE
+2021-3894,Audrey,Reed,3,Male,BS Biotech
+2024-5108,Eva,Johnson,5,Female,BS Forensic Sci
+2023-9832,Chloe,Cruz,2,Female,BA Hist
+2022-2279,Sebastian,Austin,1,Others,BSME
+2022-4057,Jackson,Young,3,Male,BS Psych
+2022-9847,Abigail,Parker,3,Female,BSDent
+2022-4126,Melody,Young,3,Female,BSEd-Values
+2024-3024,Isaac,Jimenez,2,Others,BA IR
+2024-8292,Elijah,Hill,3,Male,BSMLS
+2024-5771,Dylan,Kim,5,Others,BS Entrepreneurship
+2023-8578,Colton,Hall,1,Male,BS Chem
+2023-5114,Audrey,Medina,1,Female,BSIT
+2024-3052,Adrian,Ray,2,Others,BSRE
+2023-4491,Aiden,Morris,4,Others,BSOT
+2024-2731,Aria,Montgomery,4,Others,BSOT
+2022-5808,Evelyn,Graham,5,Others,BS Marine Bio
+2024-4774,Luke,Webb,1,Others,BSIT
+2021-4537,Samuel,Marshall,4,Others,BSEE
+2021-5721,William,Ward,1,Male,BSEd-Values
+2024-8657,Theodore,Davis,5,Others,BS Chem
+2023-3015,Hunter,Price,4,Others,BSEd-SpEd
+2022-7083,Maya,Austin,2,Female,BSDent
+2023-6795,Eli,Austin,1,Others,BS Public Ad
+2022-2524,Maya,Thompson,2,Female,BS AeroEng
+2023-1695,Noah,Silva,1,Others,BSChE
+2022-9756,Ezekiel,Cruz,2,Female,BSMLS
+2023-3590,John,Martin,5,Male,BSEd-SocSci
+2021-2674,Paisley,White,4,Others,BSN Midwifery
+2023-1893,Miles,Collins,3,Female,BSEd-Values
+2024-5965,Amelia,Henderson,1,Male,BS AI
+2023-9285,Andrew,Montgomery,3,Others,BSBA-IB
+2023-7366,Brayden,Warren,2,Others,BS Public Ad
+2022-9648,Ellie,Castillo,1,Male,BSEE
+2023-9399,Jaxon,Jackson,5,Male,BSPH
+2024-5454,Mia,Young,2,Others,BS Marine Bio
+2023-7520,Josiah,Harrison,1,Others,BA Filipino
+2022-2459,Nathan,Elliott,1,Male,BA Filipino
+2023-3096,Lily,Jenkins,2,Female,BS Econ
+2023-5863,Josiah,Ross,1,Female,BS Bio
+2021-3793,Violet,Chavez,3,Others,BSEd-Sci
+2023-9023,Lucy,Thompson,5,Male,BS Math
+2022-2410,Connor,Silva,5,Female,BSEd-PE
+2022-4160,Ryan,Ruiz,4,Others,BS Radiology
+2023-6462,Olivia,Evans,2,Male,BS Radiology
+2024-3147,Caleb,Lewis,1,Male,BS Geology
+2023-2607,Scarlett,Mendoza,1,Male,BS Econ
+2023-8904,Charlotte,Franklin,2,Others,BSBA-FM
+2023-4817,Abigail,Perez,4,Others,BSRT
+2022-2763,Ariana,Harris,3,Others,BA Journ
+2022-1243,Lucas,Castillo,4,Female,BSEd-SocSci
+2024-5470,Scarlett,Morales,4,Others,BSECE
+2022-9159,Colton,Howard,1,Female,BS Public Ad
+2021-3390,Claire,Ortiz,4,Female,BSBA-OM
+2022-9882,Ellie,Thompson,3,Male,BSEd-Fil
+2024-4186,Jackson,Garcia,3,Female,BSEd-PE
+2024-1404,Ezekiel,Diaz,4,Others,BSEd-Values
+2021-4264,Christopher,Diaz,2,Male,BTLED-IA
+2024-4885,Evelyn,Clark,2,Female,BSChE
+2022-5561,Alexander,Brooks,3,Others,BSEd-Sci
+2023-1337,Thomas,Cooper,5,Male,BSEd-Sci
+2022-9768,Evelyn,Silva,4,Others,BSPH
+2023-5543,William,Moore,4,Others,BSEd-PE
+2021-9977,Hudson,White,3,Male,BSDA
+2023-3882,Michael,Price,1,Others,BS Public Ad

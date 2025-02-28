@@ -69,11 +69,6 @@ def updateCollege(originalCollegeCode: str, newCollegeCode: Any, newCollegeName:
     programsToUpdate = Program.getProgramRecordsByCollege(originalCollegeCode)
     for program in programsToUpdate:
       Program.updateProgramRecordByCode(program["Program Code"], updateData)
-    
-    # Update students under college
-    studentsToUpdate = Student.getAllStudentRecordsByCollege(originalCollegeCode)
-    for student in studentsToUpdate:
-      Student.updateStudentRecordById(student["ID Number"], updateData)
 
     return "College updated successfully."
   
@@ -96,5 +91,10 @@ def removeCollege(collegeCode: str) -> str:
     programsToUpdate = Program.getProgramRecordsByCollege(collegeCode)
     for program in programsToUpdate:
       Program.updateProgramRecordByCode(program["Program Code"], updateData)
+    
+    # Update students under college
+    studentsToUpdate = Student.getAllStudentRecordsByCollege(collegeCode)
+    for student in studentsToUpdate:
+      Student.updateStudentRecordById(student["ID Number"], updateData)
 
   return "College removed successfully." if isSuccessful else "Failed to remove college." 

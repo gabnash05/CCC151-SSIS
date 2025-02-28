@@ -16,7 +16,7 @@ dist/
 *.spec
 
 # Ignore CSV files
-*.csv
+# *.csv
 
 # Temp Code Runners
 tempCodeRunnerFile.*

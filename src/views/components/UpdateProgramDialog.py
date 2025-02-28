@@ -14,6 +14,7 @@ class UpdateProgramDialog(QtWidgets.QDialog):
     self.setModal(True)
     
     self.originalProgramCode = programData[0]
+    self.originalProgramName = programData[1]
 
     self.setupUI(programData)
 
@@ -129,6 +130,9 @@ class UpdateProgramDialog(QtWidgets.QDialog):
     programName = self.programNameInput.text().strip() or None
     collegeCode = self.collegeCodeInput.currentText() or None
 
+    if not self.showUpdateConfirmation(self):
+      return
+
     result = updateProgram(self.originalProgramCode, programCode, programName, collegeCode)
 
     if result == "Program updated successfully.":
@@ -152,6 +156,43 @@ class UpdateProgramDialog(QtWidgets.QDialog):
     # Close dialog
     self.accept()
 
+  def showUpdateConfirmation(self, parent):
+    msgBox = QtWidgets.QMessageBox(parent)
+    msgBox.setWindowTitle("Confirm Update")
+    msgBox.setText(f"Are you sure you want to update {self.originalProgramName}?")
+    msgBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+
+    for button in msgBox.findChildren(QtWidgets.QPushButton):
+      button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+
+    msgBox.setStyleSheet("""
+      QMessageBox {
+        background-color: rgb(37, 37, 37);
+        color: white;
+        border-radius: 10px;
+      }
+      QMessageBox QLabel {
+        color: white;
+        font-family: \"Inter\";
+      }
+      QMessageBox QPushButton {
+        font: 9pt "Inter";
+        font-weight: bold;
+        padding: 0px, 15px;
+        background-color: rgb(63, 150, 160);
+        border-radius: 3px;
+        padding: 5px 15px;
+      }
+                         
+      QMessageBox QPushButton::hover {
+        background-color: rgb(83, 170, 180);
+      }
+    """)
+
+    # Show the dialog and return the user's choice
+    return msgBox.exec() == QtWidgets.QMessageBox.StandardButton.Yes
+  
   def showStatusMessage(self, message):
     self.statusBar.setText(message)
 

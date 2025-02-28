@@ -14,6 +14,7 @@ class UpdateBatchStudentDialog(QtWidgets.QDialog):
 
     # Store only student IDs
     self.studentsData = studentsData
+    self.studentLastNames = [student[2] for student in studentsData]
     self.studentIDs = [student[0] for student in studentsData]
 
     self.setupUI()
@@ -121,15 +122,24 @@ class UpdateBatchStudentDialog(QtWidgets.QDialog):
     self.programCodeInput.addItems(programCodeList)
 
   def updateStudents(self):
+    if not self.showUpdateConfirmation(self):
+      return
+    
     updatedStudents = []
     
     yearLevel = self.yearLevelInput.currentText() if self.yearLevelInput.currentText() != "" else None
     gender = self.genderInput.currentText() if self.genderInput.currentText() != "" else None
-    programCode = self.programCodeInput.currentText() if self.programCodeInput.currentText() != "" else None
     collegeCode = self.collegeCodeInput.currentText() if self.collegeCodeInput.currentText() != "" else None
+    programCode = self.programCodeInput.currentText() if self.programCodeInput.currentText() != "" else None
+
+    if collegeCode is not None:
+      programsInCollege = searchProgramsByField(collegeCode, "College Code")
+      if len(programsInCollege) == 0:
+        self.showStatusMessage("Selected College has no Programs")
+        return
 
     for idNumber in self.studentIDs:
-      result = updateStudent(idNumber, idNumber, None, None, yearLevel, gender, programCode, collegeCode)
+      result = updateStudent(idNumber, idNumber, None, None, yearLevel, gender, programCode, collegeCode, False)
       if result != "Student updated successfully.":
         self.showStatusMessage(result)
         return
@@ -139,5 +149,44 @@ class UpdateBatchStudentDialog(QtWidgets.QDialog):
     self.statusMessageSignal.emit("Students Updated", 3000)
     self.accept()
 
+  def showUpdateConfirmation(self, parent):
+    studentNames = ", ".join(self.studentLastNames) if len(self.studentLastNames) <= 5 else f"{len(self.studentsData)} students selected"
+
+    msgBox = QtWidgets.QMessageBox(parent)
+    msgBox.setWindowTitle("Confirm Update")
+    msgBox.setText(f"Are you sure you want to update {studentNames}?")
+    msgBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+
+    for button in msgBox.findChildren(QtWidgets.QPushButton):
+      button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+
+    msgBox.setStyleSheet("""
+      QMessageBox {
+        background-color: rgb(37, 37, 37);
+        color: white;
+        border-radius: 10px;
+      }
+      QMessageBox QLabel {
+        color: white;
+        font-family: \"Inter\";
+      }
+      QMessageBox QPushButton {
+        font: 9pt "Inter";
+        font-weight: bold;
+        padding: 0px, 15px;
+        background-color: rgb(63, 150, 160);
+        border-radius: 3px;
+        padding: 5px 15px;
+      }
+                         
+      QMessageBox QPushButton::hover {
+        background-color: rgb(83, 170, 180);
+      }
+    """)
+
+    # Show the dialog and return the user's choice
+    return msgBox.exec() == QtWidgets.QMessageBox.StandardButton.Yes
+  
   def showStatusMessage(self, message):
-      self.statusBar.setText(message)
+    self.statusBar.setText(message)
