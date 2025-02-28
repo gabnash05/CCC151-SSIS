@@ -65,6 +65,9 @@ class StudentTable(QtWidgets.QTableWidget):
                             border-bottom: 1px solid rgb(120, 139, 140); 
                             border-right: 1px solid transparent;
                         }
+                        QTableWidget::item:selected {
+                          background-color: rgb(105, 105, 105); 
+                        }
                        
                         #deleteButton { background-color: rgb(160, 63, 63); } 
                         #editButton { background-color: rgb(63, 150, 160); } 
