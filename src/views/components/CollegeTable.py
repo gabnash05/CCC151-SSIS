@@ -1,13 +1,15 @@
 from operator import itemgetter
 
-from PyQt6 import QtWidgets, QtCore
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QApplication
+from PyQt6 import QtWidgets, QtCore, QtGui
+from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtWidgets import QGraphicsOpacityEffect, QTableWidgetItem
+from PyQt6.QtGui import QIcon
 
-from views.components.CollegeRow import CollegeRow
-from controllers.collegeControllers import getAllColleges
+from views.components.UpdateCollegeDialog import UpdateCollegeDialog
 
-class CollegeTable(QtWidgets.QWidget):
+from controllers.collegeControllers import getAllColleges, removeCollege
+
+class CollegeTable(QtWidgets.QTableWidget):
   # Student variables
   headers = ["College Code", "College Name", "Operations"]
   sortByFields = [("College Code", "College Name"), ("College Name", "College Code")]
@@ -15,6 +17,7 @@ class CollegeTable(QtWidgets.QWidget):
   # Signals
   statusMessageSignal = pyqtSignal(str, int)
   editCollegeSignal = pyqtSignal(list)
+  deleteCollegeSignal = pyqtSignal(str)
   updateTablesSignal = pyqtSignal()
 
   def __init__(self, parent=None):
@@ -23,164 +26,165 @@ class CollegeTable(QtWidgets.QWidget):
     self.parentWidget = parent
 
     self.setupUI()
-
     self.colleges = []
     self.sortByIndex = 0
     self.sortingOrder = 0
 
+    self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+
+    # For mouse features
+    self.setMouseTracking(True)
+    self.viewport().setMouseTracking(True)
+    self.viewport().installEventFilter(self)
+
     self.initialCollegesToDisplay()
     
-
-  # UI Setup
   def setupUI(self):
-    # Updating Status Bar
-    self.statusMessageSignal.emit("College Table Loading", 3000)
+    self.setColumnCount(len(self.headers))
+    self.setSelectionBehavior(QtWidgets.QTableWidget.SelectionBehavior.SelectRows)
+    self.setEditTriggers(QtWidgets.QTableWidget.EditTrigger.NoEditTriggers)
+    self.setSortingEnabled(False)
+    self.setStyleSheet("""
+                        QHeaderView::section { 
+                          font-weight: bold; 
+                          font-size: 9pt;
+                        }
+                       QHeaderView::section:vertical {
+                          font-weight: normal; 
+                          font-size: 9pt;
+                        }
+                        QPushButton { 
+                          font: 9pt "Inter"; 
+                          font-weight: bold; 
+                          padding: 0px 15px; 
+                          border-radius: 3px; 
+                        } 
+                       
+                        QTableWidget {
+                            gridline-color: transparent;
+                        }
+                        QTableWidget::item {
+                            border-bottom: 1px solid rgb(120, 139, 140); 
+                            border-right: 1px solid transparent;
+                        }
+                       
+                        #deleteButton { background-color: rgb(160, 63, 63); } 
+                        #editButton { background-color: rgb(63, 150, 160); } 
+                        #editButton::hover { background-color: rgb(83, 170, 180); } 
+                        #deleteButton::hover { background-color: rgb(180, 83, 83); } 
+                        QFrame { border: none; background: transparent; } 
+                        QLabel { border: none; background: transparent; font: 9pt "Inter"; }
+                      """)
     
-    # Main Layout
-    self.mainLayout = QtWidgets.QVBoxLayout(self)
-    self.mainLayout.setContentsMargins(0, 0, 0, 0)
-    self.mainLayout.setSpacing(0)
+    self.verticalHeader().setDefaultSectionSize(40)  # Increase row height
+    self.verticalHeader().setFixedWidth(35)
+    self.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Fixed)
     
-    # Table Header Frame
-    self.tableHeaderFrame = QtWidgets.QFrame(self)
-    self.tableHeaderFrame.setMinimumSize(QtCore.QSize(0, 50))
-    self.tableHeaderFrame.setMaximumSize(QtCore.QSize(16777215, 50))
-    self.tableHeaderFrame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
-    self.tableHeaderFrame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-
-    self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tableHeaderFrame)
-    self.horizontalLayout_2.setContentsMargins(15, 0, 15, 0)
-
-    # Set Alignment and Resizing Policies
-    for i, header in enumerate(self.headers):
-      label = QtWidgets.QLabel(header, self.tableHeaderFrame)
-      label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-      label.setStyleSheet("font: 9pt 'Inter'; font-weight: bold;")
-      label.setObjectName(f"headerLabel_{i}")
-
-      # Set width constraints
-      if i == 1:  # Name column
-        label.setMinimumWidth(500)
-      else:
-        label.setMinimumWidth(100)
-
-      self.horizontalLayout_2.addWidget(label, 1)
-
-    self.mainLayout.addWidget(self.tableHeaderFrame)
-
-    # Separator Line (QFrame) between Header and Data
-    self.headerSeparator = QtWidgets.QFrame(self)
-    self.headerSeparator.setFrameShape(QtWidgets.QFrame.Shape.HLine)
-    self.headerSeparator.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
-    self.headerSeparator.setStyleSheet("background-color: rgb(120, 139, 140);")
-    self.headerSeparator.setMaximumHeight(1)  # Thin line
-    self.mainLayout.addWidget(self.headerSeparator)
+    header = self.horizontalHeader()
+    header.setMinimumHeight(40)
+    header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+    header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeMode.Fixed)
     
-    # Scroll Area
-    self.scrollArea = QtWidgets.QScrollArea(self)
-    self.scrollArea.setWidgetResizable(True)
-    self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-    self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-
-    # Scroll Content Widget
-    self.scrollContent = QtWidgets.QWidget()
-    self.scrollLayout = QtWidgets.QVBoxLayout(self.scrollContent)
-    self.scrollLayout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
-    self.scrollLayout.setContentsMargins(0, 0, 0, 0)
-    self.scrollLayout.setSpacing(2)
-    
-    scrollAreaStyle = """
-      QScrollArea { background: transparent; border: none; font: Inter; }
-      QScrollArea::viewport { background: transparent; }
-      QScrollArea QWidget { background: transparent; }
-      QScrollBar:vertical, QScrollBar:horizontal { background: #222222; border-radius: 5px; width: 10px; height: 10px; }
-      QScrollBar::handle:vertical, QScrollBar::handle:horizontal { background: #AAAAAA; border-radius: 5px; min-height: 20px; min-width: 20px; }
-      QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover { background: #777777; }
-    """
-    self.scrollArea.setStyleSheet(scrollAreaStyle)
-
-    self.scrollArea.setWidget(self.scrollContent)
-    self.mainLayout.addWidget(self.scrollArea)
+    self.setHorizontalHeaderLabels(self.headers)
 
   #--------------------------------------------------------------------------
   
-  # Displays data provided to the table
   def refreshDisplayColleges(self):
     if not self.colleges or "College Code" not in self.colleges[0]:
-      self.clearScrollArea()
-      self.statusMessageSignal.emit("No students found", 3000)
+      self.setRowCount(0)
+      self.statusMessageSignal.emit("No colleges found", 3000)
       return
     
     self.updateSortByIndex()
-    
     primaryField, secondaryField = self.sortByFields[self.sortByIndex]
     reverseOrder = (self.sortingOrder == 1)
-    
-    # In-place sorting using Timsort (O(n log n))
+
     self.colleges.sort(key=itemgetter(primaryField, secondaryField), reverse=reverseOrder)
-    
-    self.clearScrollArea()
-
-    self.scrollArea.setUpdatesEnabled(False)
-
-    for college in self.colleges:
-      self.addCollegeRowToTable(college)
-      QApplication.processEvents()
-    
-    self.scrollArea.setUpdatesEnabled(True)
+    self.populateTable()
   
-  # Changes the set of programs in ProgramTable
   def setColleges(self, newColleges):
-    if newColleges == None:
-      self.statusMessageSignal.emit("No Colleges Found", 3000)
+    if newColleges is None:
+      print("No records to set")
       return
 
     self.colleges = newColleges
-
     self.refreshDisplayColleges()
 
-  # Deletes all ProgramRows in ProgramTable
-  def clearScrollArea(self):
-    if self.scrollLayout.count() == 0:
-      return
-
-    self.scrollArea.setUpdatesEnabled(False)
-
-    while self.scrollLayout.count():
-      item = self.scrollLayout.takeAt(0)
-      widget = item.widget()
-      if widget:
-        widget.setParent(None)
+  def populateTable(self):
+    self.setRowCount(len(self.colleges))
     
-    self.scrollArea.setUpdatesEnabled(True)
+    for row, college in enumerate(self.colleges):
+      self.setItem(row, 0, QtWidgets.QTableWidgetItem(str(college["College Code"])))
 
-  # Generates ProgramRows into ProgramTable
-  def addCollegeRowToTable(self, collegeData):
-    collegeRow = CollegeRow(collegeData, self.scrollContent)
-    collegeRow.statusMessageSignal.connect(self.statusMessageSignal)
-    collegeRow.editCollegeSignal.connect(self.editCollegeSignal.emit)
-    collegeRow.updateTablesSignal.connect(self.updateTablesSignal)
-    self.scrollLayout.addWidget(collegeRow)
-    self.scrollLayout.addWidget(collegeRow.separator)
+      collegeName = QTableWidgetItem(college["College Name"])
+      self.setItem(row, 1, collegeName)
+      
+      operationsWidget = QtWidgets.QWidget()
+      operationsLayout = QtWidgets.QHBoxLayout()
+      operationsLayout.setContentsMargins(0, 0, 0, 0)
+      operationsLayout.setSpacing(0)
+
+      editButton = QtWidgets.QPushButton()
+      editButton.setObjectName("editButton")
+      editButton.setIcon(QIcon("assets/edit.png"))
+      editButton.setFixedSize(30, 30)
+      editButton.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+      editButton.clicked.connect(lambda _, s=college: self.openUpdateCollegeDialog(s))
+      
+      self.editOpacity = QGraphicsOpacityEffect()
+      editButton.setGraphicsEffect(self.editOpacity)
+      self.editOpacity.setOpacity(0.0) 
+
+      deleteButton = QtWidgets.QPushButton()
+      deleteButton.setObjectName("deleteButton")
+      deleteButton.setIcon(QIcon("assets/delete.png"))
+      deleteButton.setFixedSize(30, 30)
+      deleteButton.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+      deleteButton.clicked.connect(lambda _, s=college: self.deleteSelectedRow(s))
+
+      self.deleteOpacity = QGraphicsOpacityEffect()
+      deleteButton.setGraphicsEffect(self.deleteOpacity)
+      self.deleteOpacity.setOpacity(0.0)
+
+      operationsLayout.addWidget(editButton)
+      operationsLayout.addWidget(deleteButton)
+      operationsWidget.setLayout(operationsLayout)
+      operationsWidget.setStyleSheet(operationsWidget.setStyleSheet("""
+        QPushButton { font: 9pt "Inter"; font-weight: bold; padding: 0px 15px; border-radius: 3px; }
+        QPushButton#editButton { background-color: rgb(63, 150, 160); }
+        QPushButton#deleteButton { background-color: rgb(160, 63, 63); }
+        QPushButton#editButton:hover { background-color: rgb(83, 170, 180); }
+        QPushButton#deleteButton:hover { background-color: rgb(180, 83, 83); }
+      """))
+      
+      self.setCellWidget(row, 2, operationsWidget)
+
+    self.viewport().installEventFilter(self)
   
-  # Reloads CollegeTable when new college is adden from AddCollegeDialog
   def addNewCollegeToTable(self, collegeData):
     newCollege = {
       "College Code": collegeData[0],
       "College Name": collegeData[1],
     }
 
+    if any(college["College Code"] == newCollege["College Code"] for college in self.colleges):
+      return
+
     self.colleges.append(newCollege)
     self.refreshDisplayColleges()
 
-  # Edits a CollegeRow in CollegeTable
-  def editCollegeInTable(self, collegeData):
-    originalCollegeCode = collegeData[0]
+  def editCollegeInTable(self, collegesData):
+    for collegeData in collegesData:
+      originalCollegeCode = collegeData[0]
 
-    newCollege = {
-      "College Code": collegeData[1],
-      "College Name": collegeData[2],
-    }
+      newCollege = {
+        key: value
+        for key, value in {
+          "College Code": collegeData[1],
+          "College Name": collegeData[2],
+          }.items()
+        if value is not None
+      }
 
     for college in self.colleges:
       if college["College Code"] == originalCollegeCode:
@@ -188,30 +192,157 @@ class CollegeTable(QtWidgets.QWidget):
     
     self.refreshDisplayColleges()
 
-  # Gets all colleges in the college.csv file
   def initialCollegesToDisplay(self):
-    self.clearScrollArea()
-
+    self.setRowCount(0)
     colleges = getAllColleges()
     if not colleges:
       return
     
     self.colleges = colleges
-
     self.refreshDisplayColleges()
   
-  # Updates the sortByIndex for sorting in refreshDisplayColleges
   def updateSortByIndex(self):
     sortByIndex = self.parentWidget.sortByComboBox.currentIndex()
     sortingOrder = self.parentWidget.sortingOrderComboBox.currentIndex()
 
-    if sortByIndex <= 0:
-      self.sortByIndex = 0
-    else:
-      self.sortByIndex = sortByIndex - 1
+    self.sortByIndex = max(0, sortByIndex - 1)
+    self.sortingOrder = max(0, sortingOrder)
+  
+  def openUpdateCollegeDialog(self, collegeRowData):
+    selectedRows = list(set(index.row() for index in self.selectedIndexes()))
+    collegeData = list(collegeRowData.values())
+    self.updateDialog = UpdateCollegeDialog(self, collegeData)
+    self.updateDialog.collegeUpdatedTableSignal.connect(self.editCollegeInTable)
+    self.updateDialog.updateTablesSignal.connect(self.updateTablesSignal)
+    self.updateDialog.statusMessageSignal.connect(self.parentWidget.displayMessageToStatusBar)
+
+    if len(selectedRows) > 1:
+      self.statusMessageSignal.emit("Colleges can only be updated one at a time.", 3000)
+      
+    self.updateDialog.exec()
+
+  def deleteSelectedRow(self, college):
+    selectedRows = sorted(set(index.row() for index in self.selectedIndexes()), reverse=True)
+    selectedRowCount = len(selectedRows)
+
+    # Single Deletion
+    if len(selectedRows) > 1:
+      collegeCodes = f'\n{"\n".join(f'{self.item(row, 0).text()}' for row in selectedRows)}'
+
+      promptText = f"the following colleges?\n{collegeCodes}" if selectedRowCount < 20 else f"{selectedRowCount} colleges"
+
+      if not self.showDeleteConfirmation(self, promptText):
+        return
+      
+      failedDeletions = []
+
+      for row in sorted(selectedRows, reverse=True):  # Reverse to avoid shifting indices
+        college = self.colleges[row]
+        result = removeCollege(college["College Code"])
+
+        if result == "College removed successfully.":
+          self.colleges.pop(row)
+          self.removeRow(row)
+        else:
+          failedDeletions.append(college["College Code"])
+
+      # Emit status message
+      if failedDeletions:
+        self.statusMessageSignal.emit(f"Failed to remove: {', '.join(failedDeletions)}", 3000)
+      else:
+        self.statusMessageSignal.emit("Selected colleges removed successfully.", 3000)
     
-    if sortingOrder < 0:
-      self.sortingOrder = 0
+    # Multiple Deletions
     else:
-      self.sortingOrder = sortingOrder
+      if not self.showDeleteConfirmation(self, college["College Name"]):
+        return
+
+      # Remove from CSV
+      result = removeCollege(college["College Code"])
+
+      if result != "College removed successfully.":
+        self.statusMessageSignal.emit(result, 3000)
+        return
+
+      # Find the row index of the program
+      rowToRemove = -1
+      for row in range(self.rowCount()):
+        if self.item(row, 0) and self.item(row, 0).text() == str(college["College Code"]):
+          rowToRemove = row
+          break
+
+      if rowToRemove == -1:
+        self.statusMessageSignal.emit("Error: College not found in table.", 3000)
+        return
+
+      # Remove program from internal list
+      self.colleges.remove(college)
+
+      # Remove row from QTableWidget
+      self.removeRow(rowToRemove)
+      self.statusMessageSignal.emit(result, 3000)
+    
+    self.updateTablesSignal.emit()
+
+  def showDeleteConfirmation(self, parent, collegeName):
+    msgBox = QtWidgets.QMessageBox(parent)
+    msgBox.setWindowTitle("Confirm Deletion")
+    msgBox.setText(f"Are you sure you want to delete {collegeName}?")
+    msgBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+    msgBox.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+
+    for button in msgBox.findChildren(QtWidgets.QPushButton):
+      button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+
+    msgBox.setStyleSheet("""
+      QMessageBox {
+        background-color: rgb(37, 37, 37);
+        color: white;
+        border-radius: 10px;
+      }
+      QMessageBox QLabel {
+        color: white;
+        font-family: \"Inter\";
+      }
+      QMessageBox QPushButton {
+        font: 9pt "Inter";
+        font-weight: bold;
+        padding: 0px, 15px;
+        background-color: rgb(63, 150, 160);
+        border-radius: 3px;
+        padding: 5px 15px;
+      }
+                         
+      QMessageBox QPushButton::hover {
+        background-color: rgb(83, 170, 180);
+      }
+    """)
+
+    # Show the dialog and return the user's choice
+    return msgBox.exec() == QtWidgets.QMessageBox.StandardButton.Yes
+  
+  def handleCollegeDeleted(self, message, duration):
+    self.refreshDisplayColleges()
+    self.statusMessageSignal.emit(message, duration)
+
+  def eventFilter(self, obj, event):
+    if obj == self.viewport():
+      if event.type() == QtCore.QEvent.Type.MouseMove:
+        index = self.indexAt(event.pos())  # Get index of row under mouse
+        if index.isValid():
+          self.toggleButtons(index.row())
+        else:
+          self.toggleButtons(-1)  # Hide buttons when not over a valid row
+      elif event.type() == QtCore.QEvent.Type.Leave:
+        self.toggleButtons(-1)  # Hide buttons when mouse leaves the table
+    return super().eventFilter(obj, event)
+
+  def toggleButtons(self, row):
+    for r in range(self.rowCount()):
+      operationsWidget = self.cellWidget(r, 2)
+      if operationsWidget:
+        for i in range(operationsWidget.layout().count()):
+          widget = operationsWidget.layout().itemAt(i).widget()
+          if widget and isinstance(widget.graphicsEffect(), QGraphicsOpacityEffect):
+            widget.graphicsEffect().setOpacity(1.0 if r == row else 0.0)
 

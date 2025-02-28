@@ -228,12 +228,11 @@ class ProgramTable(QtWidgets.QTableWidget):
       
     self.updateDialog.exec()
 
-
   def deleteSelectedRow(self, program):
     selectedRows = sorted(set(index.row() for index in self.selectedIndexes()), reverse=True)
     selectedRowCount = len(selectedRows)
 
-    # Single Deletion
+    # Multiple Deletions
     if len(selectedRows) > 1:
       programCodes = f'\n{"\n".join(f'{self.item(row, 0).text()}' for row in selectedRows)}'
 
@@ -260,7 +259,7 @@ class ProgramTable(QtWidgets.QTableWidget):
       else:
         self.statusMessageSignal.emit("Selected programs removed successfully.", 3000)
     
-    # Multiple Deletions
+    # Single Deletion
     else:
       if not self.showDeleteConfirmation(self, program["Program Name"]):
         return
@@ -288,8 +287,9 @@ class ProgramTable(QtWidgets.QTableWidget):
 
       # Remove row from QTableWidget
       self.removeRow(rowToRemove)
-      self.updateTablesSignal.emit()
       self.statusMessageSignal.emit(result, 3000)
+    
+    self.updateTablesSignal.emit()
 
   def showDeleteConfirmation(self, parent, programName):
     msgBox = QtWidgets.QMessageBox(parent)

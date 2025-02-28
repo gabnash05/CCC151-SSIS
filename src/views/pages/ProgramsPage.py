@@ -514,7 +514,6 @@ class ProgramsPage(QtWidgets.QWidget):
     self.addDialog.exec()
 
   def searchPrograms(self):
-    print("search")
     searchValue = self.searchBarLineEdit.text().strip()
     searchField = self.searchByComboBox.currentText()
 
@@ -530,7 +529,7 @@ class ProgramsPage(QtWidgets.QWidget):
       self.programTable.setPrograms(programs)
     else:
       self.statusMessageSignal.emit("No Programs Found", 3000)
-      self.programTable.clearScrollArea()
+      self.studentTable.setStudents([])
 
   def keyPressEvent(self, event):
     if event.key() == Qt.Key.Key_Return:

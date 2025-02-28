@@ -12,7 +12,6 @@ class UpdateCollegeDialog(QtWidgets.QDialog):
     self.setWindowTitle("Update College")
     self.setModal(True)
     
-    # Store the student ID for reference
     self.originalCollegeCode = collegeData[0]
 
     self.setupUI(collegeData)
@@ -34,7 +33,11 @@ class UpdateCollegeDialog(QtWidgets.QDialog):
 
                        QComboBox { 
                           background-color: rgba(0, 0, 0, 0); 
-                       }  
+                       }
+
+                       QComboBox QAbstractItemView {
+                          background-color: rgb(37, 37, 37);
+                      }
                        
                        QComboBox::drop-down { 
                           subcontrol-origin: padding; subcontrol-position: top right; width: 15px; 
@@ -57,11 +60,11 @@ class UpdateCollegeDialog(QtWidgets.QDialog):
 
     # Section Headers
     self.titleLabel = QtWidgets.QLabel("Update College")
-    self.titleLabel.setFont(QtGui.QFont("Inter", 18, QtGui.QFont.Weight.Bold))
+    self.titleLabel.setStyleSheet("font-size: 24px; font-weight: bold;")
     self.titleLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
     self.collegeInfoLabel = QtWidgets.QLabel("College Information")
-    self.collegeInfoLabel.setFont(QtGui.QFont("Inter", 14, QtGui.QFont.Weight.Bold))
+    self.collegeInfoLabel.setStyleSheet("font-size: 19px; font-weight: bold;")
 
     # Update Button
     self.updateButton = QtWidgets.QPushButton("Update College")
@@ -115,7 +118,7 @@ class UpdateCollegeDialog(QtWidgets.QDialog):
       self.statusBar.setStyleSheet("background-color: none; color: green; border-top: 1px solid #666666; padding: 4px; text-align: center")
 
       # Send signal to MainWindow to call addStudent in StudentTable
-      self.collegeUpdatedTableSignal.emit([self.originalCollegeCode, collegeCode, collegeName])
+      self.collegeUpdatedTableSignal.emit([[self.originalCollegeCode, collegeCode, collegeName]])
       self.updateTablesSignal.emit()
       self.statusMessageSignal.emit("Updating College", 1000)
 

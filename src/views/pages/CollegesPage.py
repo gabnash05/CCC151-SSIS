@@ -27,7 +27,6 @@ class CollegesPage(QtWidgets.QWidget):
     self.collegeTable.updateTablesSignal.connect(self.updateTablesSignal)
 
     self.addCollegeButton.clicked.connect(self.openAddCollegeDialog)
-    self.collegeTable.editCollegeSignal.connect(self.openUpdateCollegeDialog)
 
     self.sortByComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
     self.sortingOrderComboBox.currentIndexChanged.connect(lambda: self.statusMessageSignal.emit("Sorting...", 2000))
@@ -512,14 +511,6 @@ class CollegesPage(QtWidgets.QWidget):
     self.addDialog.collegeAddedWindowSignal.connect(self.displayMessageToStatusBar)
     self.addDialog.exec()
 
-  # Open Update Program Dialog
-  def openUpdateCollegeDialog(self, collegeData):
-    self.updateDialog = UpdateCollegeDialog(self, collegeData)
-    self.updateDialog.collegeUpdatedTableSignal.connect(self.collegeTable.editCollegeInTable)
-    self.updateDialog.updateTablesSignal.connect(self.updateTablesSignal)
-    self.updateDialog.statusMessageSignal.connect(self.displayMessageToStatusBar)
-    self.updateDialog.exec()
-
   # Search students
   def searchColleges(self):
     self.displayMessageToStatusBar("Searching...", 3000)
@@ -539,7 +530,7 @@ class CollegesPage(QtWidgets.QWidget):
       self.collegeTable.setColleges(colleges)
     else:
       self.statusMessageSignal.emit("No colleges found", 3000)
-      self.collegeTable.clearScrollArea()
+      self.studentTable.setStudents([])
 
   # Handle key press events
   def keyPressEvent(self, event):
