@@ -188,13 +188,11 @@ class UpdateStudentDialog(QtWidgets.QDialog):
     programCode = self.programCodeInput.currentText() or None
     collegeCode = self.collegeCodeInput.currentText() or None
 
-    result = updateStudent(self.originalStudentID, idNumber, firstName, lastName, yearLevel, gender, programCode, collegeCode)
+    result = updateStudent(self.originalStudentID, idNumber, firstName, lastName, yearLevel, gender, programCode, collegeCode, True)
 
     if result == "Student updated successfully.":
       self.showStatusMessage(result)
       
-      
-
       # Send signal to MainWindow to call addStudent in StudentTable
       self.studentUpdatedTableSignal.emit([[self.originalStudentID, idNumber, firstName, lastName, gender, yearLevel, programCode, collegeCode]])
       self.statusMessageSignal.emit("Updating Student", 1000)

@@ -125,11 +125,18 @@ class UpdateBatchStudentDialog(QtWidgets.QDialog):
     
     yearLevel = self.yearLevelInput.currentText() if self.yearLevelInput.currentText() != "" else None
     gender = self.genderInput.currentText() if self.genderInput.currentText() != "" else None
-    programCode = self.programCodeInput.currentText() if self.programCodeInput.currentText() != "" else None
     collegeCode = self.collegeCodeInput.currentText() if self.collegeCodeInput.currentText() != "" else None
+    programCode = self.programCodeInput.currentText() if self.programCodeInput.currentText() != "" else None
+
+    
+    if collegeCode is not None:
+      programsInCollege = searchProgramsByField(collegeCode, "College Code")
+      if len(programsInCollege) == 0:
+        self.showStatusMessage("Selected College has no Programs")
+        return
 
     for idNumber in self.studentIDs:
-      result = updateStudent(idNumber, idNumber, None, None, yearLevel, gender, programCode, collegeCode)
+      result = updateStudent(idNumber, idNumber, None, None, yearLevel, gender, programCode, collegeCode, False)
       if result != "Student updated successfully.":
         self.showStatusMessage(result)
         return

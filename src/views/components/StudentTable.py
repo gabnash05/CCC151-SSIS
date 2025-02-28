@@ -132,6 +132,9 @@ class StudentTable(QtWidgets.QTableWidget):
       programCodeItem.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
       self.setItem(row, 4, programCodeItem)
 
+      if student["College Code"] is None:
+        student["College Code"] = "N/A"
+      
       collegeCodeItem = QTableWidgetItem(student["College Code"])
       collegeCodeItem.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
       self.setItem(row, 5, collegeCodeItem)

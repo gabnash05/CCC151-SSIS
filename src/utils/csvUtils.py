@@ -78,7 +78,11 @@ def getRowsByFieldCsv(filepath: str, searchValue: str, searchField: Optional[str
       for record in reader:
         if isStudentCsv:
           collegeCode = getCollegeCode(record["ID Number"])
-          record["College Code"] = collegeCode
+
+          if collegeCode is None:
+            record["College Code"] = "N/A"
+          else:
+            record["College Code"] = collegeCode
 
           if searchField == "College Code":
             if collegeCode.lower() == searchValue.lower():
